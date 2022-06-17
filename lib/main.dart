@@ -55,12 +55,14 @@ _devMode() async {
 }
 
 addBoolToSF(var bool) async {
+  print('wrote to prefs');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('devModeOn', bool);
 }
 
 getBoolValuesSF() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  print("accessed prefs");
   //Return bool
   bool? devModeOn = prefs.getBool('devModeOn');
   return devModeOn;
@@ -75,11 +77,12 @@ class MyHome extends StatelessWidget {
       null;
     } else {
       await prefs.setBool('seen', true);
-      Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => YourMomJokes(),
-          ));
+      print("first time");
+      // Navigator.push(
+      //     context,
+      //     CupertinoPageRoute(
+      //       builder: (context) => YourMomJokes(),
+      //     ));
     }
   }
 
@@ -145,26 +148,13 @@ class ActualHome extends StatelessWidget {
                 child: ListView(
                   children: [
                     CupertinoListTile(
-                        //leading: Icon(),
-                        title: const Text('Friend me on Roblox'),
-                        onTap: () => _launchURL(
-                            "https://www.roblox.com/users/690475268/profile")),
-                    CupertinoListTile(
-                        title: const Text('Join my Discord Server'),
-                        onTap: () =>
-                            _launchURL("https://discord.gg/HSmAerG2VX")),
-                    CupertinoListTile(
-                        title: const Text('Add me on Snapchat'),
-                        onTap: () => _launchURL(
-                            "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
-                    connectivityResult == ConnectivityResult.mobile
-                        ? const CupertinoListTile(
-                            title: Text('No Wifi Connection'))
-                        : const CupertinoListTile(
-                            title: const Text('Wifi Connected')),
+                      title: const Text("My Social"),
+                      onTap: () => Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) => MySocial())),
+                    ),
                     CupertinoListTile(
                         title: Text('your mom jokes'),
-                        onTap: () => getBoolValuesSF() ?? true
+                        onTap: () => getBoolValuesSF() == true
                             ? Navigator.push(
                                 context,
                                 PageTransition(
@@ -206,6 +196,54 @@ class ActualHome extends StatelessWidget {
   }
 }
 
+class MySocial extends StatelessWidget {
+  MySocial({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
+    return Dismissible(
+        direction: DismissDirection.down,
+        key: const Key('key'),
+        onDismissed: (_) => Navigator.of(context).pop(),
+        child: CupertinoPageScaffold(
+            navigationBar: const CupertinoNavigationBar(
+              middle: const Text('Social Links'),
+              automaticallyImplyLeading: true,
+              previousPageTitle: "Home",
+            ),
+            child: Container(
+                padding: const EdgeInsets.all(20),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: ListView(
+                      children: [
+                        CupertinoListTile(
+                            //leading: Icon(),
+                            title: const Text('Friend me on Roblox'),
+                            onTap: () => _launchURL(
+                                "https://www.roblox.com/users/690475268/profile")),
+                        CupertinoListTile(
+                            title: const Text('Join my Discord Server'),
+                            onTap: () =>
+                                _launchURL("https://discord.gg/HSmAerG2VX")),
+                        CupertinoListTile(
+                            title: const Text('Add me on Snapchat'),
+                            onTap: () => _launchURL(
+                                "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
+                        CupertinoListTile(
+                            title: const Text('Look at me on Minecraft'),
+                            onTap: () => _launchURL(
+                                "https://namemc.com/profile/Firebolt_9907.1")),
+                        CupertinoListTile(
+                            title: const Text('Subscribe to me on YouTube'),
+                            onTap: () => _launchURL(
+                                "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
+                      ],
+                    )))));
+  }
+}
+
 class MySettings extends StatelessWidget {
   MySettings({Key? key}) : super(key: key);
 
@@ -228,7 +266,7 @@ class MySettings extends StatelessWidget {
             onTap: () => Navigator.push(
                 context,
                 PageTransition(
-                    type: PageTransitionType.leftToRight, child: DevConfirm())),
+                    type: PageTransitionType.bottomToTop, child: DevConfirm())),
           ),
         ]));
   }
@@ -239,27 +277,38 @@ class DevConfirm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        themeMode: ThemeMode.system,
-        home: Scaffold(
-            appBar: AppBar(
-              title: const Text('Slow Down There...'),
-            ),
-            body: Column(
-              children: [
-                Text("You're going to need a code to do this ☠️"),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Enter the Access Code',
-                    ),
-                  ),
+    return Dismissible(
+        direction: DismissDirection.down,
+        key: const Key('key'),
+        onDismissed: (_) => Navigator.of(context).pop(),
+        child: MaterialApp(
+            themeMode: ThemeMode.system,
+            home: Scaffold(
+                appBar: AppBar(
+                  title: const Text('Slow Down There...'),
                 ),
-              ],
-            )));
+                body: Column(
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Text("u r going to need a code to do this")),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 16),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Enter Access Code',
+                        ),
+                        autofocus: true,
+                      ),
+                    ),
+                    const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 40),
+                        child: Text(
+                            "swipe down to dismiss bc u obv dont have a code")),
+                  ],
+                ))));
   }
 }
 
@@ -337,7 +386,7 @@ class EmbarrasingDate extends StatelessWidget {
         child: ListView(children: [
           Padding(
               padding: const EdgeInsets.all(25.0),
-              child: getBoolValuesSF() ?? true
+              child: getBoolValuesSF() == true
                   ? const Text(
                       "Y'all think I'm good enough to get a date 🤣 i dont have a life i spent way too long making stuff like this")
                   : Text(
