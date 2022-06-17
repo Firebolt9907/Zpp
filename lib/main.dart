@@ -3,7 +3,7 @@
 //import 'package:flutter/material.dart';
 //import 'dart:html';
 
-// import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -12,7 +12,9 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/cupertino.dart';
 //import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+// import 'package:line_icons/line_icons.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
+// import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 // import 'package:easy_web_view/easy_web_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -41,10 +43,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       theme: const CupertinoThemeData(
-        textTheme: const CupertinoTextThemeData(
+        textTheme: CupertinoTextThemeData(
           textStyle: TextStyle(
             color: CupertinoDynamicColor.withBrightness(
-              color: const Color(0xFF000000),
+              color: Color(0xFF000000),
               darkColor: Color(0xFFFFFFFF),
             ),
           ),
@@ -55,7 +57,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
-addBoolToSF(var bool) async {
+Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+late Future<bool> _Developer;
+
+addBoolToSF(bool) async {
   print('wrote to prefs');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('devModeOn', bool);
@@ -89,7 +94,7 @@ class MyHome extends StatelessWidget {
 
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
       systemNavigationBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Color.fromARGB(1, 1, 1, 1));
+      systemNavigationBarColor: Color.fromARGB(0, 0, 0, 0));
 
   MyHome({Key? key}) : super(key: key);
   @override
@@ -97,35 +102,34 @@ class MyHome extends StatelessWidget {
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(items: <BottomNavigationBarItem>[
-        const BottomNavigationBarItem(
-          icon: const Icon(CupertinoIcons.home),
-          activeIcon: Icon(CupertinoIcons.home),
-        ),
-        const BottomNavigationBarItem(
-          icon: const Icon(CupertinoIcons.settings),
-          activeIcon: Icon(CupertinoIcons.settings_solid),
-        ),
-      ]),
-      tabBuilder: (context, index) {
-        switch (index) {
-          case 0:
-            return CupertinoTabView(builder: (context) {
-              return CupertinoPageScaffold(
-                child: ActualHome(),
-              );
-            });
-          case 1:
-            return CupertinoTabView(builder: (context) {
-              return CupertinoPageScaffold(
-                child: MySettings(),
-              );
-            });
-          default:
-            return const Text('');
-        }
-      },
-    );
+        tabBar: CupertinoTabBar(items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.home),
+            activeIcon: Icon(CupertinoIcons.home),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.settings),
+            activeIcon: Icon(CupertinoIcons.settings_solid),
+          ),
+        ]),
+        tabBuilder: (context, index) {
+          switch (index) {
+            case 0:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: ActualHome(),
+                );
+              });
+            case 1:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: MySettings(),
+                );
+              });
+            default:
+              return const Text('');
+          }
+        });
   }
 }
 
@@ -203,41 +207,43 @@ class MySocial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
-    return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          middle: const Text('Social Links'),
-          automaticallyImplyLeading: true,
-          previousPageTitle: "Home",
-        ),
-        child: Container(
-            padding: const EdgeInsets.all(20),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: ListView(
-                  children: [
-                    CupertinoListTile(
-                        //leading: Icon(),
-                        title: const Text('Friend me on Roblox'),
-                        onTap: () => _launchURL(
-                            "https://www.roblox.com/users/690475268/profile")),
-                    CupertinoListTile(
-                        title: const Text('Join my Discord Server'),
-                        onTap: () =>
-                            _launchURL("https://discord.gg/HSmAerG2VX")),
-                    CupertinoListTile(
-                        title: const Text('Add me on Snapchat'),
-                        onTap: () => _launchURL(
-                            "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
-                    CupertinoListTile(
-                        title: const Text('Look at me on Minecraft'),
-                        onTap: () => _launchURL(
-                            "https://namemc.com/profile/Firebolt_9907.1")),
-                    CupertinoListTile(
-                        title: const Text('Subscribe to me on YouTube'),
-                        onTap: () => _launchURL(
-                            "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
-                  ],
-                ))));
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(22.0),
+        child: CupertinoPageScaffold(
+            navigationBar: const CupertinoNavigationBar(
+              middle: Text('Social Links'),
+              automaticallyImplyLeading: true,
+              previousPageTitle: "Home",
+            ),
+            child: Container(
+                padding: const EdgeInsets.all(20),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(22.0),
+                    child: ListView(
+                      children: [
+                        CupertinoListTile(
+                            //leading: Icon(),
+                            title: const Text('Friend me on Roblox'),
+                            onTap: () => _launchURL(
+                                "https://www.roblox.com/users/690475268/profile")),
+                        CupertinoListTile(
+                            title: const Text('Join my Discord Server'),
+                            onTap: () =>
+                                _launchURL("https://discord.gg/HSmAerG2VX")),
+                        CupertinoListTile(
+                            title: const Text('Add me on Snapchat'),
+                            onTap: () => _launchURL(
+                                "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
+                        CupertinoListTile(
+                            title: const Text('Look at me on Minecraft'),
+                            onTap: () => _launchURL(
+                                "https://namemc.com/profile/Firebolt_9907.1")),
+                        CupertinoListTile(
+                            title: const Text('Subscribe to me on YouTube'),
+                            onTap: () => _launchURL(
+                                "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
+                      ],
+                    )))));
   }
 }
 
@@ -280,48 +286,51 @@ class DevConfirm extends StatelessWidget {
         direction: DismissDirection.down,
         key: const Key('key'),
         onDismissed: (_) => Navigator.of(context).pop(),
-        child: MaterialApp(
-            themeMode: ThemeMode.system,
-            home: Scaffold(
-                appBar: AppBar(
-                  title: const Text('Slow Down There...'),
-                ),
-                body: Column(
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Text("u r going to need a code to do this")),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 16),
-                      child: TextFormField(
-                        onChanged: (inputValue) {
-                          if (inputValue == "devmode9") {
-                            addBoolToSF(false);
-                            Navigator.pop(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => ActualHome(),
-                                ));
-                            Phoenix.rebirth(context);
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Enter Access Code',
-                        ),
-                        autofocus: true,
-                        obscureText: true,
-                        obscuringCharacter: "ඞ",
-                        controller: textController,
-                      ),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(25.0),
+            child: MaterialApp(
+                themeMode: ThemeMode.system,
+                home: Scaffold(
+                    appBar: AppBar(
+                      title: const Text('Slow Down There...'),
                     ),
-                    const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 40),
-                        child: Text(
-                            "swipe down to dismiss bc u obv dont have a code")),
-                  ],
-                ))));
+                    body: Column(
+                      children: [
+                        const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Text("u r going to need a code to do this")),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 16),
+                          child: TextFormField(
+                            onChanged: (inputValue) {
+                              if (inputValue == "devmode9") {
+                                Navigator.pop(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.topToBottom,
+                                      child: ActualHome(),
+                                    ));
+                                addBoolToSF(false);
+                                Phoenix.rebirth(context);
+                              }
+                            },
+                            decoration: const InputDecoration(
+                              border: UnderlineInputBorder(),
+                              labelText: 'Enter Access Code',
+                            ),
+                            autofocus: true,
+                            obscureText: true,
+                            obscuringCharacter: "ඞ",
+                            controller: textController,
+                          ),
+                        ),
+                        const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 40),
+                            child: Text(
+                                "swipe down to dismiss bc u obv dont have a code")),
+                      ],
+                    )))));
   }
 }
 
@@ -332,7 +341,7 @@ class TestText extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: const CupertinoNavigationBar(
-          middle: const Text('TestText'),
+          middle: Text('TestText'),
           previousPageTitle: 'Home',
           automaticallyImplyLeading: true,
         ),
@@ -359,25 +368,25 @@ class YourMomJokes extends StatelessWidget {
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return CupertinoPageScaffold(
         navigationBar: const CupertinoNavigationBar(
-          middle: const Text('your mom jokes'),
+          middle: Text('your mom jokes'),
           previousPageTitle: 'Home',
           automaticallyImplyLeading: true,
         ),
-        child: ListView(children: [
-          const CupertinoListTile(
-            title: const Text('ur mom so fat ur dad didnt leave for the milk'),
+        child: ListView(children: const [
+          CupertinoListTile(
+            title: Text('ur mom so fat ur dad didnt leave for the milk'),
           ),
-          const CupertinoListTile(
-            title: const Text('ur mom 🤣🤢🤣🤢🤢🤣🤣🤣'),
+          CupertinoListTile(
+            title: Text('ur mom 🤣🤢🤣🤢🤢🤣🤣🤣'),
           ),
-          const CupertinoListTile(
+          CupertinoListTile(
             title: Text('ur mom so stupid she got an award from "jonas 4"'),
           ),
-          const CupertinoListTile(
+          CupertinoListTile(
             title: Text('ur mom so dumb that u r a mistake'),
           ),
-          const CupertinoListTile(
-            title: const Text(
+          CupertinoListTile(
+            title: Text(
                 'ur mom so stupid she thought instagram was a weed delivery service'),
           ),
         ]));
@@ -392,7 +401,7 @@ class EmbarrasingDate extends StatelessWidget {
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return CupertinoPageScaffold(
         navigationBar: const CupertinoNavigationBar(
-          middle: const Text('most embarrasing thing on date'),
+          middle: Text('most embarrasing thing on date'),
           previousPageTitle: 'Home',
           automaticallyImplyLeading: true,
         ),
