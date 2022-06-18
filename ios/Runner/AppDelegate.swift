@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 
+Application.targetFrameRate = 30
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
