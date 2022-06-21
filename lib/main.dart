@@ -139,7 +139,7 @@ _vibrate() {
 }
 
 class RefreshHome extends StatelessWidget {
-  final _offsetToArmed = 75.0;
+  final _offsetToArmed = 90.0;
 
   RefreshHome({Key? key}) : super(key: key);
   getBoolValuesSF() async {
@@ -181,8 +181,12 @@ class RefreshHome extends StatelessWidget {
                   if (change.didChange(
                       from: IndicatorState.dragging,
                       to: IndicatorState.armed)) {
-                    _vibrate();
-                  } //else if (change.didChange(
+                    Vibration.vibrate(duration: 5, amplitude: 255);
+                  } else if (change.didChange(
+                      from: IndicatorState.armed, to: IndicatorState.loading)) {
+                    Vibration.vibrate(duration: 10, amplitude: 128);
+                  }
+                  //else if (change.didChange(
                   //     from: IndicatorState.armed, to: IndicatorState.loading)) {
                   //   _vibrate();
                   // }
@@ -222,7 +226,7 @@ class RefreshHome extends StatelessWidget {
                       padding: const EdgeInsets.all(20),
                       color: CupertinoTheme.of(context).scaffoldBackgroundColor,
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(22.0),
                           child: ListView(
                             children: [
                               CupertinoListTile(
@@ -234,7 +238,7 @@ class RefreshHome extends StatelessWidget {
                                           backgroundColor: Colors.transparent,
                                           builder: (context) => MySocial(),
                                           duration: const Duration(
-                                              milliseconds: 250))),
+                                              milliseconds: 150))),
                               CupertinoListTile(
                                   title: const Text('Test Text'),
                                   onTap: () => getBoolValuesSF() == false
@@ -258,7 +262,7 @@ class RefreshHome extends StatelessWidget {
                                           backgroundColor: Colors.transparent,
                                           builder: (context) => MySettings(),
                                           duration: const Duration(
-                                              milliseconds: 250))),
+                                              milliseconds: 150))),
                             ],
                           ))),
                 ))));
@@ -269,10 +273,10 @@ class MySocial extends StatelessWidget {
   MySocial({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
       systemNavigationBarColor: Color.fromARGB(0, 0, 0, 0));
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
+    Vibration.vibrate(duration: 10, amplitude: 128);
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
@@ -284,52 +288,57 @@ class MySocial extends StatelessWidget {
                   automaticallyImplyLeading: true,
                   previousPageTitle: "Home",
                 ),
-                child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(0.0),
-                            child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 130),
-                                child: Divider(
-                                  height: 10,
-                                  thickness: 2,
-                                  color: CupertinoTheme.of(context)
-                                      .primaryContrastingColor,
-                                ))),
-                        CupertinoListTile(
-                            //leading: Icon(),
-                            title: const Text('Friend me on Roblox'),
-                            onTap: () => _launchURL(
-                                "https://www.roblox.com/users/690475268/profile")),
-                        CupertinoListTile(
-                            title: const Text('Join my Discord Server'),
-                            onTap: () =>
-                                _launchURL("https://discord.gg/HSmAerG2VX")),
-                        CupertinoListTile(
-                            title: const Text('Add me on Snapchat'),
-                            onTap: () => _launchURL(
-                                "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
-                        CupertinoListTile(
-                            title: const Text('Look at me on Minecraft'),
-                            onTap: () => _launchURL(
-                                "https://namemc.com/profile/Firebolt_9907.1")),
-                        CupertinoListTile(
-                            title: const Text('Subscribe to me on YouTube'),
-                            onTap: () => _launchURL(
-                                "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                            child: Text(
-                              "Swipe down to dismiss",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: ui.Color.fromARGB(255, 131, 131, 131)),
-                            ))
-                      ],
-                    )))));
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: ListView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(0.0),
+                                child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 130),
+                                    child: Divider(
+                                      height: 10,
+                                      thickness: 2,
+                                      color: CupertinoTheme.of(context)
+                                          .primaryContrastingColor,
+                                    ))),
+                            CupertinoListTile(
+                                //leading: Icon(),
+                                title: const Text('Friend me on Roblox'),
+                                onTap: () => _launchURL(
+                                    "https://www.roblox.com/users/690475268/profile")),
+                            CupertinoListTile(
+                                title: const Text('Join my Discord Server'),
+                                onTap: () => _launchURL(
+                                    "https://discord.gg/HSmAerG2VX")),
+                            CupertinoListTile(
+                                title: const Text('Add me on Snapchat'),
+                                onTap: () => _launchURL(
+                                    "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
+                            CupertinoListTile(
+                                title: const Text('Look at me on Minecraft'),
+                                onTap: () => _launchURL(
+                                    "https://namemc.com/profile/Firebolt_9907.1")),
+                            CupertinoListTile(
+                                title: const Text('Subscribe to me on YouTube'),
+                                onTap: () => _launchURL(
+                                    "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
+                            const Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                                child: Text(
+                                  "Swipe down to dismiss",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: ui.Color.fromARGB(
+                                          255, 131, 131, 131)),
+                                ))
+                          ],
+                        ))))));
   }
 }
 
@@ -340,6 +349,7 @@ class MySettings extends StatelessWidget {
   @override
   var devMode = 0;
   Widget build(BuildContext context) {
+    Vibration.vibrate(duration: 10, amplitude: 128);
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return CupertinoPageScaffold(
@@ -371,59 +381,64 @@ class DevConfirm extends StatelessWidget {
       systemNavigationBarColor: Color.fromARGB(0, 0, 0, 0));
   @override
   Widget build(BuildContext context) {
+    Vibration.vibrate(duration: 10, amplitude: 128);
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     TextEditingController textController = TextEditingController();
     String displayText = "";
-    return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text('Slow down there...'),
-          automaticallyImplyLeading: true,
-          previousPageTitle: "Home",
-        ),
-        backgroundColor: CupertinoColors.systemBackground,
-        child: SafeArea(
-            child: Column(
-          children: [
-            const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: Text("u r going to need a code to do this")),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: CupertinoTextField(
-                onChanged: (inputValue) {
-                  if (inputValue == "devmode9") {
-                    Navigator.pop(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.topToBottom,
-                          child: RefreshHome(),
-                        ));
-                    addBoolToSF(false);
-                    Phoenix.rebirth(context);
-                  } else if (inputValue == "urmom") {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => YourMomJokes(),
-                        ));
-                  } else if (inputValue == "date") {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => EmbarrasingDate(),
-                        ));
-                  }
-                },
-                autofocus: true,
-                obscureText: true,
-                obscuringCharacter: "ඞ",
-                controller: _controller,
-              ),
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(22.0),
+        child: CupertinoPageScaffold(
+            navigationBar: const CupertinoNavigationBar(
+              middle: Text('Slow down there...'),
+              automaticallyImplyLeading: true,
+              previousPageTitle: "Home",
             ),
-          ],
-        )));
+            backgroundColor: CupertinoColors.systemBackground,
+            child: SafeArea(
+                child: Column(
+              children: [
+                const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Text("u r going to need a code to do this")),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  child: CupertinoTextField(
+                    onChanged: (inputValue) {
+                      if (inputValue == "devmode9") {
+                        Navigator.pop(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.topToBottom,
+                              child: RefreshHome(),
+                            ));
+                        addBoolToSF(false);
+                        Phoenix.rebirth(context);
+                      } else if (inputValue == "urmom") {
+                        Navigator.pop(context);
+                        CupertinoScaffold.showCupertinoModalBottomSheet(
+                            expand: true,
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => YourMomJokes(),
+                            duration: const Duration(milliseconds: 150));
+                      } else if (inputValue == "date") {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => EmbarrasingDate(),
+                            ));
+                      }
+                    },
+                    autofocus: true,
+                    obscureText: true,
+                    obscuringCharacter: "ඞ",
+                    controller: _controller,
+                  ),
+                ),
+              ],
+            ))));
   }
 }
 
@@ -433,6 +448,7 @@ class TestText extends StatelessWidget {
       systemNavigationBarColor: Color.fromARGB(0, 0, 0, 0));
   @override
   Widget build(BuildContext context) {
+    Vibration.vibrate(duration: 10, amplitude: 128);
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return CupertinoPageScaffold(
         navigationBar: const CupertinoNavigationBar(
