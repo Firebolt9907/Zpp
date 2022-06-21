@@ -6,6 +6,7 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 // import 'globals.dart';
 // import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +54,12 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: MyHome(),
+      initialRoute: '/',
+      routes: <String, WidgetBuilder>{
+        '/': (BuildContext context) => CupertinoScaffold(body: RefreshHome()),
+        '/settings': (BuildContext context) =>
+            CupertinoScaffold(body: MySettings()),
+      },
     );
   }
 }
@@ -61,10 +67,10 @@ class MyApp extends StatelessWidget {
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 late Future<bool> _Developer;
 
-addBoolToSF(bool) async {
+addBoolToSF(bool first) async {
   print('wrote to prefs');
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('devModeOn', bool);
+  prefs.setBool('devModeOn', first);
 }
 
 getBoolValuesSF() async {
@@ -72,7 +78,6 @@ getBoolValuesSF() async {
   print("accessed prefs");
   //Return bool
   bool? devModeOn = prefs.getBool('devModeOn');
-  return devModeOn;
 }
 
 class MyHome extends StatelessWidget {
@@ -85,11 +90,6 @@ class MyHome extends StatelessWidget {
     } else {
       await prefs.setBool('seen', true);
       print("first time");
-      // Navigator.push(
-      //     context,
-      //     CupertinoPageRoute(
-      //       builder: (context) => YourMomJokes(),
-      //     ));
     }
   }
 
@@ -116,7 +116,7 @@ class MyHome extends StatelessWidget {
           switch (index) {
             case 0:
               return CupertinoTabView(builder: (context) {
-                return const CupertinoPageScaffold(
+                return CupertinoPageScaffold(
                   child: RefreshHome(),
                 );
               });
@@ -139,14 +139,25 @@ _vibrate() {
 }
 
 class RefreshHome extends StatelessWidget {
-  final _offsetToArmed = 150.0;
+  final _offsetToArmed = 75.0;
 
-  const RefreshHome({Key? key}) : super(key: key);
+  RefreshHome({Key? key}) : super(key: key);
+  getBoolValuesSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return bool
+    bool? devModeOn = prefs.getBool('devModeOn');
+    return devModeOn;
+  }
 
-  _refreshVibrate(double) async {
-    if (double == 1.0) {
-      _vibrate();
-    }
+  @override
+  bool devModeOn = true;
+  void initState() {
+    getAllSavedData();
+  }
+
+  getAllSavedData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? devModeOn = prefs.getBool("youKey");
   }
 
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
@@ -156,68 +167,101 @@ class RefreshHome extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: getBoolValuesSF() == false
-              ? const Text('Dev Home')
-              : const Text('Home'),
+          middle:
+              devModeOn == false ? const Text('Dev Home') : const Text('Home'),
           automaticallyImplyLeading: true,
         ),
-        child: CustomRefreshIndicator(
-          onRefresh: () => Future.delayed(const Duration(milliseconds: 3000)),
-          offsetToArmed: _offsetToArmed,
-          builder: (context, child, controller) => AnimatedBuilder(
-              animation: controller,
-              child: child,
-              builder: (context, child) {
-                return Stack(children: <Widget>[
-                  Container(
+        child: SafeArea(
+            child: CustomRefreshIndicator(
+                onRefresh: () => Future.delayed(
+                      const Duration(seconds: 1),
+                    ),
+                offsetToArmed: _offsetToArmed,
+                onStateChanged: (IndicatorStateChange change) {
+                  if (change.didChange(
+                      from: IndicatorState.dragging,
+                      to: IndicatorState.armed)) {
+                    _vibrate();
+                  } //else if (change.didChange(
+                  //     from: IndicatorState.armed, to: IndicatorState.loading)) {
+                  //   _vibrate();
+                  // }
+                },
+                builder: (context, child, controller) => AnimatedBuilder(
+                    animation: controller,
+                    child: child,
+                    builder: (context, child) {
+                      return Stack(children: <Widget>[
+                        Container(
+                            color: CupertinoTheme.of(context)
+                                .scaffoldBackgroundColor,
+                            child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                child: ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(22.0),
+                                        bottomRight: Radius.circular(22.0)),
+                                    child: SizedBox(
+                                        width: double.infinity,
+                                        height: _offsetToArmed *
+                                            controller.value *
+                                            2,
+                                        child: const RiveAnimation.asset(
+                                          "assets/falling.riv",
+                                          fit: BoxFit.cover,
+                                        ))))),
+                        Transform.translate(
+                            offset: Offset(
+                                0.0, _offsetToArmed * controller.value * 2),
+                            child: child),
+                      ]);
+                    }),
+                child: Material(
+                  child: Container(
+                      padding: const EdgeInsets.all(20),
                       color: CupertinoTheme.of(context).scaffoldBackgroundColor,
-                      child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 0.0),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(22.0),
-                              child: SizedBox(
-                                  width: double.infinity,
-                                  height: _offsetToArmed * controller.value,
-                                  child: const RiveAnimation.asset(
-                                    "assets/falling.riv",
-                                    fit: BoxFit.cover,
-                                  ))))),
-                  Transform.translate(
-                      offset: Offset(0.0, _offsetToArmed * controller.value),
-                      child: child),
-                ]);
-              }),
-          child: Container(
-              padding: const EdgeInsets.all(20),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: ListView(
-                    children: [
-                      CupertinoListTile(
-                        title: const Text("My Social"),
-                        onTap: () => Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                child: MySocial())),
-                      ),
-                      CupertinoListTile(
-                          title: const Text('Test Text'),
-                          onTap: () => getBoolValuesSF() == false
-                              ? Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.rightToLeft,
-                                      child: TestText()))
-                              : Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => TestText(),
-                                  ))),
-                    ],
-                  ))),
-        ));
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: ListView(
+                            children: [
+                              CupertinoListTile(
+                                  title: const Text("My Social"),
+                                  onTap: () => CupertinoScaffold
+                                      .showCupertinoModalBottomSheet(
+                                          expand: true,
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) => MySocial(),
+                                          duration: const Duration(
+                                              milliseconds: 250))),
+                              CupertinoListTile(
+                                  title: const Text('Test Text'),
+                                  onTap: () => getBoolValuesSF() == false
+                                      ? Navigator.push(
+                                          context,
+                                          PageTransition(
+                                              type: PageTransitionType
+                                                  .rightToLeft,
+                                              child: TestText()))
+                                      : Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                            builder: (context) => TestText(),
+                                          ))),
+                              CupertinoListTile(
+                                  title: const Text("Settings"),
+                                  onTap: () => CupertinoScaffold
+                                      .showCupertinoModalBottomSheet(
+                                          expand: true,
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) => MySettings(),
+                                          duration: const Duration(
+                                              milliseconds: 250))),
+                            ],
+                          ))),
+                ))));
   }
 }
 
@@ -225,73 +269,67 @@ class MySocial extends StatelessWidget {
   MySocial({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
       systemNavigationBarColor: Color.fromARGB(0, 0, 0, 0));
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
-    return Dismissible(
-        direction: DismissDirection.down,
-        key: const Key('key'),
-        onDismissed: (_) => Navigator.of(context).pop(),
-        child: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 350.0, 0.0, 0.0),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(42.0),
-                child: CupertinoPageScaffold(
-                    // navigationBar: const CupertinoNavigationBar(
-                    //   middle: Text('Social Links'),
-                    //   automaticallyImplyLeading: false,
-                    //   previousPageTitle: "Home",
-                    // ),
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ListView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(442.0),
-                                child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 130),
-                                    child: Divider(
-                                      height: 10,
-                                      thickness: 2,
-                                      color: CupertinoTheme.of(context)
-                                          .primaryContrastingColor,
-                                    ))),
-                            CupertinoListTile(
-                                //leading: Icon(),
-                                title: const Text('Friend me on Roblox'),
-                                onTap: () => _launchURL(
-                                    "https://www.roblox.com/users/690475268/profile")),
-                            CupertinoListTile(
-                                title: const Text('Join my Discord Server'),
-                                onTap: () => _launchURL(
-                                    "https://discord.gg/HSmAerG2VX")),
-                            CupertinoListTile(
-                                title: const Text('Add me on Snapchat'),
-                                onTap: () => _launchURL(
-                                    "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
-                            CupertinoListTile(
-                                title: const Text('Look at me on Minecraft'),
-                                onTap: () => _launchURL(
-                                    "https://namemc.com/profile/Firebolt_9907.1")),
-                            CupertinoListTile(
-                                title: const Text('Subscribe to me on YouTube'),
-                                onTap: () => _launchURL(
-                                    "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
-                            const Padding(
-                                padding:
-                                    EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                                child: Text(
-                                  "Swipe down to dismiss",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: ui.Color.fromARGB(
-                                          255, 131, 131, 131)),
-                                ))
-                          ],
-                        ))))));
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(0.0),
+            child: CupertinoPageScaffold(
+                navigationBar: const CupertinoNavigationBar(
+                  middle: Text('Social Links'),
+                  automaticallyImplyLeading: true,
+                  previousPageTitle: "Home",
+                ),
+                child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ListView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(0.0),
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 130),
+                                child: Divider(
+                                  height: 10,
+                                  thickness: 2,
+                                  color: CupertinoTheme.of(context)
+                                      .primaryContrastingColor,
+                                ))),
+                        CupertinoListTile(
+                            //leading: Icon(),
+                            title: const Text('Friend me on Roblox'),
+                            onTap: () => _launchURL(
+                                "https://www.roblox.com/users/690475268/profile")),
+                        CupertinoListTile(
+                            title: const Text('Join my Discord Server'),
+                            onTap: () =>
+                                _launchURL("https://discord.gg/HSmAerG2VX")),
+                        CupertinoListTile(
+                            title: const Text('Add me on Snapchat'),
+                            onTap: () => _launchURL(
+                                "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
+                        CupertinoListTile(
+                            title: const Text('Look at me on Minecraft'),
+                            onTap: () => _launchURL(
+                                "https://namemc.com/profile/Firebolt_9907.1")),
+                        CupertinoListTile(
+                            title: const Text('Subscribe to me on YouTube'),
+                            onTap: () => _launchURL(
+                                "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                            child: Text(
+                              "Swipe down to dismiss",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ui.Color.fromARGB(255, 131, 131, 131)),
+                            ))
+                      ],
+                    )))));
   }
 }
 
@@ -308,19 +346,20 @@ class MySettings extends StatelessWidget {
         navigationBar: CupertinoNavigationBar(
           middle: getBoolValuesSF() == false
               ? const Text('Dev Mode Enabled')
-              : const Text('Settings'),
+              : const Text('Disabled'),
           previousPageTitle: 'Home',
           automaticallyImplyLeading: true,
         ),
-        child: ListView(children: [
+        child:
+            ListView(physics: const NeverScrollableScrollPhysics(), children: [
           CupertinoListTile(
-            leading: const Icon(CupertinoIcons.wifi_exclamationmark),
-            title: const Text('No Internet Connection'),
-            onTap: () => Navigator.push(
-                context,
-                PageTransition(
-                    type: PageTransitionType.bottomToTop, child: DevConfirm())),
-          ),
+              leading: const Icon(CupertinoIcons.wifi_exclamationmark),
+              title: const Text('No Internet Connection'),
+              onTap: () => Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => DevConfirm(),
+                  )))
         ]));
   }
 }
@@ -335,79 +374,56 @@ class DevConfirm extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     TextEditingController textController = TextEditingController();
     String displayText = "";
-    return Dismissible(
-        direction: DismissDirection.down,
-        key: const Key('key'),
-        onDismissed: (_) => Navigator.of(context).pop(),
-        child: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(25.0),
-                child: MaterialApp(
-                    themeMode: ThemeMode.system,
-                    color: CupertinoTheme.of(context).scaffoldBackgroundColor,
-                    home: Scaffold(
-                        appBar: AppBar(
-                          title: const Text('Slow Down There...'),
-                        ),
-                        body: Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                            child: Column(
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Text(
-                                        "u r going to need a code to do this")),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 16),
-                                  child: TextFormField(
-                                    onChanged: (inputValue) {
-                                      if (inputValue == "devmode9") {
-                                        Navigator.pop(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType
-                                                  .topToBottom,
-                                              child: RefreshHome(),
-                                            ));
-                                        addBoolToSF(false);
-                                        Phoenix.rebirth(context);
-                                      } else if (inputValue == "urmom") {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  YourMomJokes(),
-                                            ));
-                                      } else if (inputValue == "date") {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  EmbarrasingDate(),
-                                            ));
-                                      }
-                                    },
-                                    decoration: const InputDecoration(
-                                      border: UnderlineInputBorder(),
-                                      labelText: 'Enter Access Code',
-                                    ),
-                                    autofocus: true,
-                                    obscureText: true,
-                                    obscuringCharacter: "ඞ",
-                                    controller: _controller,
-                                  ),
-                                ),
-                                const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 40),
-                                    child: Text(
-                                        "swipe down to dismiss bc u obv dont have a code")),
-                              ],
-                            )))))));
+    return CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Slow down there...'),
+          automaticallyImplyLeading: true,
+          previousPageTitle: "Home",
+        ),
+        backgroundColor: CupertinoColors.systemBackground,
+        child: SafeArea(
+            child: Column(
+          children: [
+            const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Text("u r going to need a code to do this")),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              child: CupertinoTextField(
+                onChanged: (inputValue) {
+                  if (inputValue == "devmode9") {
+                    Navigator.pop(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.topToBottom,
+                          child: RefreshHome(),
+                        ));
+                    addBoolToSF(false);
+                    Phoenix.rebirth(context);
+                  } else if (inputValue == "urmom") {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => YourMomJokes(),
+                        ));
+                  } else if (inputValue == "date") {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => EmbarrasingDate(),
+                        ));
+                  }
+                },
+                autofocus: true,
+                obscureText: true,
+                obscuringCharacter: "ඞ",
+                controller: _controller,
+              ),
+            ),
+          ],
+        )));
   }
 }
 
