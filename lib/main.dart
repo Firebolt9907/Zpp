@@ -1,8 +1,14 @@
-import 'dart:js';
+// import 'dart:js';
+//import 'package:flutter/material.dart';
+//import 'dart:html';
+// import 'dart:js';
 import 'dart:ui' as ui;
-import 'dart:io';
+import 'dart:ui';
+// import 'dart:io';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter/painting.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -11,12 +17,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
 // import 'package:line_icons/line_icons.dart';
+// import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +30,7 @@ void main() {
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark));
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
@@ -102,6 +109,7 @@ class MyHome extends StatelessWidget {
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
 
@@ -191,10 +199,28 @@ class RefreshHome extends StatelessWidget {
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
   @override
   Widget build(BuildContext context) {
+    Future checkFirstSeen() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool seen = (prefs.getBool('seen') ?? false);
+
+      if (seen) {
+        null;
+      } else {
+        // await prefs.setBool('seen', true);
+        CupertinoScaffold.showCupertinoModalBottomSheet(
+            expand: true,
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context) => MySocial(),
+            duration: const Duration(milliseconds: 150));
+      }
+    }
+
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -311,16 +337,12 @@ class RefreshHome extends StatelessWidget {
                                                   ))),
                                       CupertinoListTile(
                                           title: const Text("Settings"),
-                                          onTap: () => CupertinoScaffold
-                                              .showCupertinoModalBottomSheet(
-                                                  expand: true,
-                                                  context: context,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  builder: (context) =>
-                                                      MySettings(),
-                                                  duration: const Duration(
-                                                      milliseconds: 150))),
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    MySettings(),
+                                              ))),
                                     ],
                                   ))),
                         ))))));
@@ -333,6 +355,7 @@ class MySocial extends StatelessWidget {
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
   @override
@@ -371,7 +394,7 @@ class MySocial extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(0.0),
                                         child: Padding(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 130),
                                             child: Divider(
                                               height: 10,
@@ -425,6 +448,7 @@ class MySettings extends StatelessWidget {
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
   @override
@@ -443,26 +467,194 @@ class MySettings extends StatelessWidget {
                 statusBarIconBrightness: Brightness.dark),
             sized: false,
             child: CupertinoPageScaffold(
-                navigationBar: CupertinoNavigationBar(
-                  middle: getBoolValuesSF() == false
-                      ? const Text('Dev Mode Enabled')
-                      : const Text('Disabled'),
+                navigationBar: const CupertinoNavigationBar(
+                  middle: Text('Settings'),
                   previousPageTitle: 'Home',
                   automaticallyImplyLeading: true,
                 ),
                 child: ListView(
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      CupertinoListTile(
-                          leading:
-                              const Icon(CupertinoIcons.wifi_exclamationmark),
-                          title: const Text('No Internet Connection'),
-                          onTap: () => Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => DevConfirm(),
-                              )))
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (BuildContext context) =>
+                                        AboutUs()));
+                          },
+                          child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(22.0),
+                                  child: Stack(
+                                    children: [
+                                      AspectRatio(
+                                          aspectRatio: 4 / 5,
+                                          child: Hero(
+                                              tag: 'sus',
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          22.0),
+                                                  child: const Image(
+                                                      image: AssetImage(
+                                                          'assets/amogus.jpg'),
+                                                      fit: BoxFit.cover)))),
+                                      Align(
+                                          alignment: const Alignment(-1.0, 0.0),
+                                          child: Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 403),
+                                              child: ClipRRect(
+                                                  // Clip it cleanly.
+                                                  child: BackdropFilter(
+                                                filter: ImageFilter.blur(
+                                                    sigmaX: 10, sigmaY: 10),
+                                                child: Container(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.1),
+                                                  alignment: Alignment.center,
+                                                  child: const Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 5),
+                                                    child: Text(
+                                                      'Credits',
+                                                      style: TextStyle(
+                                                          fontSize: 40,
+                                                          color: CupertinoColors
+                                                              .white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )))),
+                                    ],
+                                  )))),
                     ]))));
+  }
+}
+
+class AboutUs extends StatelessWidget {
+  AboutUs({Key? key}) : super(key: key);
+  static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
+      systemStatusBarContrastEnforced: true,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark);
+  @override
+  var devMode = 0;
+  final _offsetToArmed = 75.0;
+  Widget build(BuildContext context) {
+    Vibration.vibrate(duration: 10, amplitude: 128);
+    //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
+    MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(22.0),
+        child: DismissiblePage(
+            onDismissed: () {
+              Navigator.of(context).pop();
+            },
+            direction: DismissiblePageDismissDirection.down,
+            isFullScreen: true,
+            child: Scaffold(
+                extendBodyBehindAppBar: true,
+                body: AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: const SystemUiOverlayStyle(
+                        systemStatusBarContrastEnforced: true,
+                        systemNavigationBarColor: Colors.transparent,
+                        systemNavigationBarDividerColor: Colors.transparent,
+                        systemNavigationBarIconBrightness: Brightness.dark,
+                        statusBarIconBrightness: Brightness.dark),
+                    sized: false,
+                    child: CupertinoPageScaffold(
+                        resizeToAvoidBottomInset: false,
+                        child: ListView(
+                            physics: const ClampingScrollPhysics(),
+                            padding: const EdgeInsets.only(top: 0),
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (BuildContext context) =>
+                                                DevConfirm()));
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Hero(
+                                          tag: 'sus',
+                                          child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(22.0),
+                                              child: const Image(
+                                                image: AssetImage(
+                                                    'assets/amogus.jpg'),
+                                              ))),
+                                      Align(
+                                          alignment: const Alignment(-1.0, 0.0),
+                                          child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 349),
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                          bottomLeft: ui.Radius
+                                                              .circular(22.0),
+                                                          bottomRight: ui.Radius
+                                                              .circular(22.0)),
+                                                  child: ClipRRect(
+                                                      // Clip it cleanly.
+                                                      child: BackdropFilter(
+                                                    filter: ImageFilter.blur(
+                                                        sigmaX: 10, sigmaY: 10),
+                                                    child: Container(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.1),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: const Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 5),
+                                                        child: Text(
+                                                          'Rishu Sharma',
+                                                          style: TextStyle(
+                                                              fontSize: 40,
+                                                              color:
+                                                                  CupertinoColors
+                                                                      .white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ))))),
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 25),
+                                          child:
+                                              CupertinoNavigationBarBackButton(
+                                                  previousPageTitle: 'Settings',
+                                                  color: CupertinoColors
+                                                      .activeBlue)),
+                                    ],
+                                  )),
+                              Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Text(
+                                          'dedicaded many weeks to breaking Stack Overflow and his CTRL, C, and V keys',
+                                          style: CupertinoTheme.of(context)
+                                              .textTheme
+                                              .textStyle))),
+                            ]))))));
   }
 }
 
@@ -473,6 +665,7 @@ class DevConfirm extends StatelessWidget {
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
   @override
@@ -502,8 +695,22 @@ class DevConfirm extends StatelessWidget {
                     child: SafeArea(
                         child: Column(
                       children: [
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 40, right: 40),
+                            child: AspectRatio(
+                                aspectRatio: 4 / 3,
+                                child: Hero(
+                                    tag: 'sus',
+                                    child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(22.0),
+                                        child: const Image(
+                                          image: AssetImage('assets/sus.jpg'),
+                                          fit: BoxFit.fitWidth,
+                                        ))))),
                         const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
+                            padding: EdgeInsets.only(top: 20),
                             child: Text("u r going to need a code to do this")),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -547,11 +754,12 @@ class DevConfirm extends StatelessWidget {
 }
 
 class TestText extends StatelessWidget {
-  TestText({Key? key}) : super(key: key);
+  const TestText({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
   @override
@@ -591,11 +799,12 @@ class TestText extends StatelessWidget {
 }
 
 class YourMomJokes extends StatelessWidget {
-  YourMomJokes({Key? key}) : super(key: key);
+  const YourMomJokes({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
   @override
@@ -643,44 +852,47 @@ class YourMomJokes extends StatelessWidget {
 }
 
 class EmbarrasingDate extends StatelessWidget {
-  EmbarrasingDate({Key? key}) : super(key: key);
+  const EmbarrasingDate({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
       systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
   @override
   Widget build(BuildContext context) {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
-    return Scaffold(
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: false,
-                systemNavigationBarColor: Colors.transparent,
-                systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: Brightness.dark,
-                statusBarIconBrightness: Brightness.dark),
-            sized: false,
-            child: CupertinoPageScaffold(
-                navigationBar: const CupertinoNavigationBar(
-                  middle: Text('most embarrasing thing on date'),
-                  previousPageTitle: 'Settings',
-                  automaticallyImplyLeading: true,
-                ),
-                child: ListView(children: [
-                  Padding(
-                      padding: const EdgeInsets.all(25.0),
-                      child: getBoolValuesSF() == false
-                          ? const Text(
-                              "Y'all think I'm good enough to get a date 🤣 i dont have a life i spent way too long making stuff like this")
-                          : Text(
-                              "Y'all think I'm good enough to get a date 🤣 i dont have a life i spent way too long making stuff like this",
-                              style: CupertinoTheme.of(context)
-                                  .textTheme
-                                  .textStyle))
-                ]))));
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(22.0),
+        child: Scaffold(
+            body: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: const SystemUiOverlayStyle(
+                    systemStatusBarContrastEnforced: true,
+                    systemNavigationBarColor: Colors.transparent,
+                    systemNavigationBarDividerColor: Colors.transparent,
+                    systemNavigationBarIconBrightness: Brightness.dark,
+                    statusBarIconBrightness: Brightness.dark),
+                sized: false,
+                child: CupertinoPageScaffold(
+                    navigationBar: const CupertinoNavigationBar(
+                      middle: Text('most embarrasing thing on date'),
+                      previousPageTitle: 'Settings',
+                      automaticallyImplyLeading: true,
+                    ),
+                    child: ListView(children: [
+                      Padding(
+                          padding: const EdgeInsets.all(25.0),
+                          child: getBoolValuesSF() == false
+                              ? const Text(
+                                  "Y'all think I'm good enough to get a date 🤣 i dont have a life i spent way too long making stuff like this")
+                              : Text(
+                                  "Y'all think I'm good enough to get a date 🤣 i dont have a life i spent way too long making stuff like this",
+                                  style: CupertinoTheme.of(context)
+                                      .textTheme
+                                      .textStyle))
+                    ])))));
   }
 }
 
