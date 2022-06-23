@@ -1,5 +1,3 @@
-//import 'package:flutter/material.dart';
-//import 'dart:html';
 import 'dart:js';
 import 'dart:ui' as ui;
 import 'dart:io';
@@ -8,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-// import 'globals.dart';
-// import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 //import 'package:flutter/widgets.dart';
 import 'package:rive/rive.dart';
@@ -25,7 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -103,7 +99,7 @@ class MyHome extends StatelessWidget {
   }
 
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -192,7 +188,7 @@ class RefreshHome extends StatelessWidget {
   }
 
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -203,7 +199,7 @@ class RefreshHome extends StatelessWidget {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: true,
+                systemStatusBarContrastEnforced: false,
                 systemNavigationBarColor: Colors.transparent,
                 systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: Brightness.dark,
@@ -334,7 +330,7 @@ class RefreshHome extends StatelessWidget {
 class MySocial extends StatelessWidget {
   MySocial({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -347,7 +343,7 @@ class MySocial extends StatelessWidget {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: true,
+                systemStatusBarContrastEnforced: false,
                 systemNavigationBarColor: Colors.transparent,
                 systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: Brightness.dark,
@@ -426,7 +422,7 @@ class MySocial extends StatelessWidget {
 class MySettings extends StatelessWidget {
   MySettings({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -440,7 +436,7 @@ class MySettings extends StatelessWidget {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: true,
+                systemStatusBarContrastEnforced: false,
                 systemNavigationBarColor: Colors.transparent,
                 systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: Brightness.dark,
@@ -474,7 +470,7 @@ class DevConfirm extends StatelessWidget {
   DevConfirm({Key? key}) : super(key: key);
   final _controller = TextEditingController();
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -490,7 +486,7 @@ class DevConfirm extends StatelessWidget {
         child: Scaffold(
             body: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
-                    systemStatusBarContrastEnforced: true,
+                    systemStatusBarContrastEnforced: false,
                     systemNavigationBarColor: Colors.transparent,
                     systemNavigationBarDividerColor: Colors.transparent,
                     systemNavigationBarIconBrightness: Brightness.dark,
@@ -553,7 +549,7 @@ class DevConfirm extends StatelessWidget {
 class TestText extends StatelessWidget {
   TestText({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -565,7 +561,7 @@ class TestText extends StatelessWidget {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: true,
+                systemStatusBarContrastEnforced: false,
                 systemNavigationBarColor: Colors.transparent,
                 systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: Brightness.dark,
@@ -597,7 +593,7 @@ class TestText extends StatelessWidget {
 class YourMomJokes extends StatelessWidget {
   YourMomJokes({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -609,7 +605,7 @@ class YourMomJokes extends StatelessWidget {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: true,
+                systemStatusBarContrastEnforced: false,
                 systemNavigationBarColor: Colors.transparent,
                 systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: Brightness.dark,
@@ -649,7 +645,7 @@ class YourMomJokes extends StatelessWidget {
 class EmbarrasingDate extends StatelessWidget {
   EmbarrasingDate({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -661,7 +657,7 @@ class EmbarrasingDate extends StatelessWidget {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: true,
+                systemStatusBarContrastEnforced: false,
                 systemNavigationBarColor: Colors.transparent,
                 systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: Brightness.dark,
