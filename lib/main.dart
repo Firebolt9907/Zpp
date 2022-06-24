@@ -12,11 +12,14 @@ import 'package:dismissible_page/dismissible_page.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:flutter_platform_alert/flutter_platform_alert.dart';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 //import 'package:flutter/widgets.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
 // import 'package:line_icons/line_icons.dart';
+import 'package:resize/resize.dart';
 // import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
@@ -54,25 +57,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
         borderRadius: BorderRadius.circular(22.0),
-        child: CupertinoApp(
-          theme: const CupertinoThemeData(
-            textTheme: CupertinoTextThemeData(
-              textStyle: TextStyle(
-                color: CupertinoDynamicColor.withBrightness(
-                  color: Color(0xFF000000),
-                  darkColor: Color(0xFFFFFFFF),
+        child: Resize(builder: () {
+          return CupertinoApp(
+            theme: const CupertinoThemeData(
+              primaryContrastingColor: CupertinoDynamicColor.withBrightness(
+                  color: Colors.black, darkColor: Colors.white),
+              textTheme: CupertinoTextThemeData(
+                textStyle: TextStyle(
+                  color: CupertinoDynamicColor.withBrightness(
+                    color: Color(0xFF000000),
+                    darkColor: Color(0xFFFFFFFF),
+                  ),
                 ),
               ),
             ),
-          ),
-          initialRoute: '/',
-          routes: <String, WidgetBuilder>{
-            '/': (BuildContext context) =>
-                CupertinoScaffold(body: RefreshHome()),
-            '/settings': (BuildContext context) =>
-                CupertinoScaffold(body: MySettings()),
-          },
-        ));
+            initialRoute: '/',
+            routes: <String, WidgetBuilder>{
+              '/': (BuildContext context) =>
+                  CupertinoScaffold(body: RefreshHome()),
+              '/settings': (BuildContext context) =>
+                  CupertinoScaffold(body: MySettings()),
+            },
+          );
+        }));
   }
 }
 
@@ -343,6 +350,24 @@ class RefreshHome extends StatelessWidget {
                                                 builder: (context) =>
                                                     MySettings(),
                                               ))),
+                                      CupertinoListTile(
+                                          //leading: Icon(),
+                                          title: const Text('Send Feedback'),
+                                          onTap: () async {
+                                            final result =
+                                                await FlutterPlatformAlert
+                                                    .showAlert(
+                                              windowTitle: 'r u sure',
+                                              text:
+                                                  'this will open the email app bc i cant be bothered to add cloud services to my app',
+                                              alertStyle:
+                                                  AlertButtonStyle.yesNo,
+                                            );
+                                            result == AlertButton.yesButton
+                                                ? _launchURL(
+                                                    "mailto:remmeberthisrishu@gmail.com?subject=Feedback on Zpp")
+                                                : null;
+                                          }),
                                     ],
                                   ))),
                         ))))));
@@ -390,18 +415,6 @@ class MySocial extends StatelessWidget {
                                 child: ListView(
                                   physics: const NeverScrollableScrollPhysics(),
                                   children: [
-                                    ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(0.0),
-                                        child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 130),
-                                            child: Divider(
-                                              height: 10,
-                                              thickness: 2,
-                                              color: CupertinoTheme.of(context)
-                                                  .primaryContrastingColor,
-                                            ))),
                                     CupertinoListTile(
                                         //leading: Icon(),
                                         title:
@@ -427,16 +440,6 @@ class MySocial extends StatelessWidget {
                                             'Subscribe to me on YouTube'),
                                         onTap: () => _launchURL(
                                             "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
-                                    const Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            0.0, 10.0, 0.0, 0.0),
-                                        child: Text(
-                                          "Swipe down to dismiss",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: ui.Color.fromARGB(
-                                                  255, 131, 131, 131)),
-                                        ))
                                   ],
                                 ))))))));
   }
@@ -488,6 +491,7 @@ class MySettings extends StatelessWidget {
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(22.0),
                                   child: Stack(
+                                    alignment: Alignment.bottomCenter,
                                     children: [
                                       AspectRatio(
                                           aspectRatio: 4 / 5,
@@ -501,36 +505,27 @@ class MySettings extends StatelessWidget {
                                                       image: AssetImage(
                                                           'assets/amogus.jpg'),
                                                       fit: BoxFit.cover)))),
-                                      Align(
-                                          alignment: const Alignment(-1.0, 0.0),
-                                          child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 403),
-                                              child: ClipRRect(
-                                                  // Clip it cleanly.
-                                                  child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 10, sigmaY: 10),
-                                                child: Container(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.1),
-                                                  alignment: Alignment.center,
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5),
-                                                    child: Text(
-                                                      'Credits',
-                                                      style: TextStyle(
-                                                          fontSize: 40,
-                                                          color: CupertinoColors
-                                                              .white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                ),
-                                              )))),
+                                      ClipRRect(
+                                          // Clip it cleanly.
+                                          child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaX: 10, sigmaY: 10),
+                                        child: Container(
+                                          color: Colors.grey.withOpacity(0.1),
+                                          alignment: Alignment.center,
+                                          child: const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: Text(
+                                              'Credits',
+                                              style: TextStyle(
+                                                  fontSize: 40,
+                                                  color: CupertinoColors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                      )),
                                     ],
                                   )))),
                     ]))));
@@ -540,10 +535,11 @@ class MySettings extends StatelessWidget {
 class AboutUs extends StatelessWidget {
   AboutUs({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
-      statusBarColor: Colors.transparent,
+      statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),
+      statusBarBrightness: ui.Brightness.dark,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark);
   @override
@@ -557,19 +553,29 @@ class AboutUs extends StatelessWidget {
         borderRadius: BorderRadius.circular(22.0),
         child: DismissiblePage(
             onDismissed: () {
+              _vibrate();
               Navigator.of(context).pop();
             },
             direction: DismissiblePageDismissDirection.down,
             isFullScreen: true,
+            maxRadius: 22.0,
+            minRadius: 22.0,
+            minScale: 0.1,
             child: Scaffold(
+                appBar: CupertinoNavigationBar(
+                    backgroundColor: Color(0x00000000),
+                    border: Border.all(color: Colors.transparent),
+                    previousPageTitle: "Settings",
+                    middle: const Text("About Us")),
                 extendBodyBehindAppBar: true,
                 body: AnnotatedRegion<SystemUiOverlayStyle>(
                     value: const SystemUiOverlayStyle(
-                        systemStatusBarContrastEnforced: true,
+                        systemStatusBarContrastEnforced: false,
                         systemNavigationBarColor: Colors.transparent,
                         systemNavigationBarDividerColor: Colors.transparent,
+                        statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),
                         systemNavigationBarIconBrightness: Brightness.dark,
-                        statusBarIconBrightness: Brightness.dark),
+                        statusBarIconBrightness: Brightness.light),
                     sized: false,
                     child: CupertinoPageScaffold(
                         resizeToAvoidBottomInset: false,
@@ -578,82 +584,73 @@ class AboutUs extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 0),
                             children: [
                               GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (BuildContext context) =>
-                                                DevConfirm()));
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      Hero(
-                                          tag: 'sus',
-                                          child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(22.0),
-                                              child: const Image(
-                                                image: AssetImage(
-                                                    'assets/amogus.jpg'),
-                                              ))),
-                                      Align(
-                                          alignment: const Alignment(-1.0, 0.0),
-                                          child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 349),
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      const BorderRadius.only(
-                                                          bottomLeft: ui.Radius
-                                                              .circular(22.0),
-                                                          bottomRight: ui.Radius
-                                                              .circular(22.0)),
-                                                  child: ClipRRect(
-                                                      // Clip it cleanly.
-                                                      child: BackdropFilter(
-                                                    filter: ImageFilter.blur(
-                                                        sigmaX: 10, sigmaY: 10),
-                                                    child: Container(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.1),
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: const Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 5),
-                                                        child: Text(
-                                                          'Rishu Sharma',
-                                                          style: TextStyle(
-                                                              fontSize: 40,
-                                                              color:
-                                                                  CupertinoColors
-                                                                      .white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ))))),
-                                      const Padding(
-                                          padding: EdgeInsets.only(top: 25),
-                                          child:
-                                              CupertinoNavigationBarBackButton(
-                                                  previousPageTitle: 'Settings',
-                                                  color: CupertinoColors
-                                                      .activeBlue)),
-                                    ],
-                                  )),
-                              Padding(
-                                  padding: const EdgeInsets.all(20),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (BuildContext context) =>
+                                              DevConfirm()));
+                                },
+                                child: Stack(
+                                  alignment: Alignment.bottomCenter,
+                                  children: [
+                                    const Hero(
+                                        tag: 'sus',
+                                        child: ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft:
+                                                    ui.Radius.circular(22.0),
+                                                bottomRight:
+                                                    ui.Radius.circular(22.0)),
+                                            child: Image(
+                                              image: AssetImage(
+                                                  'assets/amogus.jpg'),
+                                            ))),
+                                    ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft:
+                                                ui.Radius.circular(22.0),
+                                            bottomRight:
+                                                ui.Radius.circular(22.0)),
+                                        child: ClipRRect(
+                                            // Clip it cleanly.
+                                            child: BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaX: 10, sigmaY: 10),
+                                          child: Container(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            alignment: Alignment.center,
+                                            child: const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 5),
+                                              child: Text(
+                                                'Rishu Sharma',
+                                                style: TextStyle(
+                                                    fontSize: 40,
+                                                    color:
+                                                        CupertinoColors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        ))),
+                                  ],
+                                ),
+                              ),
+                              const Padding(
+                                  padding: EdgeInsets.all(20),
                                   child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Text(
                                           'dedicaded many weeks to breaking Stack Overflow and his CTRL, C, and V keys',
-                                          style: CupertinoTheme.of(context)
-                                              .textTheme
-                                              .textStyle))),
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: CupertinoDynamicColor
+                                                  .withBrightness(
+                                                      color: Colors.black,
+                                                      darkColor:
+                                                          Colors.white))))),
                             ]))))));
   }
 }
@@ -662,15 +659,14 @@ class DevConfirm extends StatelessWidget {
   DevConfirm({Key? key}) : super(key: key);
   final _controller = TextEditingController();
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: false,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-      statusBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark);
+    systemStatusBarContrastEnforced: false,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+    statusBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  );
   @override
   Widget build(BuildContext context) {
-    Vibration.vibrate(duration: 10, amplitude: 128);
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     TextEditingController textController = TextEditingController();
     String displayText = "";
@@ -682,8 +678,7 @@ class DevConfirm extends StatelessWidget {
                     systemStatusBarContrastEnforced: false,
                     systemNavigationBarColor: Colors.transparent,
                     systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness: Brightness.dark,
-                    statusBarIconBrightness: Brightness.dark),
+                    statusBarIconBrightness: Brightness.light),
                 sized: false,
                 child: CupertinoPageScaffold(
                     navigationBar: const CupertinoNavigationBar(
@@ -700,15 +695,24 @@ class DevConfirm extends StatelessWidget {
                                 top: 10, left: 40, right: 40),
                             child: AspectRatio(
                                 aspectRatio: 4 / 3,
-                                child: Hero(
-                                    tag: 'sus',
-                                    child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(22.0),
-                                        child: const Image(
-                                          image: AssetImage('assets/sus.jpg'),
-                                          fit: BoxFit.fitWidth,
-                                        ))))),
+                                child: GestureDetector(
+                                    onTap: () async {
+                                      await FlutterPlatformAlert.showAlert(
+                                        windowTitle: 'u thought',
+                                        text: '🤣🤣🤣',
+                                        alertStyle: AlertButtonStyle.ok,
+                                      );
+                                    },
+                                    child: Hero(
+                                        tag: 'sus',
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(22.0),
+                                            child: const Image(
+                                              image:
+                                                  AssetImage('assets/sus.jpg'),
+                                              fit: BoxFit.fitWidth,
+                                            )))))),
                         const Padding(
                             padding: EdgeInsets.only(top: 20),
                             child: Text("u r going to need a code to do this")),
@@ -740,6 +744,12 @@ class DevConfirm extends StatelessWidget {
                                     CupertinoPageRoute(
                                       builder: (context) => EmbarrasingDate(),
                                     ));
+                              } else if (inputValue == "random") {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: ((context) => RandomPage())));
                               }
                             },
                             autofocus: true,
@@ -750,6 +760,109 @@ class DevConfirm extends StatelessWidget {
                         ),
                       ],
                     ))))));
+  }
+}
+
+class RandomPage extends StatefulWidget {
+  const RandomPage({super.key});
+
+  @override
+  _RandomPageState createState() => _RandomPageState();
+}
+
+class _RandomPageState extends State<RandomPage> {
+  var rng = Random();
+  int _n = 0;
+  Future<void> _ranInt() async {
+    print("number generated");
+    setState(() {
+      print("number setstate");
+      var _n = Random().nextInt(100);
+      _n++;
+      print(_n);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var _offsetToArmed = 75.0;
+
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(22.0),
+        child: Scaffold(
+            appBar: const CupertinoNavigationBar(
+                middle: Text("random"), previousPageTitle: "About Us"),
+            extendBodyBehindAppBar: true,
+            body: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: const SystemUiOverlayStyle(
+                  systemStatusBarContrastEnforced: false,
+                  systemNavigationBarColor: Colors.transparent,
+                  systemNavigationBarDividerColor: Colors.transparent,
+                  statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),
+                  systemNavigationBarIconBrightness: Brightness.dark,
+                ),
+                sized: false,
+                child: SafeArea(
+                    child: CustomRefreshIndicator(
+                        onRefresh: _ranInt,
+                        offsetToArmed: _offsetToArmed,
+                        onStateChanged: (IndicatorStateChange change) {
+                          if (change.didChange(
+                              from: IndicatorState.dragging,
+                              to: IndicatorState.armed)) {
+                            Vibration.vibrate(duration: 5, amplitude: 255);
+                          } else if (change.didChange(
+                              from: IndicatorState.armed,
+                              to: IndicatorState.loading)) {
+                            Vibration.vibrate(duration: 10, amplitude: 128);
+                          }
+                          //else if (change.didChange(
+                          //     from: IndicatorState.armed, to: IndicatorState.loading)) {
+                          //   _vibrate();
+                          // }
+                        },
+                        builder: (context, child, controller) =>
+                            AnimatedBuilder(
+                                animation: controller,
+                                child: child,
+                                builder: (context, child) {
+                                  return Stack(children: <Widget>[
+                                    Container(
+                                        color: CupertinoTheme.of(context)
+                                            .scaffoldBackgroundColor,
+                                        child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                0.0, 0.0, 0.0, 0.0),
+                                            child: ClipRRect(
+                                                borderRadius: const BorderRadius
+                                                        .only(
+                                                    bottomLeft:
+                                                        Radius.circular(22.0),
+                                                    bottomRight:
+                                                        Radius.circular(22.0)),
+                                                child: SizedBox(
+                                                    width: double.infinity,
+                                                    height: _offsetToArmed *
+                                                        controller.value *
+                                                        2,
+                                                    child: const RiveAnimation
+                                                        .asset(
+                                                      "assets/falling.riv",
+                                                      fit: BoxFit.cover,
+                                                    ))))),
+                                    Transform.translate(
+                                        offset: Offset(
+                                            0.0,
+                                            _offsetToArmed *
+                                                controller.value *
+                                                2),
+                                        child: child),
+                                  ]);
+                                }),
+                        child: CupertinoPageScaffold(
+                            child: ListView(
+                          children: <Widget>[Text(_n.toString())],
+                        )))))));
   }
 }
 
@@ -872,7 +985,6 @@ class EmbarrasingDate extends StatelessWidget {
                     systemStatusBarContrastEnforced: true,
                     systemNavigationBarColor: Colors.transparent,
                     systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness: Brightness.dark,
                     statusBarIconBrightness: Brightness.dark),
                 sized: false,
                 child: CupertinoPageScaffold(
