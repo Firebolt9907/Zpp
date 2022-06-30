@@ -49,3 +49,4 @@
 	<true/>
 </dict>
 </plist>
+FirebaseMessagingAutoInitEnabled = NO

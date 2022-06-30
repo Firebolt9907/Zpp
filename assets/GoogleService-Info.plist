@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>150464604521-v07u064p08126tdbi5imop68esc4er15.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.150464604521-v07u064p08126tdbi5imop68esc4er15</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCf5gZwIlNKcdr-xxKOPc08TdVlSmJd4yA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>150464604521</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.firebolt.blogApp</string>
+	<key>PROJECT_ID</key>
+	<string>zpp-flutter</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zpp-flutter.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:150464604521:ios:490f4fac4571d75065b5f8</string>
+</dict>
+</plist>

@@ -1,4 +1,4 @@
-package com.firebolt.blog_app
+package com.firebolt.zpp
 
 import androidx.core.view.WindowCompat
 import io.flutter.embedding.android.FlutterActivity
