@@ -55,6 +55,7 @@ void main() async {
       child: const IdCard(),
     ),
   );
+  
 }
 
 _launchURL(var myUrl) async {

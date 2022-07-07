@@ -21,8 +21,8 @@ class _IdCardState extends State<IdCard> {
   Widget build(BuildContext context) {
     // return DynamicColorBuilder(
     //   builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        return MyApp();
-      // },
+    return OverlaySupport.global(child: MyApp());
+    // },
     // );
   }
 }
@@ -33,42 +33,40 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return OverlaySupport(
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(22.0),
-            child: Resize(builder: () {
-              return CupertinoApp(
-                theme: const CupertinoThemeData(
-                  primaryContrastingColor: CupertinoDynamicColor.withBrightness(
-                      color: Colors.black, darkColor: Colors.white),
-                  textTheme: CupertinoTextThemeData(
-                    textStyle: TextStyle(
-                      color: CupertinoDynamicColor.withBrightness(
-                        color: Color(0xFF000000),
-                        darkColor: Color(0xFFFFFFFF),
-                      ),
-                    ),
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(22.0),
+        child: Resize(builder: () {
+          return CupertinoApp(
+            theme: const CupertinoThemeData(
+              primaryContrastingColor: CupertinoDynamicColor.withBrightness(
+                  color: Colors.black, darkColor: Colors.white),
+              textTheme: CupertinoTextThemeData(
+                textStyle: TextStyle(
+                  color: CupertinoDynamicColor.withBrightness(
+                    color: Color(0xFF000000),
+                    darkColor: Color(0xFFFFFFFF),
                   ),
                 ),
-                initialRoute: '/',
-                routes: <String, WidgetBuilder>{
-                  '/': (BuildContext context) => FutureBuilder(
-                      future: _fbApp,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          print('Error: ${snapshot.error.toString()}');
-                          return const CupertinoScaffold(body: MySettings());
-                        } else if (snapshot.hasData) {
-                          return CupertinoScaffold(body: RefreshHome());
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),
-                  '/settings': (BuildContext context) =>
-                      const CupertinoScaffold(body: MySettings()),
-                },
-              );
-            })));
+              ),
+            ),
+            initialRoute: '/',
+            routes: <String, WidgetBuilder>{
+              '/': (BuildContext context) => FutureBuilder(
+                  future: _fbApp,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      print('Error: ${snapshot.error.toString()}');
+                      return const CupertinoScaffold(body: MySettings());
+                    } else if (snapshot.hasData) {
+                      return CupertinoScaffold(body: RefreshHome());
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  }),
+              '/settings': (BuildContext context) =>
+                  const CupertinoScaffold(body: MySettings()),
+            },
+          );
+        }));
   }
 }

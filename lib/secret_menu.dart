@@ -54,6 +54,7 @@ class DevConfirm extends StatelessWidget {
     return ClipRRect(
         borderRadius: BorderRadius.circular(22.0),
         child: Scaffold(
+            resizeToAvoidBottomInset: true,
             body: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
                     systemStatusBarContrastEnforced: false,
@@ -124,9 +125,8 @@ class DevConfirm extends StatelessWidget {
                               } else if (inputValue == "devmodedisable") {
                                 Navigator.pop(
                                     context,
-                                    PageTransition(
-                                      type: PageTransitionType.topToBottom,
-                                      child: RefreshHome(),
+                                    CupertinoPageRoute(
+                                      builder: (context) => RefreshHome(),
                                     ));
                                 addBoolToSF(true);
                                 Phoenix.rebirth(context);

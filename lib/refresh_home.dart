@@ -11,6 +11,8 @@ import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 
 import 'test_text.dart';
@@ -43,6 +45,14 @@ class RefreshHomeState extends State<RefreshHome> {
 
   @override
   Widget build(BuildContext context) {
+    GoToTestText() {
+      Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => TestText(),
+          ));
+    }
+
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -143,19 +153,11 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       milliseconds: 150))),
                                       CupertinoListTile(
                                           title: const Text('Test Text'),
-                                          onTap: () => devModeOn == false
-                                              ? Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        TestText(),
-                                                  ))
-                                              : Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      child: TestText()))),
+                                          onTap: () => showSimpleNotification(
+                                                const Text("wow"),
+                                                background: Colors.purple,
+                                                autoDismiss: true,
+                                              )),
                                       CupertinoListTile(
                                           title: const Text("Settings"),
                                           onTap: () => devModeOn == false
@@ -170,6 +172,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                   PageTransition(
                                                       type: PageTransitionType
                                                           .rightToLeft,
+                                                      curve: Curves.easeOutExpo,
                                                       child: MySettings()))),
                                       CupertinoListTile(
                                           //leading: Icon(),

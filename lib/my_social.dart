@@ -37,25 +37,11 @@ class MySocial extends StatelessWidget {
       statusBarIconBrightness: Brightness.dark);
   @override
   Widget build(BuildContext context) {
-    // goToAboutUsPage() {
-    //   Navigator.push(
-    //       context,
-    //       CupertinoPageRoute(
-    //         builder: (context) => AboutUs(),
-    //       ));
-    // }
-
-    // showSimpleNotification(
-    //   GestureDetector(
-    //       onVerticalDragDown: goToAboutUsPage(),
-    //       child: const Text("Subscribe to FilledStacks")),
-    //   background: Colors.purple,
-    // );
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     Vibration.vibrate(duration: 10, amplitude: 128);
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+        padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
         child: ClipRRect(
             borderRadius: BorderRadius.circular(12.0),
             child: Scaffold(

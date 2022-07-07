@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
-  dynamic_color
   flutter_platform_alert
   url_launcher_windows
 )
