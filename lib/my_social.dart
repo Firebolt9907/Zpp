@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'dart:ui';
+import 'package:Zpp/about_us.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
@@ -21,6 +22,7 @@ import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'main.dart';
 
@@ -35,6 +37,20 @@ class MySocial extends StatelessWidget {
       statusBarIconBrightness: Brightness.dark);
   @override
   Widget build(BuildContext context) {
+    // goToAboutUsPage() {
+    //   Navigator.push(
+    //       context,
+    //       CupertinoPageRoute(
+    //         builder: (context) => AboutUs(),
+    //       ));
+    // }
+
+    // showSimpleNotification(
+    //   GestureDetector(
+    //       onVerticalDragDown: goToAboutUsPage(),
+    //       child: const Text("Subscribe to FilledStacks")),
+    //   background: Colors.purple,
+    // );
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     Vibration.vibrate(duration: 10, amplitude: 128);
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));

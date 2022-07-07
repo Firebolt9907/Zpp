@@ -15,6 +15,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'my_app.dart';
@@ -51,7 +52,7 @@ void main() async {
       ?.createNotificationChannel(channel);
   runApp(
     Phoenix(
-      child: MyApp(),
+      child: const IdCard(),
     ),
   );
 }

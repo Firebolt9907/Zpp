@@ -1,4 +1,3 @@
-import 'main.dart';
 import 'dart:io';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+// import 'package:dynamic_color/dynamic_color.dart';
 
 import 'test_text.dart';
 import 'settings.dart';

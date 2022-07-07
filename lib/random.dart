@@ -152,13 +152,12 @@ class _RandomPageState extends State<RandomPage> {
                                             randInt == 0
                                                 ? 'Pull Down to Generate Number'
                                                 : '$randInt',
-                                            style: const TextStyle(
-                                                fontSize: 80,
-                                                color: CupertinoDynamicColor
-                                                    .withBrightness(
-                                                        color: Colors.black,
-                                                        darkColor:
-                                                            Colors.white))))
+                                            style: TextStyle(
+                                              fontSize: 80,
+                                              color: context.isDarkMode
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            )))
                                   ],
                                 )))))))));
   }
