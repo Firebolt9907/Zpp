@@ -24,6 +24,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:overlay_support/overlay_support.dart';
 
+import 'package:akar_icons_flutter/akar_icons_flutter.dart';
+import 'package:iconforest_arcticons/arcticons.dart';
+
 import 'main.dart';
 
 class MySocial extends StatelessWidget {
@@ -64,13 +67,15 @@ class MySocial extends StatelessWidget {
                               previousPageTitle: "Home",
                             ),
                             child: Padding(
-                                padding: const EdgeInsets.all(20),
+                                padding:
+                                    const EdgeInsets.fromLTRB(5, 20, 20, 20),
                                 child: ListView(
                                   physics: const NeverScrollableScrollPhysics(),
                                   reverse: true,
                                   children: [
                                     CupertinoListTile(
-                                        //leading: Icon(),
+                                        leading:
+                                            const Arcticons(Arcticons.roblox),
                                         title:
                                             const Text('Friend me on Roblox'),
                                         subtitle: RichText(
@@ -93,6 +98,8 @@ class MySocial extends StatelessWidget {
                                         onTap: () => _launchURL(
                                             "https://www.roblox.com/users/690475268/profile")),
                                     CupertinoListTile(
+                                        leading:
+                                            const Arcticons(Arcticons.discord),
                                         title: const Text(
                                             'Join my Discord Server'),
                                         subtitle: RichText(
@@ -115,6 +122,8 @@ class MySocial extends StatelessWidget {
                                         onTap: () => _launchURL(
                                             "https://discord.gg/HSmAerG2VX")),
                                     CupertinoListTile(
+                                        leading:
+                                            const Arcticons(Arcticons.snapchat),
                                         title: const Text('Add me on Snapchat'),
                                         subtitle: RichText(
                                           text: TextSpan(
@@ -141,6 +150,8 @@ class MySocial extends StatelessWidget {
                                         onTap: () => _launchURL(
                                             "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
                                     CupertinoListTile(
+                                        leading: const Arcticons(
+                                            Arcticons.minecraft),
                                         title: const Text(
                                             'Look at me on Minecraft'),
                                         subtitle: RichText(
@@ -167,6 +178,8 @@ class MySocial extends StatelessWidget {
                                         onTap: () => _launchURL(
                                             "https://namemc.com/profile/Firebolt_9907.1")),
                                     CupertinoListTile(
+                                        leading:
+                                            const Arcticons(Arcticons.youtube),
                                         title: const Text(
                                             'Subscribe to me on YouTube'),
                                         subtitle: RichText(
@@ -189,6 +202,8 @@ class MySocial extends StatelessWidget {
                                         onTap: () => _launchURL(
                                             "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
                                     CupertinoListTile(
+                                        leading: const Arcticons(Arcticons.xbox,
+                                            fit: BoxFit.contain),
                                         subtitle: RichText(
                                           text: TextSpan(
                                             // Note: Styles for TextSpans must be explicitly defined.

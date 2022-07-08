@@ -394,6 +394,11 @@ class AboutUs extends StatelessWidget {
                                                 ? Colors.white
                                                 : Colors.black,
                                           )))),
+
+                              //bottom padding below
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                              )
                             ]))))));
   }
 }
