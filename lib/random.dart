@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 import 'dart:io';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:video_player/video_player.dart';
@@ -15,7 +15,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
-import 'package:resize/resize.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -74,7 +73,7 @@ class _RandomPageState extends State<RandomPage> {
             ),
             sized: false,
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(22.0),
+                borderRadius: BorderRadius.circular(15.0),
                 child: CupertinoPageScaffold(
                     navigationBar: const CupertinoNavigationBar(
                       middle: Text("Random Number Generator"),
@@ -118,10 +117,10 @@ class _RandomPageState extends State<RandomPage> {
                                                         const BorderRadius.only(
                                                             bottomLeft:
                                                                 Radius.circular(
-                                                                    22.0),
+                                                                    15.0),
                                                             bottomRight:
                                                                 Radius.circular(
-                                                                    22.0)),
+                                                                    15.0)),
                                                     child: SizedBox(
                                                         width: double.infinity,
                                                         height: _offsetToArmed *

@@ -2,7 +2,6 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 import 'package:Zpp/about_us.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:video_player/video_player.dart';
@@ -16,7 +15,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
-import 'package:resize/resize.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,12 +30,12 @@ import 'main.dart';
 class MySocial extends StatelessWidget {
   MySocial({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: false,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-      statusBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark);
+    systemStatusBarContrastEnforced: false,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+    statusBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  );
   @override
   Widget build(BuildContext context) {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
@@ -65,6 +63,7 @@ class MySocial extends StatelessWidget {
                               middle: Text('Social Links'),
                               automaticallyImplyLeading: true,
                               previousPageTitle: "Home",
+                              transitionBetweenRoutes: false,
                             ),
                             child: Padding(
                                 padding:

@@ -5,7 +5,7 @@
 //import 'package:flutter/widgets.dart';
 // import 'package:line_icons/line_icons.dart';
 // import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/services.dart';
@@ -31,17 +31,14 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final deviceInfo = await DeviceInfoPlugin().deviceInfo;
-  final androidSdkVersion =
-      deviceInfo is AndroidDeviceInfo ? deviceInfo.version.sdkInt! : 0;
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: false,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-      statusBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark));
+    systemStatusBarContrastEnforced: false,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+    statusBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
       overlays: [SystemUiOverlay.top]);
   await Firebase.initializeApp();
@@ -52,10 +49,9 @@ void main() async {
       ?.createNotificationChannel(channel);
   runApp(
     Phoenix(
-      child: const IdCard(),
+      child: MyApp(),
     ),
   );
-  
 }
 
 _launchURL(var myUrl) async {
@@ -80,17 +76,17 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 late Future<bool> _Developer;
 
-addBoolToSF(bool first) async {
+addBoolToSF(second, bool first) async {
   print('wrote to prefs');
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('devModeOn', first);
+  prefs.setBool(second, first);
 }
 
-getBoolValuesSF() async {
+getBoolValuesSF(second) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   print("accessed prefs");
   //Return bool
-  bool? devModeOn = prefs.getBool('devModeOn');
+  bool? second = prefs.getBool('devModeOn');
 }
 
 // class MyHome extends StatelessWidget {

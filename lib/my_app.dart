@@ -1,31 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:resize/resize.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:overlay_support/overlay_support.dart';
+// import 'package:overlay_support/overlay_support.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 
 import 'refresh_home.dart';
 import 'settings.dart';
-
-class IdCard extends StatefulWidget {
-  const IdCard({Key? key}) : super(key: key);
-
-  @override
-  State<IdCard> createState() => _IdCardState();
-}
-
-class _IdCardState extends State<IdCard> {
-  @override
-  Widget build(BuildContext context) {
-    // return DynamicColorBuilder(
-    //   builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-    return OverlaySupport.global(child: MyApp());
-    // },
-    // );
-  }
-}
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
@@ -34,39 +15,40 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: BorderRadius.circular(22.0),
-        child: Resize(builder: () {
-          return CupertinoApp(
-            theme: const CupertinoThemeData(
-              primaryContrastingColor: CupertinoDynamicColor.withBrightness(
-                  color: Colors.black, darkColor: Colors.white),
-              textTheme: CupertinoTextThemeData(
-                textStyle: TextStyle(
-                  color: CupertinoDynamicColor.withBrightness(
-                    color: Color(0xFF000000),
-                    darkColor: Color(0xFFFFFFFF),
-                  ),
+        borderRadius: BorderRadius.circular(15.0),
+        child: CupertinoApp(
+          scrollBehavior: const MaterialScrollBehavior(
+            androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+          ),
+          theme: const CupertinoThemeData(
+            primaryContrastingColor: CupertinoDynamicColor.withBrightness(
+                color: Colors.black, darkColor: Colors.white),
+            textTheme: CupertinoTextThemeData(
+              textStyle: TextStyle(
+                color: CupertinoDynamicColor.withBrightness(
+                  color: Color(0xFF000000),
+                  darkColor: Color(0xFFFFFFFF),
                 ),
               ),
             ),
-            initialRoute: '/',
-            routes: <String, WidgetBuilder>{
-              '/': (BuildContext context) => FutureBuilder(
-                  future: _fbApp,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      print('Error: ${snapshot.error.toString()}');
-                      return const CupertinoScaffold(body: MySettings());
-                    } else if (snapshot.hasData) {
-                      return CupertinoScaffold(body: RefreshHome());
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),
-              '/settings': (BuildContext context) =>
-                  const CupertinoScaffold(body: MySettings()),
-            },
-          );
-        }));
+          ),
+          initialRoute: '/',
+          routes: <String, WidgetBuilder>{
+            '/': (BuildContext context) => FutureBuilder(
+                future: _fbApp,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    print('Error: ${snapshot.error.toString()}');
+                    return const CupertinoScaffold(body: MySettings());
+                  } else if (snapshot.hasData) {
+                    return CupertinoScaffold(body: RefreshHome());
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+            '/settings': (BuildContext context) =>
+                const CupertinoScaffold(body: MySettings()),
+          },
+        ));
   }
 }

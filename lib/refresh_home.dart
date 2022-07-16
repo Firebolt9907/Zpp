@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Zpp/candidates.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -12,13 +13,15 @@ import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+// import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 
+import 'about_us.dart';
 import 'test_text.dart';
 import 'settings.dart';
 import 'my_social.dart';
 import 'main.dart';
+import 'candidates.dart';
 
 class RefreshHome extends StatefulWidget {
   @override
@@ -35,16 +38,20 @@ class RefreshHomeState extends State<RefreshHome> {
   }
 
   bool devModeOn = true;
+  bool spam = true;
   _loadCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Platform.isAndroid ? addBoolToSF(false) : null;
+    Platform.isAndroid ? addBoolToSF('devModeOn', false) : null;
     setState(() {
       devModeOn = (prefs.getBool('devModeOn') ?? true);
+      spam = (prefs.getBool('spam') ?? true);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
+
     GoToTestText() {
       Navigator.push(
           context,
@@ -53,6 +60,16 @@ class RefreshHomeState extends State<RefreshHome> {
           ));
     }
 
+    // spam == true
+    //     ? {
+    //         WidgetsFlutterBinding.ensureInitialized(),
+    //         Navigator.push(
+    //             context,
+    //             CupertinoPageRoute(
+    //               builder: (context) => AboutUs(),
+    //             ))
+    //       }
+    //     : null;
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -108,9 +125,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                 borderRadius: const BorderRadius
                                                         .only(
                                                     bottomLeft:
-                                                        Radius.circular(22.0),
+                                                        Radius.circular(15.0),
                                                     bottomRight:
-                                                        Radius.circular(22.0)),
+                                                        Radius.circular(15.0)),
                                                 child: SizedBox(
                                                     width: double.infinity,
                                                     height: _offsetToArmed *
@@ -136,9 +153,26 @@ class RefreshHomeState extends State<RefreshHome> {
                               color: CupertinoTheme.of(context)
                                   .scaffoldBackgroundColor,
                               child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(22.0),
+                                  borderRadius: BorderRadius.circular(15.0),
                                   child: ListView(
                                     children: [
+                                      CupertinoListTile(
+                                          title:
+                                              const Text("Election Candidates"),
+                                          onTap: () => devModeOn == false
+                                              ? Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        CandidatesPage(),
+                                                  ))
+                                              : Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      curve: Curves.easeOutExpo,
+                                                      child: MySettings()))),
                                       CupertinoListTile(
                                           title: const Text("My Social"),
                                           onTap: () => CupertinoScaffold
@@ -151,13 +185,6 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       MySocial(),
                                                   duration: const Duration(
                                                       milliseconds: 150))),
-                                      CupertinoListTile(
-                                          title: const Text('Test Text'),
-                                          onTap: () => showSimpleNotification(
-                                                const Text("wow"),
-                                                background: Colors.purple,
-                                                autoDismiss: true,
-                                              )),
                                       CupertinoListTile(
                                           title: const Text("Settings"),
                                           onTap: () => devModeOn == false
