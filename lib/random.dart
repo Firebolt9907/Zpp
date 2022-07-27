@@ -1,25 +1,10 @@
-import 'dart:ui' as ui;
-import 'dart:ui';
-import 'package:animated_text_kit/animated_text_kit.dart';
-
-import 'dart:io';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
-import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:dismissible_page/dismissible_page.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
-import 'package:cupertino_list_tile/cupertino_list_tile.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'main.dart';
 
@@ -61,18 +46,7 @@ class _RandomPageState extends State<RandomPage> {
   Widget build(BuildContext context) {
     var _offsetToArmed = 90.0;
 
-    return Scaffold(
-        extendBodyBehindAppBar: true,
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: const SystemUiOverlayStyle(
-              systemStatusBarContrastEnforced: false,
-              systemNavigationBarColor: Colors.transparent,
-              systemNavigationBarDividerColor: Colors.transparent,
-              statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),
-              systemNavigationBarIconBrightness: Brightness.dark,
-            ),
-            sized: false,
-            child: ClipRRect(
+    return ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: CupertinoPageScaffold(
                     navigationBar: const CupertinoNavigationBar(
@@ -80,7 +54,15 @@ class _RandomPageState extends State<RandomPage> {
                       previousPageTitle: "About Us",
                       border: Border(),
                     ),
-                    child: SafeArea(
+                    child: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: const SystemUiOverlayStyle(
+                    systemStatusBarContrastEnforced: false,
+                    systemNavigationBarColor: Colors.transparent,
+                    systemNavigationBarDividerColor: Colors.transparent,
+                    systemNavigationBarIconBrightness: Brightness.dark,
+                    statusBarIconBrightness: Brightness.dark),
+                sized: false,
+                child: SafeArea(
                         child: CustomRefreshIndicator(
                             onRefresh: _ranInt,
                             offsetToArmed: _offsetToArmed,
@@ -158,6 +140,6 @@ class _RandomPageState extends State<RandomPage> {
                                                   : Colors.black,
                                             )))
                                   ],
-                                )))))))));
+                                ))))))));
   }
 }

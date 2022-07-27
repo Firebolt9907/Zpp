@@ -47,6 +47,8 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Used for seeing yourself in 200 years</string>
 </dict>
 </plist>
 FirebaseMessagingAutoInitEnabled = NO

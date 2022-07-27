@@ -12,7 +12,8 @@ import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:overlay_support/overlay_support.dart';
+import 'package:camera/camera.dart';
+// import 'package:overlay_support/overlay_support.dart';
 // import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 
@@ -24,17 +25,21 @@ import 'main.dart';
 import 'candidates.dart';
 
 class RefreshHome extends StatefulWidget {
+  const RefreshHome({Key? key}) : super(key: key);
   @override
   RefreshHomeState createState() => RefreshHomeState();
 }
 
 class RefreshHomeState extends State<RefreshHome> {
   final _offsetToArmed = 90.0;
+  late CameraController controller;
+  late List<CameraDescription> _cameras;
 
   @override
   void initState() {
     super.initState();
     _loadCounter();
+    // controller.initialize();
   }
 
   bool devModeOn = true;
@@ -50,6 +55,7 @@ class RefreshHomeState extends State<RefreshHome> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage('assets/wow.png'), context);
     WidgetsFlutterBinding.ensureInitialized();
 
     GoToTestText() {
@@ -71,8 +77,15 @@ class RefreshHomeState extends State<RefreshHome> {
     //       }
     //     : null;
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
-    return Scaffold(
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
+    return CupertinoPageScaffold(
+        resizeToAvoidBottomInset: false,
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Home'),
+          automaticallyImplyLeading: true,
+        ),
+        // navigationBar:
+        //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
                 systemStatusBarContrastEnforced: false,
                 systemNavigationBarColor: Colors.transparent,
@@ -80,102 +93,94 @@ class RefreshHomeState extends State<RefreshHome> {
                 systemNavigationBarIconBrightness: Brightness.dark,
                 statusBarIconBrightness: Brightness.dark),
             sized: false,
-            child: CupertinoPageScaffold(
-                resizeToAvoidBottomInset: false,
-                navigationBar: const CupertinoNavigationBar(
-                  middle: Text('Home'),
-                  automaticallyImplyLeading: true,
-                ),
-                child: SafeArea(
-                    child: CustomRefreshIndicator(
-                        onRefresh: () => Future.delayed(
-                              const Duration(seconds: 1),
-                            ),
-                        offsetToArmed: _offsetToArmed,
-                        onStateChanged: (IndicatorStateChange change) {
-                          if (devModeOn == false) {
-                            if (change.didChange(
-                                from: IndicatorState.dragging,
-                                to: IndicatorState.armed)) {
-                              Vibration.vibrate(duration: 5, amplitude: 255);
-                            } else if (change.didChange(
-                                from: IndicatorState.armed,
-                                to: IndicatorState.loading)) {
-                              Vibration.vibrate(duration: 10, amplitude: 128);
-                            }
-                          }
-                          //else if (change.didChange(
-                          //     from: IndicatorState.armed, to: IndicatorState.loading)) {
-                          //   _vibrate();
-                          // }
-                        },
-                        builder: (context, child, controller) =>
-                            AnimatedBuilder(
-                                animation: controller,
-                                child: child,
-                                builder: (context, child) {
-                                  return Stack(children: <Widget>[
-                                    Container(
-                                        color: CupertinoTheme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                            child: ClipRRect(
-                                                borderRadius: const BorderRadius
-                                                        .only(
-                                                    bottomLeft:
-                                                        Radius.circular(15.0),
-                                                    bottomRight:
-                                                        Radius.circular(15.0)),
-                                                child: SizedBox(
-                                                    width: double.infinity,
-                                                    height: _offsetToArmed *
-                                                        controller.value *
-                                                        2,
-                                                    child: const RiveAnimation
-                                                        .asset(
-                                                      "assets/falling.riv",
-                                                      fit: BoxFit.cover,
-                                                    ))))),
-                                    Transform.translate(
-                                        offset: Offset(
-                                            0.0,
-                                            _offsetToArmed *
+            child: SafeArea(
+                child: CustomRefreshIndicator(
+                    onRefresh: () => Future.delayed(
+                          const Duration(seconds: 1),
+                        ),
+                    offsetToArmed: _offsetToArmed,
+                    onStateChanged: (IndicatorStateChange change) {
+                      if (devModeOn == false) {
+                        if (change.didChange(
+                            from: IndicatorState.dragging,
+                            to: IndicatorState.armed)) {
+                          Vibration.vibrate(duration: 5, amplitude: 255);
+                        } else if (change.didChange(
+                            from: IndicatorState.armed,
+                            to: IndicatorState.loading)) {
+                          Vibration.vibrate(duration: 10, amplitude: 128);
+                        }
+                      }
+                      //else if (change.didChange(
+                      //     from: IndicatorState.armed, to: IndicatorState.loading)) {
+                      //   _vibrate();
+                      // }
+                    },
+                    builder: (context, child, controller) => AnimatedBuilder(
+                        animation: controller,
+                        child: child,
+                        builder: (context, child) {
+                          return Stack(children: <Widget>[
+                            Container(
+                                color: CupertinoTheme.of(context)
+                                    .scaffoldBackgroundColor,
+                                child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    child: ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(15.0),
+                                            bottomRight: Radius.circular(15.0)),
+                                        child: SizedBox(
+                                            width: double.infinity,
+                                            height: _offsetToArmed *
                                                 controller.value *
-                                                2),
-                                        child: child),
-                                  ]);
-                                }),
-                        child: Material(
-                          child: Container(
-                              padding: const EdgeInsets.all(20),
-                              color: CupertinoTheme.of(context)
-                                  .scaffoldBackgroundColor,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  child: ListView(
-                                    children: [
-                                      CupertinoListTile(
-                                          title:
-                                              const Text("Election Candidates"),
-                                          onTap: () => devModeOn == false
-                                              ? Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        CandidatesPage(),
-                                                  ))
-                                              : Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      curve: Curves.easeOutExpo,
-                                                      child: MySettings()))),
-                                      CupertinoListTile(
-                                          title: const Text("My Social"),
-                                          onTap: () => CupertinoScaffold
+                                                2,
+                                            child: const RiveAnimation.asset(
+                                              "assets/falling.riv",
+                                              fit: BoxFit.cover,
+                                            ))))),
+                            Transform.translate(
+                                offset: Offset(
+                                    0.0, _offsetToArmed * controller.value * 2),
+                                child: child),
+                          ]);
+                        }),
+                    child: Material(
+                      child: Container(
+                          padding: const EdgeInsets.all(20),
+                          color: CupertinoTheme.of(context)
+                              .scaffoldBackgroundColor,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: ListView(
+                                children: [
+                                  CupertinoListTile(
+                                      title: const Text("Election Candidates"),
+                                      onTap: () => devModeOn == false
+                                          ? Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    CandidatesPage(),
+                                              ))
+                                          : Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                  type: PageTransitionType
+                                                      .rightToLeft,
+                                                  curve: Curves.easeOutExpo,
+                                                  child: MySettings()))),
+                                  CupertinoListTile(
+                                      title: const Text("My Social"),
+                                      onTap: () {
+                                        Future.delayed(
+                                            devModeOn == true
+                                                ? const Duration(
+                                                    milliseconds: 500)
+                                                : const Duration(
+                                                    milliseconds: 0), () {
+                                          CupertinoScaffold
                                               .showCupertinoModalBottomSheet(
                                                   expand: false,
                                                   context: context,
@@ -184,44 +189,69 @@ class RefreshHomeState extends State<RefreshHome> {
                                                   builder: (context) =>
                                                       MySocial(),
                                                   duration: const Duration(
-                                                      milliseconds: 150))),
-                                      CupertinoListTile(
-                                          title: const Text("Settings"),
-                                          onTap: () => devModeOn == false
-                                              ? Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        MySettings(),
-                                                  ))
-                                              : Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      curve: Curves.easeOutExpo,
-                                                      child: MySettings()))),
-                                      CupertinoListTile(
-                                          //leading: Icon(),
-                                          title: const Text('Send Feedback'),
-                                          onTap: () async {
-                                            final result =
-                                                await FlutterPlatformAlert
-                                                    .showAlert(
-                                              windowTitle: 'r u sure',
-                                              text:
-                                                  'this will open the email app bc i cant be bothered to add cloud services to my app',
-                                              alertStyle:
-                                                  AlertButtonStyle.yesNo,
-                                            );
-                                            result == AlertButton.yesButton
-                                                ? _launchURL(
-                                                    "mailto:rememberthisrishu@gmail.com?subject=Feedback on Zpp")
-                                                : null;
-                                          }),
-                                    ],
-                                  ))),
-                        ))))));
+                                                      milliseconds: 150));
+                                        });
+                                      }),
+                                  CupertinoListTile(
+                                      title: const Text(
+                                          "See Yourself in 200 years"),
+                                      onTap: () {
+                                        Future.delayed(
+                                            devModeOn
+                                                ? const Duration(
+                                                    milliseconds: 2500)
+                                                : const Duration(
+                                                    milliseconds: 0), () {
+                                          CupertinoScaffold
+                                              .showCupertinoModalBottomSheet(
+                                                  expand: false,
+                                                  bounce: false,
+                                                  useRootNavigator: false,
+                                                  context: context,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  builder: (context) =>
+                                                      const FutureCamera(),
+                                                  duration: const Duration(
+                                                      milliseconds: 150));
+                                        });
+                                      }),
+                                  CupertinoListTile(
+                                      title: const Text("Settings"),
+                                      onTap: () => devModeOn == false
+                                          ? Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    MySettings(),
+                                              ))
+                                          : Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                  type: PageTransitionType
+                                                      .rightToLeft,
+                                                  curve: Curves.easeOutExpo,
+                                                  child: MySettings()))),
+                                  CupertinoListTile(
+                                      //leading: Icon(),
+                                      title: const Text('Send Feedback'),
+                                      onTap: () async {
+                                        final result =
+                                            await FlutterPlatformAlert
+                                                .showAlert(
+                                          windowTitle: 'r u sure',
+                                          text:
+                                              'this will open the email app bc i cant be bothered to add cloud services to my app',
+                                          alertStyle: AlertButtonStyle.yesNo,
+                                        );
+                                        result == AlertButton.yesButton
+                                            ? _launchURL(
+                                                "mailto:rememberthisrishu@gmail.com?subject=Feedback on Zpp")
+                                            : null;
+                                      }),
+                                ],
+                              ))),
+                    )))));
   }
 }
 

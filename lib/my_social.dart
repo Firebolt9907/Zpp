@@ -1,28 +1,11 @@
 import 'dart:ui' as ui;
-import 'dart:ui';
-import 'package:Zpp/about_us.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'dart:io';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
-import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:dismissible_page/dismissible_page.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:flutter_platform_alert/flutter_platform_alert.dart';
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:overlay_support/overlay_support.dart';
 
-import 'package:akar_icons_flutter/akar_icons_flutter.dart';
 import 'package:iconforest_arcticons/arcticons.dart';
 
 import 'main.dart';
@@ -45,8 +28,8 @@ class MySocial extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
         child: ClipRRect(
             borderRadius: BorderRadius.circular(12.0),
-            child: Scaffold(
-                body: AnnotatedRegion<SystemUiOverlayStyle>(
+            child: CupertinoPageScaffold(
+                child: AnnotatedRegion<SystemUiOverlayStyle>(
                     value: const SystemUiOverlayStyle(
                         systemStatusBarContrastEnforced: false,
                         systemNavigationBarColor: Colors.transparent,

@@ -1,26 +1,11 @@
-import 'dart:ui' as ui;
-import 'dart:ui';
-import 'package:animated_text_kit/animated_text_kit.dart';
-
-import 'dart:io';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
-import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:dismissible_page/dismissible_page.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:flutter_platform_alert/flutter_platform_alert.dart';
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import 'main.dart';
 import 'about_us.dart';
@@ -47,36 +32,34 @@ class TestText extends StatelessWidget {
   Widget build(BuildContext context) {
     Vibration.vibrate(duration: 10, amplitude: 128);
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
-    return OverlaySupport(
-        child: Scaffold(
-            body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: const SystemUiOverlayStyle(
-                    systemStatusBarContrastEnforced: false,
-                    systemNavigationBarColor: Colors.transparent,
-                    systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness: Brightness.dark,
-                    statusBarIconBrightness: Brightness.dark),
-                sized: false,
-                child: CupertinoPageScaffold(
-                    navigationBar: const CupertinoNavigationBar(
-                      middle: Text('TestText'),
-                      previousPageTitle: 'Home',
-                      automaticallyImplyLeading: true,
-                    ),
-                    child: ListView(
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.all(25.0),
-                            child: getBoolValuesSF('devModeOn') == false
-                                ? const Text(
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent maximus id felis id euismod. Nunc non dolor malesuada, finibus quam quis, dictum ligula. Donec tincidunt, dui ac varius commodo, eros tortor pellentesque nulla, sit amet porta lacus odio a sem. Vivamus aliquet ligula at molestie congue. Nulla vel dictum turpis. Morbi consectetur ligula non urna faucibus, ut laoreet purus placerat. Morbi rhoncus porta velit et aliquam. Sed pretium, orci id tincidunt vehicula, metus mauris malesuada nunc, eget consectetur erat risus molestie purus. Fusce convallis diam eu tortor rhoncus gravida. Sed id nunc quis augue vulputate facilisis. Praesent gravida luctus maximus.")
-                                : Text(
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent maximus id felis id euismod. Nunc non dolor malesuada, finibus quam quis, dictum ligula. Donec tincidunt, dui ac varius commodo, eros tortor pellentesque nulla, sit amet porta lacus odio a sem. Vivamus aliquet ligula at molestie congue. Nulla vel dictum turpis. Morbi consectetur ligula non urna faucibus, ut laoreet purus placerat. Morbi rhoncus porta velit et aliquam. Sed pretium, orci id tincidunt vehicula, metus mauris malesuada nunc, eget consectetur erat risus molestie purus. Fusce convallis diam eu tortor rhoncus gravida. Sed id nunc quis augue vulputate facilisis. Praesent gravida luctus maximus.",
-                                    style: CupertinoTheme.of(context)
-                                        .textTheme
-                                        .textStyle)),
-                      ],
-                    )))));
+    return CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('TestText'),
+          previousPageTitle: 'Home',
+          automaticallyImplyLeading: true,
+        ),
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: const SystemUiOverlayStyle(
+                systemStatusBarContrastEnforced: false,
+                systemNavigationBarColor: Colors.transparent,
+                systemNavigationBarDividerColor: Colors.transparent,
+                systemNavigationBarIconBrightness: Brightness.dark,
+                statusBarIconBrightness: Brightness.dark),
+            sized: false,
+            child: ListView(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: getBoolValuesSF('devModeOn') == false
+                        ? const Text(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent maximus id felis id euismod. Nunc non dolor malesuada, finibus quam quis, dictum ligula. Donec tincidunt, dui ac varius commodo, eros tortor pellentesque nulla, sit amet porta lacus odio a sem. Vivamus aliquet ligula at molestie congue. Nulla vel dictum turpis. Morbi consectetur ligula non urna faucibus, ut laoreet purus placerat. Morbi rhoncus porta velit et aliquam. Sed pretium, orci id tincidunt vehicula, metus mauris malesuada nunc, eget consectetur erat risus molestie purus. Fusce convallis diam eu tortor rhoncus gravida. Sed id nunc quis augue vulputate facilisis. Praesent gravida luctus maximus.")
+                        : Text(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent maximus id felis id euismod. Nunc non dolor malesuada, finibus quam quis, dictum ligula. Donec tincidunt, dui ac varius commodo, eros tortor pellentesque nulla, sit amet porta lacus odio a sem. Vivamus aliquet ligula at molestie congue. Nulla vel dictum turpis. Morbi consectetur ligula non urna faucibus, ut laoreet purus placerat. Morbi rhoncus porta velit et aliquam. Sed pretium, orci id tincidunt vehicula, metus mauris malesuada nunc, eget consectetur erat risus molestie purus. Fusce convallis diam eu tortor rhoncus gravida. Sed id nunc quis augue vulputate facilisis. Praesent gravida luctus maximus.",
+                            style: CupertinoTheme.of(context)
+                                .textTheme
+                                .textStyle)),
+              ],
+            )));
   }
 }
 
@@ -234,66 +217,5 @@ class EmbarrasingDate extends StatelessWidget {
                                       .textTheme
                                       .textStyle))
                     ])))));
-  }
-}
-
-class RickRollScreen extends StatefulWidget {
-  const RickRollScreen({super.key});
-
-  @override
-  State<RickRollScreen> createState() => _RickRollState();
-}
-
-class _RickRollState extends State<RickRollScreen> {
-  late VideoPlayerController _controller;
-  late Future<void> _initializeVideoPlayerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Create and store the VideoPlayerController. The VideoPlayerController
-    // offers several different constructors to play videos from assets, files,
-    // or the internet.
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    _controller = VideoPlayerController.asset(
-      'rickroll.mp4',
-    );
-
-    _initializeVideoPlayerFuture = _controller.initialize();
-  }
-
-  @override
-  void dispose() {
-    // Ensure disposing of the VideoPlayerController to free up resources.
-    _controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // Complete the code in the next step.
-    return FutureBuilder(
-      future: _initializeVideoPlayerFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          // If the VideoPlayerController has finished initialization, use
-          // the data it provides to limit the aspect ratio of the video.
-          return AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            // Use the VideoPlayer widget to display the video.
-            child: VideoPlayer(_controller),
-          );
-        } else {
-          // If the VideoPlayerController is still initializing, show a
-          // loading spinner.
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
   }
 }
