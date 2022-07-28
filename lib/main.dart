@@ -23,6 +23,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'my_app.dart';
 import 'my_social.dart';
+import 'refresh_home.dart';
 
 late List<CameraDescription> _cameras;
 
@@ -114,8 +115,11 @@ class _FutureCameraState extends State<FutureCamera> {
   @override
   void initState() {
     super.initState();
-    controller =
-        CameraController(_cameras[1], ResolutionPreset.max, enableAudio: false);
+    _loadCounter();
+    controller = Platform.isIOS
+        ? CameraController(_cameras[1], ResolutionPreset.low, enableAudio: true)
+        : CameraController(_cameras[1], ResolutionPreset.max,
+            enableAudio: false);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
@@ -137,9 +141,18 @@ class _FutureCameraState extends State<FutureCamera> {
     });
   }
 
+  bool devModeOn = true;
+  _loadCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Platform.isAndroid ? addBoolToSF('devModeOn', false) : null;
+    setState(() {
+      devModeOn = (prefs.getBool('devModeOn') ?? true);
+    });
+  }
+
   @override
   void dispose() {
-    controller.dispose();
+    devModeOn == false ? null : controller.dispose();
     super.dispose();
   }
 
@@ -221,7 +234,7 @@ class _FutureCameraState extends State<FutureCamera> {
                         borderRadius: BorderRadius.circular(8.0),
                         child: ClipRect(
                           child: Transform.scale(
-                            scale: 1.15,
+                            scale: 1.16,
                             child: Center(
                               child: AspectRatio(
                                 aspectRatio: 1 / controller.value.aspectRatio,
@@ -234,7 +247,7 @@ class _FutureCameraState extends State<FutureCamera> {
                         onTap: () {
                           setState(() {
                             visibility = false;
-                            controller.dispose();
+                            devModeOn == false ? null : controller.dispose();
                           });
                         },
                         child: const Align(

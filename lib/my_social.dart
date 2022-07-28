@@ -52,7 +52,6 @@ class MySocial extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.fromLTRB(5, 20, 20, 20),
                                 child: ListView(
-                                  physics: const NeverScrollableScrollPhysics(),
                                   reverse: true,
                                   children: [
                                     CupertinoListTile(
