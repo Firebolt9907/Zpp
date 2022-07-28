@@ -129,7 +129,7 @@ class MySettingsState extends State<RishuSharma> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            Slide()));
+                                            const Slide()));
                               },
                               child: Padding(
                                   padding: const EdgeInsets.all(20),

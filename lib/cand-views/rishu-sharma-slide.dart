@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:flutter/services.dart';
 
 class Slide extends StatelessWidget {

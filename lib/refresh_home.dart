@@ -83,6 +83,8 @@ class RefreshHomeState extends State<RefreshHome> {
           middle: Text('Home'),
           automaticallyImplyLeading: true,
         ),
+        backgroundColor:
+            context.isDarkMode == true ? Colors.black : Colors.white,
         // navigationBar:
         //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
         child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -122,8 +124,9 @@ class RefreshHomeState extends State<RefreshHome> {
                         builder: (context, child) {
                           return Stack(children: <Widget>[
                             Container(
-                                color: CupertinoTheme.of(context)
-                                    .scaffoldBackgroundColor,
+                                color: context.isDarkMode == true
+                                    ? Colors.black
+                                    : Colors.white,
                                 child: Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         0.0, 0.0, 0.0, 0.0),

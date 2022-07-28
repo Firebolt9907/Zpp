@@ -60,6 +60,8 @@ class CandidatesPage extends StatelessWidget {
                     previousPageTitle: "Home",
                     middle: const Text("Candidates")),
                 extendBodyBehindAppBar: true,
+                backgroundColor:
+                    context.isDarkMode == true ? Colors.black : Colors.white,
                 body: AnnotatedRegion<SystemUiOverlayStyle>(
                     value: const SystemUiOverlayStyle(
                       systemStatusBarContrastEnforced: false,

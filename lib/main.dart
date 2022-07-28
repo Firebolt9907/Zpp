@@ -18,6 +18,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
 import 'dart:async';
+import 'package:overlay_support/overlay_support.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -63,11 +64,11 @@ void main() async {
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
   _cameras = await availableCameras();
-  runApp(
-    Phoenix(
+  runApp(OverlaySupport.global(
+    child: Phoenix(
       child: MyApp(),
     ),
-  );
+  ));
 }
 
 _launchURL(var myUrl) async {
