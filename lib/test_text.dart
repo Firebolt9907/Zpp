@@ -40,11 +40,11 @@ class TestText extends StatelessWidget {
         ),
         child: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: false,
-                systemNavigationBarColor: Colors.transparent,
-                systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: Brightness.dark,
-                statusBarIconBrightness: Brightness.dark),
+              systemStatusBarContrastEnforced: false,
+              systemNavigationBarColor: Colors.transparent,
+              systemNavigationBarDividerColor: Colors.transparent,
+              systemNavigationBarIconBrightness: Brightness.dark,
+            ),
             sized: false,
             child: ListView(
               children: [
@@ -120,14 +120,14 @@ class YourMomJokes extends StatelessWidget {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: false,
-                systemNavigationBarColor: Colors.transparent,
-                systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: Brightness.dark,
-                statusBarIconBrightness: Brightness.dark),
+              systemStatusBarContrastEnforced: false,
+              systemNavigationBarColor: Colors.transparent,
+              systemNavigationBarDividerColor: Colors.transparent,
+              systemNavigationBarIconBrightness: Brightness.dark,
+            ),
             sized: false,
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(10.0),
                 child: CupertinoPageScaffold(
                     navigationBar: const CupertinoNavigationBar(
                       middle: Text('your mom jokes'),
@@ -190,7 +190,7 @@ class EmbarrasingDate extends StatelessWidget {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: Scaffold(
             body: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(

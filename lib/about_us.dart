@@ -43,7 +43,7 @@ class AboutUs extends StatelessWidget {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: DismissiblePage(
             onDismissed: () {
               _vibrate();
@@ -148,7 +148,7 @@ class AboutUs extends StatelessWidget {
                                         "https://discordapp.com/users/669357017307283456");
                                   },
                                   child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                       child: Stack(
                                         alignment: Alignment.bottomCenter,
                                         children: [
@@ -207,7 +207,7 @@ class AboutUs extends StatelessWidget {
                                         "https://discordapp.com/users/784825209407799297");
                                   },
                                   child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                       child: Stack(
                                         alignment: Alignment.bottomCenter,
                                         children: [
@@ -269,7 +269,7 @@ class AboutUs extends StatelessWidget {
                                         "https://www.snapchat.com/add/filmon_king?share_id=MzhGODlBRkYtMEJERC00NjkwLTg4M0MtQUNGNTFERUZDOTFC&locale=en_US");
                                   },
                                   child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                       child: Stack(
                                         alignment: Alignment.bottomCenter,
                                         children: [
@@ -331,7 +331,7 @@ class AboutUs extends StatelessWidget {
                                                 YourMomJokes()));
                                   },
                                   child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                       child: Stack(
                                         alignment: Alignment.bottomCenter,
                                         children: [
@@ -409,14 +409,14 @@ class YourMomJokes extends StatelessWidget {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: false,
-                systemNavigationBarColor: Colors.transparent,
-                systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: Brightness.dark,
-                statusBarIconBrightness: Brightness.dark),
+              systemStatusBarContrastEnforced: false,
+              systemNavigationBarColor: Colors.transparent,
+              systemNavigationBarDividerColor: Colors.transparent,
+              systemNavigationBarIconBrightness: Brightness.dark,
+            ),
             sized: false,
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(10.0),
                 child: CupertinoPageScaffold(
                     navigationBar: const CupertinoNavigationBar(
                       middle: Text('your mom jokes'),
@@ -460,7 +460,7 @@ class EmbarrasingDate extends StatelessWidget {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: Scaffold(
             body: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(

@@ -1,4 +1,4 @@
-
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -38,11 +38,22 @@ class MySettingsState extends State<RishuSharma> {
 
   @override
   Widget build(BuildContext context) {
+    const colorizeColors = [
+      Colors.purple,
+      Colors.blue,
+      Colors.yellow,
+      Colors.red,
+    ];
+
+    const colorizeTextStyle = TextStyle(
+      fontSize: 40.0,
+      fontFamily: 'Horizon',
+    );
     // Vibration.vibrate(duration: 10, amplitude: 128);
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: Scaffold(
             body: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
@@ -87,7 +98,7 @@ class MySettingsState extends State<RishuSharma> {
                                     height: 100,
                                     child: ClipRRect(
                                         borderRadius:
-                                            BorderRadius.circular(15.0),
+                                            BorderRadius.circular(10.0),
                                         child: FittedBox(
                                             fit: BoxFit.fitHeight,
                                             child: Stack(
@@ -95,6 +106,8 @@ class MySettingsState extends State<RishuSharma> {
                                               children: [
                                                 Hero(
                                                     tag: 'sus',
+                                                    transitionOnUserGestures:
+                                                        true,
                                                     child: ClipRRect(
                                                         borderRadius:
                                                             BorderRadius
@@ -106,22 +119,47 @@ class MySettingsState extends State<RishuSharma> {
                                                                 BoxFit.cover))),
                                               ],
                                             ))))),
-                            RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: context.isDarkMode
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: 'Rishu Sharma',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Hero(
+                                    transitionOnUserGestures: true,
+                                    tag: 'Rishu_First',
+                                    child: AnimatedTextKit(
+                                      animatedTexts: [
+                                        ColorizeAnimatedText(
+                                          'Rishu ',
+                                          textStyle: colorizeTextStyle,
+                                          colors: colorizeColors,
+                                        ),
+                                        ColorizeAnimatedText(
+                                          'Rishu ',
+                                          textStyle: colorizeTextStyle,
+                                          colors: colorizeColors,
+                                        ),
+                                      ],
+                                      isRepeatingAnimation: true,
+                                    )),
+                                Hero(
+                                    transitionOnUserGestures: true,
+                                    tag: 'Rishu-Last',
+                                    child: AnimatedTextKit(
+                                      animatedTexts: [
+                                        ColorizeAnimatedText(
+                                          'Sharma',
+                                          textStyle: colorizeTextStyle,
+                                          colors: colorizeColors,
+                                        ),
+                                        ColorizeAnimatedText(
+                                          'Sharma',
+                                          textStyle: colorizeTextStyle,
+                                          colors: colorizeColors,
+                                        ),
+                                      ],
+                                      isRepeatingAnimation: true,
+                                    )),
+                              ],
+                            )
                           ]),
                           GestureDetector(
                               onTap: () {

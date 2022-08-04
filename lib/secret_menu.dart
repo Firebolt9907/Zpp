@@ -40,7 +40,7 @@ class DevConfirm extends StatelessWidget {
     // TextEditingController textController = TextEditingController();
     // String displayText = "";
     return ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: CupertinoPageScaffold(
             navigationBar: const CupertinoNavigationBar(
               middle: Text('Slow down there...'),
@@ -75,7 +75,7 @@ class DevConfirm extends StatelessWidget {
                                     tag: 'sus',
                                     child: ClipRRect(
                                         borderRadius:
-                                            BorderRadius.circular(15.0),
+                                            BorderRadius.circular(10.0),
                                         child: const Image(
                                           image: AssetImage('assets/sus.jpg'),
                                           fit: BoxFit.fitWidth,

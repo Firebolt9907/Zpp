@@ -6,13 +6,14 @@ import 'package:page_transition/page_transition.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:camera/camera.dart';
+import 'package:simple_list_tile/simple_list_tile.dart';
 // import 'package:overlay_support/overlay_support.dart';
 // import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
@@ -89,11 +90,11 @@ class RefreshHomeState extends State<RefreshHome> {
         //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
         child: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: false,
-                systemNavigationBarColor: Colors.transparent,
-                systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: Brightness.dark,
-                statusBarIconBrightness: Brightness.dark),
+              systemStatusBarContrastEnforced: false,
+              systemNavigationBarColor: Colors.transparent,
+              systemNavigationBarDividerColor: Colors.transparent,
+              systemNavigationBarIconBrightness: Brightness.dark,
+            ),
             sized: false,
             child: SafeArea(
                 child: CustomRefreshIndicator(
@@ -139,7 +140,8 @@ class RefreshHomeState extends State<RefreshHome> {
                                             height: _offsetToArmed *
                                                 controller.value *
                                                 2,
-                                            child: const RiveAnimation.asset(
+                                            child:
+                                                const rive.RiveAnimation.asset(
                                               "assets/falling.riv",
                                               fit: BoxFit.cover,
                                             ))))),
@@ -150,12 +152,12 @@ class RefreshHomeState extends State<RefreshHome> {
                           ]);
                         }),
                     child: Material(
-                      child: Container(
-                          padding: const EdgeInsets.all(20),
-                          color: CupertinoTheme.of(context)
-                              .scaffoldBackgroundColor,
+                      color: CupertinoTheme.of(context).scaffoldBackgroundColor,
+                      child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20, right: 20, left: 10),
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               child: ListView(
                                 children: [
                                   CupertinoListTile(
@@ -235,6 +237,48 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       .rightToLeft,
                                                   curve: Curves.easeOutExpo,
                                                   child: MySettings()))),
+                                  SimpleListTile(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                            builder: (context) =>
+                                                CandidatesPage(),
+                                          ));
+                                    },
+                                    title: Text(
+                                      'Election Candidates',
+                                      style: TextStyle(
+                                        color: context.isDarkMode == true
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: context.isDarkMode == true
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                    leading: const Icon(
+                                      Icons.phone_android,
+                                      color: Colors.blue,
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                    tileColor: Colors.grey[300]!,
+                                    circleColor: Colors.grey[100]!,
+                                    circleDiameter: 80,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        const Color.fromARGB(255, 0, 81, 255),
+                                        context.isDarkMode == true
+                                            ? Colors.black
+                                            : Colors.white
+                                      ],
+                                    ),
+                                  ),
                                   CupertinoListTile(
                                       //leading: Icon(),
                                       title: const Text('Send Feedback'),

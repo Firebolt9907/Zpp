@@ -54,14 +54,14 @@ class MySettingsState extends State<MySettings> {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: CupertinoPageScaffold(
-                    navigationBar: const CupertinoNavigationBar(
-                      middle: Text('Settings'),
-                      previousPageTitle: 'Home',
-                      automaticallyImplyLeading: true,
-                    ),
-                    child: AnnotatedRegion<SystemUiOverlayStyle>(
+            navigationBar: const CupertinoNavigationBar(
+              middle: Text('Settings'),
+              previousPageTitle: 'Home',
+              automaticallyImplyLeading: true,
+            ),
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
                     systemStatusBarContrastEnforced: false,
                     systemNavigationBarColor: Colors.transparent,
@@ -70,65 +70,62 @@ class MySettingsState extends State<MySettings> {
                     statusBarIconBrightness: Brightness.dark),
                 sized: false,
                 child: ListView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          GestureDetector(
-                              onTap: () => devModeOn == false
-                                  ? Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (context) => AboutUs(),
-                                      ))
-                                  : Navigator.push(
-                                      context,
-                                      PageTransition(
-                                          type: PageTransitionType.leftToRight,
-                                          child: AboutUs())),
-                              child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          AspectRatio(
-                                              aspectRatio: 4 / 5,
-                                              child: Hero(
-                                                  tag: 'sus',
-                                                  child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
-                                                      child: const Image(
-                                                          image: AssetImage(
-                                                              'assets/amogus.jpg'),
-                                                          fit: BoxFit.cover)))),
-                                          ClipRRect(
-                                              // Clip it cleanly.
-                                              child: BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 10, sigmaY: 10),
-                                            child: Container(
-                                              color:
-                                                  Colors.grey.withOpacity(0.1),
-                                              alignment: Alignment.center,
-                                              child: const Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 5),
-                                                child: Text(
-                                                  'Credits',
-                                                  style: TextStyle(
-                                                      fontSize: 40,
-                                                      color:
-                                                          CupertinoColors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      GestureDetector(
+                          onTap: () => devModeOn == false
+                              ? Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => AboutUs(),
+                                  ))
+                              : Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.leftToRight,
+                                      child: AboutUs())),
+                          child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      AspectRatio(
+                                          aspectRatio: 4 / 5,
+                                          child: Hero(
+                                              tag: 'sus',
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                  child: const Image(
+                                                      image: AssetImage(
+                                                          'assets/amogus.jpg'),
+                                                      fit: BoxFit.cover)))),
+                                      ClipRRect(
+                                          // Clip it cleanly.
+                                          child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaX: 10, sigmaY: 10),
+                                        child: Container(
+                                          color: Colors.grey.withOpacity(0.1),
+                                          alignment: Alignment.center,
+                                          child: const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: Text(
+                                              'Credits',
+                                              style: TextStyle(
+                                                  fontSize: 40,
+                                                  color: CupertinoColors.white,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                          )),
-                                        ],
-                                      )))),
-                        ]))));
+                                          ),
+                                        ),
+                                      )),
+                                    ],
+                                  )))),
+                    ]))));
   }
 }

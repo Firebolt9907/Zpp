@@ -63,7 +63,13 @@ void main() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
-  _cameras = await availableCameras();
+  Platform.isMacOS
+      ? null
+      : Platform.isWindows
+          ? null
+          : Platform.isLinux
+              ? null
+              : _cameras = await availableCameras();
   runApp(OverlaySupport.global(
     child: Phoenix(
       child: MyApp(),
