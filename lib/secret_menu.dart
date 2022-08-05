@@ -52,11 +52,11 @@ class DevConfirm extends StatelessWidget {
             //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
             child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
-                    systemStatusBarContrastEnforced: false,
-                    systemNavigationBarColor: Colors.transparent,
-                    systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness: Brightness.dark,
-                    statusBarIconBrightness: Brightness.dark),
+                  systemStatusBarContrastEnforced: false,
+                  systemNavigationBarColor: Colors.transparent,
+                  systemNavigationBarDividerColor: Colors.transparent,
+                  systemNavigationBarIconBrightness: Brightness.dark,
+                ),
                 sized: false,
                 child: SafeArea(
                     child: Column(
@@ -72,6 +72,7 @@ class DevConfirm extends StatelessWidget {
                                       "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
                                 },
                                 child: Hero(
+                                    transitionOnUserGestures: true,
                                     tag: 'sus',
                                     child: ClipRRect(
                                         borderRadius:

@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:simple_list_tile/simple_list_tile.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +24,7 @@ class MySocial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
-    Vibration.vibrate(duration: 10, amplitude: 128);
+    Platform.isMacOS ? null : Vibration.vibrate(duration: 10, amplitude: 128);
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return Padding(
         padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
@@ -54,57 +56,140 @@ class MySocial extends StatelessWidget {
                                 child: ListView(
                                   reverse: true,
                                   children: [
-                                    CupertinoListTile(
-                                        leading:
-                                            const Arcticons(Arcticons.roblox),
-                                        title:
-                                            const Text('Friend me on Roblox'),
-                                        subtitle: RichText(
-                                          text: TextSpan(
-                                            // Note: Styles for TextSpans must be explicitly defined.
-                                            // Child text spans will inherit styles from parent
+                                    Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 5, bottom: 5),
+                                        child: SimpleListTile(
+                                          onTap: () => _launchURL(
+                                              "https://www.roblox.com/users/690475268/profile"),
+                                          title: Text(
+                                            'Roblox',
                                             style: TextStyle(
-                                              fontSize: 11,
-                                              color: context.isDarkMode
+                                              color: context.isDarkMode == true
                                                   ? Colors.white
                                                   : Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
                                             ),
-                                            children: const <TextSpan>[
-                                              TextSpan(
-                                                  text:
-                                                      'Of course i dont game on my school mac'),
+                                          ),
+                                          subtitle: RichText(
+                                            text: TextSpan(
+                                              // Note: Styles for TextSpans must be explicitly defined.
+                                              // Child text spans will inherit styles from parent
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                color: context.isDarkMode
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                              ),
+                                              children: const <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                        'Of course i dont game on my school mac'),
+                                              ],
+                                            ),
+                                          ),
+                                          trailing: Icon(
+                                            Icons.open_in_new_rounded,
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                          leading: Transform.scale(
+                                              scale: 0.8,
+                                              child: Arcticons(Arcticons.roblox,
+                                                  color:
+                                                      context.isDarkMode == true
+                                                          ? Colors.white
+                                                          : Colors.black)),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          tileColor: Colors.grey[300]!,
+                                          circleColor:
+                                              context.isDarkMode == true
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                          circleDiameter: 80,
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              const ui.Color.fromARGB(
+                                                  255, 128, 128, 128),
+                                              context.isDarkMode == true
+                                                  ? Colors.black
+                                                  : Colors.white
                                             ],
                                           ),
-                                        ),
-                                        onTap: () => _launchURL(
-                                            "https://www.roblox.com/users/690475268/profile")),
-                                    CupertinoListTile(
-                                        leading:
-                                            const Arcticons(Arcticons.discord),
-                                        title: const Text(
-                                            'Join my Discord Server'),
-                                        subtitle: RichText(
-                                          text: TextSpan(
-                                            // Note: Styles for TextSpans must be explicitly defined.
-                                            // Child text spans will inherit styles from parent
+                                        )),
+                                    Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 5, bottom: 5),
+                                        child: SimpleListTile(
+                                          onTap: () => _launchURL(
+                                              "https://discord.gg/HSmAerG2VX"),
+                                          title: Text(
+                                            'Discord Server',
                                             style: TextStyle(
-                                              fontSize: 11,
-                                              color: context.isDarkMode
+                                              color: context.isDarkMode == true
                                                   ? Colors.white
                                                   : Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
                                             ),
-                                            children: const <TextSpan>[
-                                              TextSpan(
-                                                  text:
-                                                      'Finally a messaging app that isnt trash'),
+                                          ),
+                                          subtitle: RichText(
+                                            text: TextSpan(
+                                              // Note: Styles for TextSpans must be explicitly defined.
+                                              // Child text spans will inherit styles from parent
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                color: context.isDarkMode
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                              ),
+                                              children: const <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                        'Finally a messaging app that isnt trash'),
+                                              ],
+                                            ),
+                                          ),
+                                          trailing: Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                          leading: Transform.scale(
+                                              scale: 0.8,
+                                              child: Arcticons(
+                                                  Arcticons.discord,
+                                                  color:
+                                                      context.isDarkMode == true
+                                                          ? Colors.white
+                                                          : Colors.black)),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          tileColor: Colors.grey[300]!,
+                                          circleColor:
+                                              context.isDarkMode == true
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                          circleDiameter: 80,
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              const ui.Color.fromARGB(
+                                                  255, 45, 0, 245),
+                                              context.isDarkMode == true
+                                                  ? Colors.black
+                                                  : Colors.white
                                             ],
                                           ),
-                                        ),
-                                        onTap: () => _launchURL(
-                                            "https://discord.gg/HSmAerG2VX")),
+                                        )),
                                     CupertinoListTile(
-                                        leading:
-                                            const Arcticons(Arcticons.snapchat),
+                                        leading: Arcticons(Arcticons.snapchat,
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black),
                                         title: const Text('Add me on Snapchat'),
                                         subtitle: RichText(
                                           text: TextSpan(
@@ -131,8 +216,10 @@ class MySocial extends StatelessWidget {
                                         onTap: () => _launchURL(
                                             "https://www.snapchat.com/add/firebolt_9907?share_id=6bLdC4GNgg8&locale=en-US")),
                                     CupertinoListTile(
-                                        leading: const Arcticons(
-                                            Arcticons.minecraft),
+                                        leading: Arcticons(Arcticons.minecraft,
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black),
                                         title: const Text(
                                             'Look at me on Minecraft'),
                                         subtitle: RichText(
@@ -159,8 +246,10 @@ class MySocial extends StatelessWidget {
                                         onTap: () => _launchURL(
                                             "https://namemc.com/profile/Firebolt_9907.1")),
                                     CupertinoListTile(
-                                        leading:
-                                            const Arcticons(Arcticons.youtube),
+                                        leading: Arcticons(Arcticons.youtube,
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black),
                                         title: const Text(
                                             'Subscribe to me on YouTube'),
                                         subtitle: RichText(
@@ -183,8 +272,11 @@ class MySocial extends StatelessWidget {
                                         onTap: () => _launchURL(
                                             "https://www.youtube.com/channel/UChcPleeg20FGQP2v3sz9MDQ")),
                                     CupertinoListTile(
-                                        leading: const Arcticons(Arcticons.xbox,
-                                            fit: BoxFit.contain),
+                                        leading: Arcticons(Arcticons.xbox,
+                                            fit: BoxFit.contain,
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black),
                                         subtitle: RichText(
                                           text: TextSpan(
                                             // Note: Styles for TextSpans must be explicitly defined.

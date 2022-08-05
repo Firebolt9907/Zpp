@@ -194,10 +194,10 @@ class EmbarrasingDate extends StatelessWidget {
         child: Scaffold(
             body: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
-                    systemStatusBarContrastEnforced: true,
-                    systemNavigationBarColor: Colors.transparent,
-                    systemNavigationBarDividerColor: Colors.transparent,
-                    statusBarIconBrightness: Brightness.dark),
+                  systemStatusBarContrastEnforced: true,
+                  systemNavigationBarColor: Colors.transparent,
+                  systemNavigationBarDividerColor: Colors.transparent,
+                ),
                 sized: false,
                 child: CupertinoPageScaffold(
                     navigationBar: const CupertinoNavigationBar(

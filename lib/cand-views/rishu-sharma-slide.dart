@@ -31,6 +31,7 @@ class Slide extends StatelessWidget {
         child: FullScreenWidget(
           child: Center(
               child: Hero(
+            transitionOnUserGestures: true,
             tag: "rishu-sharma",
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),

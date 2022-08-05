@@ -17,6 +17,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:async';
 import 'package:overlay_support/overlay_support.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
@@ -47,6 +48,8 @@ extension DarkMode on BuildContext {
 
 void main() async {
   // imageCache.clear();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -70,6 +73,7 @@ void main() async {
           : Platform.isLinux
               ? null
               : _cameras = await availableCameras();
+  FlutterNativeSplash.remove();
   runApp(OverlaySupport.global(
     child: Phoenix(
       child: MyApp(),

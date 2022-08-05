@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:simple_list_tile/simple_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,11 +64,11 @@ class MySettingsState extends State<MySettings> {
             ),
             child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
-                    systemStatusBarContrastEnforced: false,
-                    systemNavigationBarColor: Colors.transparent,
-                    systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness: Brightness.dark,
-                    statusBarIconBrightness: Brightness.dark),
+                  systemStatusBarContrastEnforced: false,
+                  systemNavigationBarColor: Colors.transparent,
+                  systemNavigationBarDividerColor: Colors.transparent,
+                  systemNavigationBarIconBrightness: Brightness.dark,
+                ),
                 sized: false,
                 child: ListView(
                     physics: const NeverScrollableScrollPhysics(),
@@ -126,6 +127,59 @@ class MySettingsState extends State<MySettings> {
                                       )),
                                     ],
                                   )))),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 10),
+                          child: SimpleListTile(
+                            onTap: () {
+                              _launchURL(
+                                  "mailto:rememberthisrishu@gmail.com?subject=Feedback on Zpp");
+                            },
+                            title: Text(
+                              'Feedback?',
+                              style: TextStyle(
+                                color: context.isDarkMode == true
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Click to send feedback',
+                              style: TextStyle(
+                                color: context.isDarkMode == true
+                                    ? Colors.white
+                                    : Colors.black,
+                                // fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                            trailing: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: context.isDarkMode == true
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                            leading: Icon(Icons.settings,
+                                color: context.isDarkMode == true
+                                    ? Colors.white
+                                    : Colors.black,
+                                size: 45),
+                            borderRadius: BorderRadius.circular(15),
+                            tileColor: Colors.grey[300]!,
+                            circleColor: context.isDarkMode == true
+                                ? Colors.black
+                                : Colors.white,
+                            circleDiameter: 80,
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color.fromARGB(255, 22, 255, 255),
+                                context.isDarkMode == true
+                                    ? Colors.black
+                                    : Colors.white
+                              ],
+                            ),
+                          )),
                     ]))));
   }
 }

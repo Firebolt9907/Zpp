@@ -44,352 +44,333 @@ class AboutUs extends StatelessWidget {
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: DismissiblePage(
-            onDismissed: () {
-              _vibrate();
-              Navigator.of(context).pop();
-            },
-            direction: DismissiblePageDismissDirection.down,
-            isFullScreen: true,
-            maxRadius: 15.0,
-            minRadius: 15.0,
-            minScale: 0.1,
-            child: Scaffold(
-                appBar: CupertinoNavigationBar(
-                    backgroundColor: Color(0x00000000),
-                    border: Border.all(color: Colors.transparent),
-                    previousPageTitle: "Settings",
-                    middle: const Text("About Us")),
-                extendBodyBehindAppBar: true,
-                body: AnnotatedRegion<SystemUiOverlayStyle>(
-                    value: const SystemUiOverlayStyle(
-                        systemStatusBarContrastEnforced: false,
-                        systemNavigationBarColor: Colors.transparent,
-                        systemNavigationBarDividerColor: Colors.transparent,
-                        statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),
-                        systemNavigationBarIconBrightness: Brightness.dark,
-                        statusBarIconBrightness: Brightness.dark),
-                    sized: false,
-                    child: CupertinoPageScaffold(
-                        resizeToAvoidBottomInset: false,
-                        child: ListView(
-                            padding: const EdgeInsets.only(top: 30),
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (BuildContext context) =>
-                                              DevConfirm()));
-                                },
-                                child: Stack(
-                                  alignment: Alignment.bottomCenter,
-                                  children: [
-                                    const Hero(
-                                        tag: 'sus',
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                                bottomLeft:
-                                                    ui.Radius.circular(15.0),
-                                                bottomRight:
-                                                    ui.Radius.circular(15.0)),
-                                            child: Image(
-                                              image: AssetImage(
-                                                  'assets/amogus.jpg'),
-                                            ))),
-                                    ClipRRect(
-                                        borderRadius: const BorderRadius.only(
+        child: Scaffold(
+            backgroundColor:
+                context.isDarkMode == true ? Colors.black : Colors.white,
+            appBar: CupertinoNavigationBar(
+                backgroundColor: const Color(0x00000000),
+                border: Border.all(color: Colors.transparent),
+                previousPageTitle: "Settings",
+                middle: const Text("About Us")),
+            extendBodyBehindAppBar: true,
+            body: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: const SystemUiOverlayStyle(
+                    systemStatusBarContrastEnforced: false,
+                    systemNavigationBarColor: Colors.transparent,
+                    systemNavigationBarDividerColor: Colors.transparent,
+                    statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),
+                    systemNavigationBarIconBrightness: Brightness.dark,
+                    statusBarIconBrightness: Brightness.dark),
+                sized: false,
+                child: CupertinoPageScaffold(
+                    resizeToAvoidBottomInset: false,
+                    child: ListView(
+                        padding: const EdgeInsets.only(top: 30),
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (BuildContext context) =>
+                                          DevConfirm()));
+                            },
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                const Hero(
+                                    transitionOnUserGestures: true,
+                                    tag: 'sus',
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.only(
                                             bottomLeft:
                                                 ui.Radius.circular(15.0),
                                             bottomRight:
                                                 ui.Radius.circular(15.0)),
-                                        child: ClipRRect(
-                                            // Clip it cleanly.
-                                            child: BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                              sigmaX: 10, sigmaY: 10),
-                                          child: Container(
-                                            color: Colors.grey.withOpacity(0.1),
-                                            alignment: Alignment.center,
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5),
-                                              child: Text(
-                                                'Rishu Sharma',
-                                                style: TextStyle(
-                                                    fontSize: 40,
-                                                    color:
-                                                        CupertinoColors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                        child: Image(
+                                          image:
+                                              AssetImage('assets/amogus.jpg'),
+                                        ))),
+                                ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                        bottomLeft: ui.Radius.circular(15.0),
+                                        bottomRight: ui.Radius.circular(15.0)),
+                                    child: ClipRRect(
+                                        // Clip it cleanly.
+                                        child: BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 10, sigmaY: 10),
+                                      child: Container(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        alignment: Alignment.center,
+                                        child: const Padding(
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 5),
+                                          child: Text(
+                                            'Rishu Sharma',
+                                            style: TextStyle(
+                                                fontSize: 40,
+                                                color: CupertinoColors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ))),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                      'dedicaded many weeks to breaking Stack Overflow and his CTRL, C, and V keys',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        color: context.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      )))),
+                          GestureDetector(
+                              onTap: () {
+                                _launchURL(
+                                    "https://discordapp.com/users/669357017307283456");
+                              },
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      const Image(
+                                          image:
+                                              AssetImage('assets/rishi.jpg')),
+                                      ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                              bottomLeft:
+                                                  ui.Radius.circular(15.0),
+                                              bottomRight:
+                                                  ui.Radius.circular(15.0)),
+                                          child: ClipRRect(
+                                              // Clip it cleanly.
+                                              child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 10, sigmaY: 10),
+                                            child: Container(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              alignment: Alignment.center,
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5),
+                                                child: Text(
+                                                  'Rishi Vennapusa',
+                                                  style: TextStyle(
+                                                      fontSize: 40,
+                                                      color:
+                                                          CupertinoColors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ))),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Text(
-                                          'dedicaded many weeks to breaking Stack Overflow and his CTRL, C, and V keys',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: context.isDarkMode
-                                                ? Colors.white
-                                                : Colors.black,
-                                          )))),
-                              GestureDetector(
-                                  onTap: () {
-                                    _launchURL(
-                                        "https://discordapp.com/users/669357017307283456");
-                                  },
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          const Image(
-                                              image: AssetImage(
-                                                  'assets/rishi.jpg')),
-                                          ClipRRect(
-                                              borderRadius: const BorderRadius
-                                                      .only(
-                                                  bottomLeft:
-                                                      ui.Radius.circular(15.0),
-                                                  bottomRight:
-                                                      ui.Radius.circular(15.0)),
-                                              child: ClipRRect(
-                                                  // Clip it cleanly.
-                                                  child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 10, sigmaY: 10),
-                                                child: Container(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.1),
-                                                  alignment: Alignment.center,
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5),
-                                                    child: Text(
-                                                      'Rishi Vennapusa',
-                                                      style: TextStyle(
-                                                          fontSize: 40,
-                                                          color: CupertinoColors
-                                                              .white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
+                                          ))),
+                                    ],
+                                  ))),
+                          Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                      'did so much work on the app only to not click push changes',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        color: context.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      )))),
+                          GestureDetector(
+                              onTap: () {
+                                _launchURL(
+                                    "https://discordapp.com/users/784825209407799297");
+                              },
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      const Image(
+                                          image: AssetImage('assets/nick.png')),
+                                      ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                              bottomLeft:
+                                                  ui.Radius.circular(15.0),
+                                              bottomRight:
+                                                  ui.Radius.circular(15.0)),
+                                          child: ClipRRect(
+                                              // Clip it cleanly.
+                                              child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 10, sigmaY: 10),
+                                            child: Container(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              alignment: Alignment.center,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 5),
+                                                child: Text(
+                                                  'Nick Smith',
+                                                  style: TextStyle(
+                                                      fontSize: 40,
+                                                      color: context.isDarkMode
+                                                          ? CupertinoColors
+                                                              .white
+                                                          : CupertinoColors
+                                                              .black,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
-                                              ))),
-                                        ],
-                                      ))),
-                              Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Text(
-                                          'did so much work on the app only to not click push changes',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: context.isDarkMode
-                                                ? Colors.white
-                                                : Colors.black,
-                                          )))),
-                              GestureDetector(
-                                  onTap: () {
-                                    _launchURL(
-                                        "https://discordapp.com/users/784825209407799297");
-                                  },
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          const Image(
-                                              image: AssetImage(
-                                                  'assets/nick.png')),
-                                          ClipRRect(
-                                              borderRadius: const BorderRadius
-                                                      .only(
-                                                  bottomLeft:
-                                                      ui.Radius.circular(15.0),
-                                                  bottomRight:
-                                                      ui.Radius.circular(15.0)),
-                                              child: ClipRRect(
-                                                  // Clip it cleanly.
-                                                  child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 10, sigmaY: 10),
-                                                child: Container(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.1),
-                                                  alignment: Alignment.center,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(vertical: 5),
-                                                    child: Text(
-                                                      'Nick Smith',
-                                                      style: TextStyle(
-                                                          fontSize: 40,
-                                                          color: context
-                                                                  .isDarkMode
-                                                              ? CupertinoColors
-                                                                  .white
-                                                              : CupertinoColors
-                                                                  .black,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
+                                              ),
+                                            ),
+                                          ))),
+                                    ],
+                                  ))),
+                          Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                      'made the universe, forgot to create the app',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        color: context.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      )))),
+                          GestureDetector(
+                              onTap: () {
+                                _launchURL(
+                                    "https://www.snapchat.com/add/filmon_king?share_id=MzhGODlBRkYtMEJERC00NjkwLTg4M0MtQUNGNTFERUZDOTFC&locale=en_US");
+                              },
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      const Image(
+                                          image:
+                                              AssetImage('assets/filmon.jpg')),
+                                      ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                              bottomLeft:
+                                                  ui.Radius.circular(15.0),
+                                              bottomRight:
+                                                  ui.Radius.circular(15.0)),
+                                          child: ClipRRect(
+                                              // Clip it cleanly.
+                                              child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 10, sigmaY: 10),
+                                            child: Container(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              alignment: Alignment.center,
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5),
+                                                child: Text(
+                                                  'Filmon Negash',
+                                                  style: TextStyle(
+                                                      fontSize: 40,
+                                                      color:
+                                                          CupertinoColors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
-                                              ))),
-                                        ],
-                                      ))),
-                              Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Text(
-                                          'made the universe, forgot to create the app',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: context.isDarkMode
-                                                ? Colors.white
-                                                : Colors.black,
-                                          )))),
-                              GestureDetector(
-                                  onTap: () {
-                                    _launchURL(
-                                        "https://www.snapchat.com/add/filmon_king?share_id=MzhGODlBRkYtMEJERC00NjkwLTg4M0MtQUNGNTFERUZDOTFC&locale=en_US");
-                                  },
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          const Image(
-                                              image: AssetImage(
-                                                  'assets/filmon.jpg')),
-                                          ClipRRect(
-                                              borderRadius: const BorderRadius
-                                                      .only(
-                                                  bottomLeft:
-                                                      ui.Radius.circular(15.0),
-                                                  bottomRight:
-                                                      ui.Radius.circular(15.0)),
-                                              child: ClipRRect(
-                                                  // Clip it cleanly.
-                                                  child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 10, sigmaY: 10),
-                                                child: Container(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.1),
-                                                  alignment: Alignment.center,
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5),
-                                                    child: Text(
-                                                      'Filmon Negash',
-                                                      style: TextStyle(
-                                                          fontSize: 40,
-                                                          color: CupertinoColors
-                                                              .white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
+                                              ),
+                                            ),
+                                          ))),
+                                    ],
+                                  ))),
+                          Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                      'dedicated his entire summer to play CSGO, aim still garbage',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        color: context.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      )))),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (BuildContext context) =>
+                                            YourMomJokes()));
+                              },
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      const Image(
+                                          image:
+                                              AssetImage('assets/rohan.jpg')),
+                                      ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                              bottomLeft:
+                                                  ui.Radius.circular(15.0),
+                                              bottomRight:
+                                                  ui.Radius.circular(15.0)),
+                                          child: ClipRRect(
+                                              // Clip it cleanly.
+                                              child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 10, sigmaY: 10),
+                                            child: Container(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              alignment: Alignment.center,
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5),
+                                                child: Text(
+                                                  'Rohan George',
+                                                  style: TextStyle(
+                                                      fontSize: 40,
+                                                      color:
+                                                          CupertinoColors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
-                                              ))),
-                                        ],
-                                      ))),
-                              Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Text(
-                                          'dedicated his entire summer to play CSGO, aim still garbage',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: context.isDarkMode
-                                                ? Colors.white
-                                                : Colors.black,
-                                          )))),
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (BuildContext context) =>
-                                                YourMomJokes()));
-                                  },
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          const Image(
-                                              image: AssetImage(
-                                                  'assets/rohan.jpg')),
-                                          ClipRRect(
-                                              borderRadius: const BorderRadius
-                                                      .only(
-                                                  bottomLeft:
-                                                      ui.Radius.circular(15.0),
-                                                  bottomRight:
-                                                      ui.Radius.circular(15.0)),
-                                              child: ClipRRect(
-                                                  // Clip it cleanly.
-                                                  child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 10, sigmaY: 10),
-                                                child: Container(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.1),
-                                                  alignment: Alignment.center,
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5),
-                                                    child: Text(
-                                                      'Rohan George',
-                                                      style: TextStyle(
-                                                          fontSize: 40,
-                                                          color: CupertinoColors
-                                                              .white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ))),
-                                        ],
-                                      ))),
-                              Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Text(
-                                          'told Rishu to make a ur mom jokes page in this',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: context.isDarkMode
-                                                ? Colors.white
-                                                : Colors.black,
-                                          )))),
+                                              ),
+                                            ),
+                                          ))),
+                                    ],
+                                  ))),
+                          Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                      'told Rishu to make a ur mom jokes page in this',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        color: context.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      )))),
 
-                              //bottom padding below
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
-                              )
-                            ]))))));
+                          //bottom padding below
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                          )
+                        ])))));
   }
 }
 
@@ -464,10 +445,10 @@ class EmbarrasingDate extends StatelessWidget {
         child: Scaffold(
             body: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
-                    systemStatusBarContrastEnforced: true,
-                    systemNavigationBarColor: Colors.transparent,
-                    systemNavigationBarDividerColor: Colors.transparent,
-                    statusBarIconBrightness: Brightness.dark),
+                  systemStatusBarContrastEnforced: true,
+                  systemNavigationBarColor: Colors.transparent,
+                  systemNavigationBarDividerColor: Colors.transparent,
+                ),
                 sized: false,
                 child: CupertinoPageScaffold(
                     navigationBar: const CupertinoNavigationBar(

@@ -8,14 +8,16 @@ import 'package:vibration/vibration.dart';
 
 import 'main.dart';
 
+List myList = ['a', 'b', 'c'];
+
 class RandomPage extends StatefulWidget {
   const RandomPage({super.key});
 
   @override
-  _RandomPageState createState() => _RandomPageState();
+  RandomPageState createState() => RandomPageState();
 }
 
-class _RandomPageState extends State<RandomPage> {
+class RandomPageState extends State<RandomPage> {
   @override
   void initState() {
     super.initState();
@@ -56,11 +58,11 @@ class _RandomPageState extends State<RandomPage> {
             ),
             child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
-                    systemStatusBarContrastEnforced: false,
-                    systemNavigationBarColor: Colors.transparent,
-                    systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness: Brightness.dark,
-                    statusBarIconBrightness: Brightness.dark),
+                  systemStatusBarContrastEnforced: false,
+                  systemNavigationBarColor: Colors.transparent,
+                  systemNavigationBarDividerColor: Colors.transparent,
+                  systemNavigationBarIconBrightness: Brightness.dark,
+                ),
                 sized: false,
                 child: SafeArea(
                     child: CustomRefreshIndicator(
