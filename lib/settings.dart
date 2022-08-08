@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'about_us.dart';
 import 'main.dart';
+import 'my_social.dart';
 
 _launchURL(var myUrl) async {
   Uri finalUrl = Uri.parse(myUrl);
@@ -95,6 +97,7 @@ class MySettingsState extends State<MySettings> {
                                       AspectRatio(
                                           aspectRatio: 4 / 5,
                                           child: Hero(
+                                              transitionOnUserGestures: true,
                                               tag: 'sus',
                                               child: ClipRRect(
                                                   borderRadius:
@@ -127,8 +130,58 @@ class MySettingsState extends State<MySettings> {
                                       )),
                                     ],
                                   )))),
+                      SimpleListTile(
+                        onTap: () {
+                          Future.delayed(
+                              devModeOn == true
+                                  ? const Duration(milliseconds: 500)
+                                  : const Duration(milliseconds: 0), () {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => MySocial(),
+                                ));
+                          });
+                        },
+                        title: Text(
+                          'My Socials',
+                          style: TextStyle(
+                            color: context.isDarkMode == true
+                                ? Colors.white
+                                : Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: context.isDarkMode == true
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        leading: Icon(Icons.share,
+                            color: context.isDarkMode == true
+                                ? Colors.white
+                                : Colors.black,
+                            size: 45),
+                        borderRadius: BorderRadius.circular(15),
+                        tileColor: Colors.grey[300]!,
+                        circleColor: context.isDarkMode == true
+                            ? Colors.black
+                            : Colors.white,
+                        circleDiameter: 80,
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color.fromARGB(255, 9, 255, 0),
+                            context.isDarkMode == true
+                                ? Colors.black
+                                : Colors.white
+                          ],
+                        ),
+                      ),
                       Padding(
-                          padding: const EdgeInsets.only(left: 5, right: 10),
+                          padding: const EdgeInsets.only(
+                              left: 5, right: 10, top: 10),
                           child: SimpleListTile(
                             onTap: () {
                               _launchURL(

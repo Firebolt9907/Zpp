@@ -1,3 +1,4 @@
+import 'package:Zpp/candidates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -114,6 +115,12 @@ class DevConfirm extends StatelessWidget {
                                 context,
                                 CupertinoPageRoute(
                                   builder: (context) => const DevMode(),
+                                ));
+                          } else if (inputValue == "cands") {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => CandidatesPage(),
                                 ));
                           }
                         },

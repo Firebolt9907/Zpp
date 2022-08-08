@@ -137,7 +137,7 @@ class AboutUs extends StatelessWidget {
                                     "https://discordapp.com/users/669357017307283456");
                               },
                               child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(15.0),
                                   child: Stack(
                                     alignment: Alignment.bottomCenter,
                                     children: [
@@ -194,7 +194,7 @@ class AboutUs extends StatelessWidget {
                                     "https://discordapp.com/users/784825209407799297");
                               },
                               child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(15.0),
                                   child: Stack(
                                     alignment: Alignment.bottomCenter,
                                     children: [
@@ -254,7 +254,7 @@ class AboutUs extends StatelessWidget {
                                     "https://www.snapchat.com/add/filmon_king?share_id=MzhGODlBRkYtMEJERC00NjkwLTg4M0MtQUNGNTFERUZDOTFC&locale=en_US");
                               },
                               child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(15.0),
                                   child: Stack(
                                     alignment: Alignment.bottomCenter,
                                     children: [
@@ -314,7 +314,7 @@ class AboutUs extends StatelessWidget {
                                             YourMomJokes()));
                               },
                               child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(15.0),
                                   child: Stack(
                                     alignment: Alignment.bottomCenter,
                                     children: [

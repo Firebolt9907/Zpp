@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:Zpp/candidates.dart';
+import 'package:Zpp/coin_flip.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -73,7 +74,7 @@ class RefreshHomeState extends State<RefreshHome> {
     return CupertinoPageScaffold(
         resizeToAvoidBottomInset: false,
         navigationBar: const CupertinoNavigationBar(
-          middle: Text('Home'),
+          middle: Text('Zpp'),
           automaticallyImplyLeading: true,
         ),
         backgroundColor:
@@ -146,89 +147,89 @@ class RefreshHomeState extends State<RefreshHome> {
                     child: Material(
                       color: CupertinoTheme.of(context).scaffoldBackgroundColor,
                       child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, right: 20, left: 10),
+                          padding: const EdgeInsets.only(right: 20, left: 10),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: ListView(
                                 children: [
+                                  // Padding(
+                                  //     padding: const EdgeInsets.only(top: 20),
+                                  //     child: SimpleListTile(
+                                  //       onTap: () {
+                                  //         Navigator.push(
+                                  //             context,
+                                  //             CupertinoPageRoute(
+                                  //               builder: (context) =>
+                                  //                   CandidatesPage(),
+                                  //             ));
+                                  //       },
+                                  //       title: Text(
+                                  //         'Election Candidates',
+                                  //         style: TextStyle(
+                                  //           color: context.isDarkMode == true
+                                  //               ? Colors.white
+                                  //               : Colors.black,
+                                  //           fontWeight: FontWeight.bold,
+                                  //           fontSize: 20,
+                                  //         ),
+                                  //       ),
+                                  //       trailing: Icon(
+                                  //         Icons.arrow_forward_ios_rounded,
+                                  //         color: context.isDarkMode == true
+                                  //             ? Colors.white
+                                  //             : Colors.black,
+                                  //       ),
+                                  //       leading: Transform.scale(
+                                  //           scale: 1.16,
+                                  //           child: const Padding(
+                                  //               padding:
+                                  //                   EdgeInsets.only(bottom: 4),
+                                  //               child: Image(
+                                  //                 image: AssetImage(
+                                  //                     'assets/wolves.png'),
+                                  //                 // fit: BoxFit.cover
+                                  //               ))),
+                                  //       borderRadius: BorderRadius.circular(15),
+                                  //       tileColor: Colors.grey[300]!,
+                                  //       circleColor: context.isDarkMode == true
+                                  //           ? Colors.black
+                                  //           : Colors.white,
+                                  //       circleDiameter: 80,
+                                  //       gradient: LinearGradient(
+                                  //         colors: [
+                                  //           const Color.fromARGB(
+                                  //               255, 0, 81, 255),
+                                  //           context.isDarkMode == true
+                                  //               ? Colors.black
+                                  //               : Colors.white
+                                  //         ],
+                                  //       ),
+                                  //     )),
                                   Padding(
-                                      padding: const EdgeInsets.only(top: 10),
+                                      padding: const EdgeInsets.only(top: 20),
                                       child: SimpleListTile(
                                         onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              CupertinoPageRoute(
-                                                builder: (context) =>
-                                                    CandidatesPage(),
-                                              ));
-                                        },
-                                        title: Text(
-                                          'Election Candidates',
-                                          style: TextStyle(
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        trailing: Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          color: context.isDarkMode == true
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        leading: Transform.scale(
-                                            scale: 1.16,
-                                            child: const Padding(
-                                                padding:
-                                                    EdgeInsets.only(bottom: 4),
-                                                child: Image(
-                                                  image: AssetImage(
-                                                      'assets/wolves.png'),
-                                                  // fit: BoxFit.cover
-                                                ))),
-                                        borderRadius: BorderRadius.circular(15),
-                                        tileColor: Colors.grey[300]!,
-                                        circleColor: context.isDarkMode == true
-                                            ? Colors.black
-                                            : Colors.white,
-                                        circleDiameter: 80,
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            const Color.fromARGB(
-                                                255, 0, 81, 255),
-                                            context.isDarkMode == true
-                                                ? Colors.black
-                                                : Colors.white
-                                          ],
-                                        ),
-                                      )),
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: SimpleListTile(
-                                        onTap: () {
-                                          Future.delayed(
-                                              devModeOn == true
-                                                  ? const Duration(
-                                                      milliseconds: 500)
-                                                  : const Duration(
-                                                      milliseconds: 0), () {
-                                            CupertinoScaffold
-                                                .showCupertinoModalBottomSheet(
-                                                    expand: false,
-                                                    context: context,
-                                                    backgroundColor:
-                                                        Colors.transparent,
+                                          Vibration.vibrate(duration: 10);
+                                          devModeOn == false
+                                              ? Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
                                                     builder: (context) =>
-                                                        MySocial(),
-                                                    duration: const Duration(
-                                                        milliseconds: 150));
-                                          });
+                                                        CoinFlip(
+                                                      devModeOn: devModeOn,
+                                                    ),
+                                                  ))
+                                              : Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      curve: Curves.easeOutExpo,
+                                                      child:
+                                                          const MySettings()));
                                         },
                                         title: Text(
-                                          'My Socials',
+                                          'Coin Flip',
                                           style: TextStyle(
                                             color: context.isDarkMode == true
                                                 ? Colors.white
@@ -243,7 +244,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                               ? Colors.white
                                               : Colors.black,
                                         ),
-                                        leading: Icon(Icons.share,
+                                        leading: Icon(Icons.abc_rounded,
                                             color: context.isDarkMode == true
                                                 ? Colors.white
                                                 : Colors.black,

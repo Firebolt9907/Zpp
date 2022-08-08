@@ -27,21 +27,14 @@ class RandomPageState extends State<RandomPage> {
   var rng = Random();
   int randInt = 0;
 
-  void randomInt() {
+  void randomInt() {}
+
+  Future<void> _ranInt() async {
     setState(() {
       // var randInt = Random().nextInt(100);
       randInt = Random().nextInt(100);
       randInt++;
     });
-  }
-
-  Future<void> _ranInt() async {
-    randomInt();
-    // setState(() {
-    //   var randInt = Random().nextInt(100);
-    //   randInt++;
-    //   print(randInt);
-    // });
   }
 
   @override
