@@ -64,7 +64,7 @@ class CoinFlipState extends State<CoinFlip> {
     if (topWin == 0) {
       null;
     } else {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
+
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -79,7 +79,7 @@ class CoinFlipState extends State<CoinFlip> {
             topWin = 0;
           });
         });
-      });
+
     }
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
