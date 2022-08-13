@@ -33,6 +33,7 @@ class MySettingsState extends State<MySettings> {
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
     systemStatusBarContrastEnforced: false,
     systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarContrastEnforced: false,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
     systemNavigationBarIconBrightness: Brightness.dark,
@@ -73,7 +74,7 @@ class MySettingsState extends State<MySettings> {
                 ),
                 sized: false,
                 child: ListView(
-                    physics: const NeverScrollableScrollPhysics(),
+                    // physics: const NeverScrollableScrollPhysics(),
                     children: [
                       GestureDetector(
                           onTap: () => devModeOn == false
@@ -139,7 +140,7 @@ class MySettingsState extends State<MySettings> {
                             Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => MySocial(),
+                                  builder: (context) => const MySocial(),
                                 ));
                           });
                         },
@@ -213,7 +214,7 @@ class MySettingsState extends State<MySettings> {
                                   ? Colors.white
                                   : Colors.black,
                             ),
-                            leading: Icon(Icons.settings,
+                            leading: Icon(Icons.feedback_outlined,
                                 color: context.isDarkMode == true
                                     ? Colors.white
                                     : Colors.black,

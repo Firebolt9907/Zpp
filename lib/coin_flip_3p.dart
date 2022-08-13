@@ -1,12 +1,14 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
+import 'package:Zpp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 
-class CoinFlip extends StatefulWidget {
-  const CoinFlip({Key? key, this.devModeOn}) : super(key: key);
+class CoinFlip3p extends StatefulWidget {
+  const CoinFlip3p({Key? key, this.devModeOn}) : super(key: key);
   final devModeOn;
 
   @override
@@ -14,20 +16,18 @@ class CoinFlip extends StatefulWidget {
   CoinFlipState createState() => CoinFlipState(devModeOn);
 }
 
-class CoinFlipState extends State<CoinFlip> {
-  static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
+class CoinFlipState extends State<CoinFlip3p> {
+  static SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
     systemStatusBarContrastEnforced: false,
-    systemNavigationBarContrastEnforced: false,
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
-    statusBarIconBrightness: ui.Brightness.light,
-    systemNavigationBarIconBrightness: Brightness.light,
   );
   // ignore: prefer_typing_uninitialized_variables
   final devModeOn;
 
   bool top = false;
+  bool middle = false;
   bool bottom = false;
   bool win = false;
   var topWin = 0;
@@ -35,30 +35,42 @@ class CoinFlipState extends State<CoinFlip> {
 
   int randInt = 0;
   CoinFlipState(this.devModeOn);
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     double height = MediaQuery.of(context).size.height -
         kBottomNavigationBarHeight -
-        MediaQuery.of(context).padding.top;
+        MediaQuery.of(context).padding.top -
+        kToolbarHeight;
     gesture() async {
       if (top == true) {
-        if (bottom == true) {
-          ("tapped");
-          setState(() {
-            randInt = Random().nextInt(2);
-          });
-          if (randInt == 0) {
+        if (middle == true) {
+          if (bottom == true) {
+            ("tapped");
             setState(() {
-              topWin = 1;
-              (topWin);
+              randInt = Random().nextInt(3);
             });
-          } else {
-            setState(() {
-              topWin = 2;
-              (topWin);
-            });
+            if (randInt == 0) {
+              setState(() {
+                topWin = 1;
+                (topWin);
+              });
+            } else if (randInt == 1) {
+              setState(() {
+                topWin = 2;
+                (topWin);
+              });
+            } else {
+              setState(() {
+                topWin = 3;
+                (topWin);
+              });
+            }
           }
         }
       }
@@ -75,7 +87,14 @@ class CoinFlipState extends State<CoinFlip> {
                 topWin: topWin,
                 devModeOn: devModeOn,
               ),
-            ));
+            )); //.then((value) {
+        //   setState(() {
+        //     top = false;
+        //     middle = false;
+        //     bottom = false;
+        //     topWin = 0;
+        //   });
+        // });
       });
     }
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
@@ -83,6 +102,7 @@ class CoinFlipState extends State<CoinFlip> {
         value: const SystemUiOverlayStyle(
             systemStatusBarContrastEnforced: false,
             systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarContrastEnforced: false,
             systemNavigationBarDividerColor: Colors.transparent,
             systemNavigationBarIconBrightness: Brightness.light,
             statusBarIconBrightness: Brightness.light),
@@ -91,6 +111,16 @@ class CoinFlipState extends State<CoinFlip> {
             borderRadius: BorderRadius.circular(12.0),
             child: CupertinoPageScaffold(
                 child: Scaffold(
+                    resizeToAvoidBottomInset: true,
+                    appBar: const CupertinoNavigationBar(
+                      middle: Text('Coin Flip',
+                          style: TextStyle(color: Colors.white)),
+                      automaticallyImplyLeading: true,
+                      previousPageTitle: "Home",
+                      transitionBetweenRoutes: true,
+                      border: null,
+                      backgroundColor: Colors.black,
+                    ),
                     backgroundColor: Colors.black,
                     extendBodyBehindAppBar: true,
                     body: Padding(
@@ -105,26 +135,106 @@ class CoinFlipState extends State<CoinFlip> {
                                       }),
                                     }),
                                 onLongPressStart: ((details) => {
-                                      Vibration.vibrate(
-                                          duration: 10, amplitude: 128),
+                                      Platform.isMacOS
+                                          ? null
+                                          : Vibration.vibrate(
+                                              duration: 10, amplitude: 128),
                                       setState(() {
                                         top = true;
                                       }),
                                       gesture(),
                                     }),
                                 onLongPressEnd: ((details) => {
-                                      Vibration.vibrate(
-                                          duration: 10, amplitude: 128),
+                                      Platform.isMacOS
+                                          ? null
+                                          : Vibration.vibrate(
+                                              duration: 10, amplitude: 128),
                                       setState(() {
                                         top = true;
                                       }),
                                       gesture(),
                                     }),
                                 onLongPressCancel: () {
-                                  Vibration.vibrate(
-                                      duration: 10, amplitude: 128);
+                                  Platform.isMacOS
+                                      ? null
+                                      : Vibration.vibrate(
+                                          duration: 10, amplitude: 128);
                                   setState(() {
                                     top = false;
+                                  });
+                                  gesture();
+                                },
+                                child: SizedBox(
+                                    width: double.infinity,
+                                    height: (height / 3),
+                                    child: Hero(
+                                        tag: 'top',
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(22),
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                    color:
+                                                        const ui.Color.fromARGB(
+                                                            149, 47, 48, 84)),
+                                                Visibility(
+                                                    visible: top,
+                                                    child: Stack(children: [
+                                                      Container(
+                                                        color: const ui
+                                                                .Color.fromARGB(
+                                                            255, 7, 69, 255),
+                                                      ),
+                                                      const RotatedBox(
+                                                          quarterTurns: 2,
+                                                          child: Center(
+                                                              child: Text(
+                                                                  'Ready',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          30))))
+                                                    ])),
+                                              ],
+                                            ))))),
+                            GestureDetector(
+                                onLongPressDown: ((details) => {
+                                      setState(() {
+                                        middle = true;
+                                      }),
+                                    }),
+                                onLongPressStart: ((details) => {
+                                      Platform.isMacOS
+                                          ? null
+                                          : Vibration.vibrate(
+                                              duration: 10, amplitude: 128),
+                                      setState(() {
+                                        middle = true;
+                                      }),
+                                      gesture(),
+                                    }),
+                                onLongPressEnd: ((details) => {
+                                      Platform.isMacOS
+                                          ? null
+                                          : Vibration.vibrate(
+                                              duration: 10, amplitude: 128),
+                                      setState(() {
+                                        middle = true;
+                                      }),
+                                      gesture(),
+                                    }),
+                                onLongPressCancel: () {
+                                  Platform.isMacOS
+                                      ? null
+                                      : Vibration.vibrate(
+                                          duration: 10, amplitude: 128);
+                                  setState(() {
+                                    middle = false;
                                   });
                                   gesture();
                                 },
@@ -132,9 +242,9 @@ class CoinFlipState extends State<CoinFlip> {
                                     padding: const EdgeInsets.only(top: 7),
                                     child: SizedBox(
                                         width: double.infinity,
-                                        height: (height / 2) - 20,
+                                        height: (height / 3),
                                         child: Hero(
-                                            tag: 'top',
+                                            tag: 'middle',
                                             child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(22),
@@ -143,20 +253,17 @@ class CoinFlipState extends State<CoinFlip> {
                                                     Container(
                                                         color: const ui
                                                                 .Color.fromARGB(
-                                                            149, 47, 48, 84)),
+                                                            148, 54, 84, 47)),
                                                     Visibility(
-                                                        visible: top,
+                                                        visible: middle,
                                                         child: Stack(children: [
                                                           Container(
                                                             color: const ui
                                                                     .Color.fromARGB(
-                                                                255,
-                                                                7,
-                                                                69,
-                                                                255),
+                                                                255, 0, 255, 0),
                                                           ),
                                                           const RotatedBox(
-                                                              quarterTurns: 2,
+                                                              quarterTurns: 3,
                                                               child: Center(
                                                                   child: Text(
                                                                       'Ready',
@@ -170,15 +277,6 @@ class CoinFlipState extends State<CoinFlip> {
                                                         ])),
                                                   ],
                                                 )))))),
-                            const CupertinoNavigationBar(
-                              middle: Text('Coin Flip',
-                                  style: TextStyle(color: Colors.white)),
-                              automaticallyImplyLeading: true,
-                              previousPageTitle: "Home",
-                              transitionBetweenRoutes: true,
-                              border: null,
-                              backgroundColor: Colors.black,
-                            ),
                             GestureDetector(
                                 onLongPressDown: ((details) => {
                                       setState(() {
@@ -186,34 +284,41 @@ class CoinFlipState extends State<CoinFlip> {
                                       }),
                                     }),
                                 onLongPressStart: ((details) => {
-                                      Vibration.vibrate(
-                                          duration: 10, amplitude: 128),
+                                      Platform.isMacOS
+                                          ? null
+                                          : Vibration.vibrate(
+                                              duration: 10, amplitude: 128),
                                       setState(() {
                                         bottom = true;
                                       }),
                                       gesture(),
                                     }),
                                 onLongPressEnd: ((details) => {
-                                      Vibration.vibrate(
-                                          duration: 10, amplitude: 128),
+                                      Platform.isMacOS
+                                          ? null
+                                          : Vibration.vibrate(
+                                              duration: 10, amplitude: 128),
                                       setState(() {
                                         bottom = true;
                                       }),
                                       gesture(),
                                     }),
                                 onLongPressCancel: () {
-                                  Vibration.vibrate(
-                                      duration: 10, amplitude: 128);
+                                  Platform.isMacOS
+                                      ? null
+                                      : Vibration.vibrate(
+                                          duration: 10, amplitude: 128);
                                   setState(() {
                                     bottom = false;
                                   });
                                   gesture();
                                 },
                                 child: Padding(
-                                    padding: EdgeInsets.only(bottom: 55),
+                                    padding: const EdgeInsets.only(
+                                        top: 7, bottom: 55),
                                     child: SizedBox(
                                         width: double.infinity,
-                                        height: (height / 2) - 20,
+                                        height: (height / 3),
                                         child: Hero(
                                             tag: 'bottom',
                                             child: ClipRRect(
@@ -256,48 +361,55 @@ class CoinFlipState extends State<CoinFlip> {
 
 class Win extends StatelessWidget {
   final topWin;
+  final height;
   final devModeOn;
 
-  const Win({super.key, required this.topWin, this.devModeOn});
+  const Win({super.key, required this.topWin, this.height, this.devModeOn});
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
         kBottomNavigationBarHeight -
         MediaQuery.of(context).padding.top;
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(12.0),
-        child: CupertinoPageScaffold(
-            child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: const SystemUiOverlayStyle(
-                    systemStatusBarContrastEnforced: false,
-                    systemNavigationBarColor: Colors.transparent,
-                    systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness: Brightness.light,
-                    statusBarIconBrightness: Brightness.light),
-                sized: false,
-                child: Scaffold(
-                    backgroundColor: Colors.black,
-                    extendBodyBehindAppBar: true,
-                    body: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                      child: GestureDetector(
-                          onTap: () {
-                            Vibration.vibrate(duration: 10, amplitude: 128);
-                            Navigator.pushReplacement(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => CoinFlip(
-                                    devModeOn: devModeOn,
-                                  ),
-                                ));
-                          },
+    return GestureDetector(
+        onTap: () {
+          Platform.isMacOS == true
+              ? null
+              : Vibration.vibrate(duration: 10, amplitude: 128);
+          Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => CoinFlip3p(
+                  devModeOn: devModeOn,
+                ),
+              ));
+        },
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.0),
+            child: CupertinoPageScaffold(
+                child: AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: const SystemUiOverlayStyle(
+                        systemStatusBarContrastEnforced: false,
+                        systemNavigationBarColor: Colors.transparent,
+                        systemNavigationBarDividerColor: Colors.transparent,
+                        systemNavigationBarIconBrightness: Brightness.light,
+                        statusBarIconBrightness: Brightness.light),
+                    sized: false,
+                    child: Scaffold(
+                      backgroundColor: Colors.black,
+                      extendBodyBehindAppBar: true,
+                      body: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                           child: Padding(
                               padding: const EdgeInsets.only(top: 40),
                               child: SizedBox(
                                   width: double.infinity,
                                   height: height,
                                   child: Hero(
-                                      tag: topWin == 1 ? 'top' : 'bottom',
+                                      tag: topWin == 1
+                                          ? 'top'
+                                          : topWin == 2
+                                              ? 'middle'
+                                              : 'bottom',
                                       child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(22),
@@ -305,8 +417,11 @@ class Win extends StatelessWidget {
                                             color: topWin == 1
                                                 ? const ui.Color.fromARGB(
                                                     255, 7, 69, 255)
-                                                : const ui.Color.fromARGB(
-                                                    255, 255, 0, 0),
+                                                : topWin == 2
+                                                    ? const ui.Color.fromARGB(
+                                                        255, 0, 255, 0)
+                                                    : const ui.Color.fromARGB(
+                                                        255, 255, 0, 0),
                                           )))))),
                     )))));
   }

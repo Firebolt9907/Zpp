@@ -53,7 +53,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemStatusBarContrastEnforced: false,
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
@@ -96,14 +95,14 @@ Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 late Future<bool> _Developer;
 
 addBoolToSF(second, bool first) async {
-  print('wrote to prefs');
+  ('wrote to prefs');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool(second, first);
 }
 
 getBoolValuesSF(second) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print("accessed prefs");
+  ("accessed prefs");
   //Return bool
   bool? second = prefs.getBool('devModeOn');
 }
@@ -145,7 +144,7 @@ class _FutureCameraState extends State<FutureCamera> {
             );
             break;
           default:
-            print('Handle other errors.');
+            ('Handle other errors.');
             break;
         }
       }
@@ -163,7 +162,7 @@ class _FutureCameraState extends State<FutureCamera> {
 
   @override
   void dispose() {
-    devModeOn == false ? null : controller.dispose();
+    devModeOn == false ? controller.dispose() : null;
     super.dispose();
   }
 
@@ -180,47 +179,50 @@ class _FutureCameraState extends State<FutureCamera> {
           child: AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   systemStatusBarContrastEnforced: false,
+                  systemNavigationBarContrastEnforced: false,
                   systemNavigationBarColor: Colors.transparent,
                   systemNavigationBarDividerColor: Colors.transparent,
                   systemNavigationBarIconBrightness: Brightness.dark,
                   statusBarIconBrightness: Brightness.dark),
               sized: false,
-              child: Stack(children: [
-                Container(
-                    color: Colors.black,
-                    height: double.infinity,
-                    width: double.infinity),
-                Stack(
-                  // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Image(
-                              image: AssetImage('assets/wow.png'),
-                            ))),
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: CupertinoNavigationBarBackButton(
-                                // previousPageTitle: "Home",
+              child: SafeArea(
+                  bottom: false,
+                  child: Stack(children: [
+                    Container(
+                        color: Colors.black,
+                        height: double.infinity,
+                        width: double.infinity),
+                    Stack(
+                      // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Image(
+                                  image: AssetImage('assets/wow.png'),
                                 ))),
-                    const Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                            child: Text("Yourself in 200 years",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)))),
-                  ],
-                ),
-              ])));
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: CupertinoNavigationBarBackButton(
+                                    // previousPageTitle: "Home",
+                                    ))),
+                        const Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                                child: Text("Yourself in 200 years",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold)))),
+                      ],
+                    ),
+                  ]))));
     } else if (visibility == true) {
       return CupertinoPageScaffold(
           // navigationBar:
@@ -258,7 +260,7 @@ class _FutureCameraState extends State<FutureCamera> {
                         onTap: () {
                           setState(() {
                             visibility = false;
-                            devModeOn == false ? null : controller.dispose();
+                            devModeOn == false ? controller.dispose() : null;
                           });
                         },
                         child: const Align(

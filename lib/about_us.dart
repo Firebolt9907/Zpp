@@ -29,6 +29,7 @@ class AboutUs extends StatelessWidget {
   AboutUs({Key? key}) : super(key: key);
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
     systemStatusBarContrastEnforced: false,
+    systemNavigationBarContrastEnforced: false,
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),

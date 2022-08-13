@@ -51,6 +51,7 @@ class RandomPageState extends State<RandomPage> {
             ),
             child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
+                  systemNavigationBarContrastEnforced: false,
                   systemStatusBarContrastEnforced: false,
                   systemNavigationBarColor: Colors.transparent,
                   systemNavigationBarDividerColor: Colors.transparent,

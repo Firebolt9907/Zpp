@@ -23,6 +23,7 @@ class TestText extends StatelessWidget {
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
     systemStatusBarContrastEnforced: false,
     systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarContrastEnforced: false,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
     systemNavigationBarIconBrightness: Brightness.dark,

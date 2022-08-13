@@ -40,10 +40,10 @@ class MyApp extends StatelessWidget {
                     future: _fbApp,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        print('Error: ${snapshot.error.toString()}');
+                        ('Error: ${snapshot.error.toString()}');
                         return const CupertinoScaffold(body: MySettings());
                       } else if (snapshot.hasData) {
-                        return CupertinoScaffold(body: RefreshHome());
+                        return const CupertinoScaffold(body: RefreshHome());
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }

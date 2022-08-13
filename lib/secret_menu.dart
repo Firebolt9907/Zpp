@@ -55,6 +55,7 @@ class DevConfirm extends StatelessWidget {
                 value: const SystemUiOverlayStyle(
                   systemStatusBarContrastEnforced: false,
                   systemNavigationBarColor: Colors.transparent,
+                  systemNavigationBarContrastEnforced: false,
                   systemNavigationBarDividerColor: Colors.transparent,
                   systemNavigationBarIconBrightness: Brightness.dark,
                 ),

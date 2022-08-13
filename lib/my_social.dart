@@ -31,6 +31,7 @@ class MySocial extends StatelessWidget {
         child: CupertinoPageScaffold(
             child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
+                    systemNavigationBarContrastEnforced: false,
                     systemStatusBarContrastEnforced: false,
                     systemNavigationBarColor: Colors.transparent,
                     systemNavigationBarDividerColor: Colors.transparent,
@@ -45,8 +46,8 @@ class MySocial extends StatelessWidget {
                         navigationBar: const CupertinoNavigationBar(
                           middle: Text('Social Links'),
                           automaticallyImplyLeading: true,
-                          previousPageTitle: "Home",
-                          transitionBetweenRoutes: false,
+                          previousPageTitle: "Settings",
+                          transitionBetweenRoutes: true,
                         ),
                         child: Padding(
                             padding: const EdgeInsets.fromLTRB(5, 20, 20, 20),
