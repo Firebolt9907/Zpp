@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:Zpp/candidates.dart';
 import 'package:Zpp/coin_flip.dart';
 import 'package:Zpp/coin_flip_3p.dart';
+import 'package:Zpp/coin_flip_5p.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -21,6 +22,7 @@ import 'package:simple_list_tile/simple_list_tile.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 
 import 'about_us.dart';
+import 'coin_flip_4p.dart';
 import 'test_text.dart';
 import 'settings.dart';
 import 'my_social.dart';
@@ -302,6 +304,140 @@ class RefreshHomeState extends State<RefreshHome> {
                                         },
                                         title: Text(
                                           'Coin Flip 3p',
+                                          style: TextStyle(
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios_rounded,
+                                          color: context.isDarkMode == true
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                        leading: Transform.scale(
+                                            scale: 2.2,
+                                            child: Image(
+                                              image: context.isDarkMode == true
+                                                  ? const AssetImage(
+                                                      'assets/coin_light.png')
+                                                  : const AssetImage(
+                                                      'assets/coin_dark.png'),
+                                              // fit: BoxFit.cover
+                                            )),
+                                        borderRadius: BorderRadius.circular(15),
+                                        tileColor: Colors.grey[300]!,
+                                        circleColor: context.isDarkMode == true
+                                            ? Colors.black
+                                            : Colors.white,
+                                        circleDiameter: 80,
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            const Color.fromARGB(
+                                                255, 9, 255, 0),
+                                            context.isDarkMode == true
+                                                ? Colors.black
+                                                : Colors.white
+                                          ],
+                                        ),
+                                      )),
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: SimpleListTile(
+                                        onTap: () {
+                                          Platform.isMacOS
+                                              ? null
+                                              : Vibration.vibrate(duration: 10);
+                                          devModeOn == false
+                                              ? Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        CoinFlip4p(
+                                                      devModeOn: devModeOn,
+                                                    ),
+                                                  ))
+                                              : Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      curve: Curves.easeOutExpo,
+                                                      child:
+                                                          const CoinFlip4p()));
+                                        },
+                                        title: Text(
+                                          'Coin Flip 4p',
+                                          style: TextStyle(
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios_rounded,
+                                          color: context.isDarkMode == true
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                        leading: Transform.scale(
+                                            scale: 2.2,
+                                            child: Image(
+                                              image: context.isDarkMode == true
+                                                  ? const AssetImage(
+                                                      'assets/coin_light.png')
+                                                  : const AssetImage(
+                                                      'assets/coin_dark.png'),
+                                              // fit: BoxFit.cover
+                                            )),
+                                        borderRadius: BorderRadius.circular(15),
+                                        tileColor: Colors.grey[300]!,
+                                        circleColor: context.isDarkMode == true
+                                            ? Colors.black
+                                            : Colors.white,
+                                        circleDiameter: 80,
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            const Color.fromARGB(
+                                                255, 9, 255, 0),
+                                            context.isDarkMode == true
+                                                ? Colors.black
+                                                : Colors.white
+                                          ],
+                                        ),
+                                      )),
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: SimpleListTile(
+                                        onTap: () {
+                                          Platform.isMacOS
+                                              ? null
+                                              : Vibration.vibrate(duration: 10);
+                                          devModeOn == false
+                                              ? Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        CoinFlip5p(
+                                                      devModeOn: devModeOn,
+                                                    ),
+                                                  ))
+                                              : Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      curve: Curves.easeOutExpo,
+                                                      child:
+                                                          const CoinFlip5p()));
+                                        },
+                                        title: Text(
+                                          'Coin Flip 5p',
                                           style: TextStyle(
                                             color: context.isDarkMode == true
                                                 ? Colors.white
