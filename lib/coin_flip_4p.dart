@@ -26,10 +26,10 @@ class CoinFlipState extends State<CoinFlip4p> {
   // ignore: prefer_typing_uninitialized_variables
   final devModeOn;
 
-  bool topLeft = false;
-  bool topRight = false;
-  bool bottomLeft = false;
-  bool bottomRight = false;
+  bool var1 = false;
+  bool var2 = false;
+  bool var3 = false;
+  bool var4 = false;
   bool win = false;
   var topWin = 0;
   var rng = Random();
@@ -50,10 +50,10 @@ class CoinFlipState extends State<CoinFlip4p> {
         kToolbarHeight;
     double width = MediaQuery.of(context).size.width;
     gesture() async {
-      if (topLeft == true) {
-        if (topRight == true) {
-          if (bottomLeft == true) {
-            if (bottomRight == true) {
+      if (var1 == true) {
+        if (var2 == true) {
+          if (var3 == true) {
+            if (var4 == true) {
               ("tapped");
               setState(() {
                 randInt = Random().nextInt(4);
@@ -99,7 +99,7 @@ class CoinFlipState extends State<CoinFlip4p> {
             )); //.then((value) {
         //   setState(() {
         //     top = false;
-        //     topRight= false;
+        //     var2= false;
         //     bottom = false;
         //     topWin = 0;
         //   });
@@ -146,7 +146,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                       child: GestureDetector(
                                           onLongPressDown: ((details) => {
                                                 setState(() {
-                                                  topLeft = true;
+                                                  var1 = true;
                                                 }),
                                               }),
                                           onLongPressStart: ((details) => {
@@ -156,7 +156,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                         duration: 10,
                                                         amplitude: 128),
                                                 setState(() {
-                                                  topLeft = true;
+                                                  var1 = true;
                                                 }),
                                                 gesture(),
                                               }),
@@ -167,7 +167,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                         duration: 10,
                                                         amplitude: 128),
                                                 setState(() {
-                                                  topLeft = true;
+                                                  var1 = true;
                                                 }),
                                                 gesture(),
                                               }),
@@ -178,12 +178,12 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                     duration: 10,
                                                     amplitude: 128);
                                             setState(() {
-                                              topLeft = false;
+                                              var1 = false;
                                             });
                                             gesture();
                                           },
                                           child: Hero(
-                                              tag: 'topLeft',
+                                              tag: 'var1',
                                               child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(22),
@@ -194,7 +194,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                                   .Color.fromARGB(
                                                               149, 47, 48, 84)),
                                                       Visibility(
-                                                          visible: topLeft,
+                                                          visible: var1,
                                                           child:
                                                               Stack(children: [
                                                             Container(
@@ -227,7 +227,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                       child: GestureDetector(
                                           onLongPressDown: ((details) => {
                                                 setState(() {
-                                                  topRight = true;
+                                                  var2 = true;
                                                 }),
                                               }),
                                           onLongPressStart: ((details) => {
@@ -237,7 +237,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                         duration: 10,
                                                         amplitude: 128),
                                                 setState(() {
-                                                  topRight = true;
+                                                  var2 = true;
                                                 }),
                                                 gesture(),
                                               }),
@@ -248,7 +248,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                         duration: 10,
                                                         amplitude: 128),
                                                 setState(() {
-                                                  topRight = true;
+                                                  var2 = true;
                                                 }),
                                                 gesture(),
                                               }),
@@ -259,12 +259,12 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                     duration: 10,
                                                     amplitude: 128);
                                             setState(() {
-                                              topRight = false;
+                                              var2 = false;
                                             });
                                             gesture();
                                           },
                                           child: Hero(
-                                              tag: 'topRight',
+                                              tag: 'var2',
                                               child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(22),
@@ -275,7 +275,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                                   .Color.fromARGB(
                                                               148, 54, 84, 47)),
                                                       Visibility(
-                                                          visible: topRight,
+                                                          visible: var2,
                                                           child:
                                                               Stack(children: [
                                                             Container(
@@ -309,7 +309,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                       child: GestureDetector(
                                           onLongPressDown: ((details) => {
                                                 setState(() {
-                                                  bottomLeft = true;
+                                                  var3 = true;
                                                 }),
                                               }),
                                           onLongPressStart: ((details) => {
@@ -319,7 +319,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                         duration: 10,
                                                         amplitude: 128),
                                                 setState(() {
-                                                  bottomLeft = true;
+                                                  var3 = true;
                                                 }),
                                                 gesture(),
                                               }),
@@ -330,7 +330,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                         duration: 10,
                                                         amplitude: 128),
                                                 setState(() {
-                                                  bottomLeft = true;
+                                                  var3 = true;
                                                 }),
                                                 gesture(),
                                               }),
@@ -341,12 +341,12 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                     duration: 10,
                                                     amplitude: 128);
                                             setState(() {
-                                              bottomLeft = false;
+                                              var3 = false;
                                             });
                                             gesture();
                                           },
                                           child: Hero(
-                                              tag: 'bottomLeft',
+                                              tag: 'var3',
                                               child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(22),
@@ -357,7 +357,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                                   .Color.fromARGB(
                                                               148, 79, 47, 84)),
                                                       Visibility(
-                                                          visible: bottomLeft,
+                                                          visible: var3,
                                                           child:
                                                               Stack(children: [
                                                             Container(
@@ -390,7 +390,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                       child: GestureDetector(
                                           onLongPressDown: ((details) => {
                                                 setState(() {
-                                                  bottomRight = true;
+                                                  var4 = true;
                                                 }),
                                               }),
                                           onLongPressStart: ((details) => {
@@ -400,7 +400,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                         duration: 10,
                                                         amplitude: 128),
                                                 setState(() {
-                                                  bottomRight = true;
+                                                  var4 = true;
                                                 }),
                                                 gesture(),
                                               }),
@@ -411,7 +411,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                         duration: 10,
                                                         amplitude: 128),
                                                 setState(() {
-                                                  bottomRight = true;
+                                                  var4 = true;
                                                 }),
                                                 gesture(),
                                               }),
@@ -422,12 +422,12 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                     duration: 10,
                                                     amplitude: 128);
                                             setState(() {
-                                              bottomRight = false;
+                                              var4 = false;
                                             });
                                             gesture();
                                           },
                                           child: Hero(
-                                              tag: 'bottomRight',
+                                              tag: 'var4',
                                               child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(22),
@@ -438,7 +438,7 @@ class CoinFlipState extends State<CoinFlip4p> {
                                                                   .Color.fromARGB(
                                                               147, 84, 47, 47)),
                                                       Visibility(
-                                                          visible: bottomRight,
+                                                          visible: var4,
                                                           child:
                                                               Stack(children: [
                                                             Container(
@@ -515,12 +515,12 @@ class Win extends StatelessWidget {
                                   height: height,
                                   child: Hero(
                                       tag: topWin == 1
-                                          ? 'topLeft'
+                                          ? 'var1'
                                           : topWin == 2
-                                              ? 'topRight'
+                                              ? 'var2'
                                               : topWin == 3
-                                                  ? 'bottomLeft'
-                                                  : 'bottomRight',
+                                                  ? 'var3'
+                                                  : 'var4',
                                       child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(22),

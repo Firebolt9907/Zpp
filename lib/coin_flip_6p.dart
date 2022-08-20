@@ -7,8 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 
-class CoinFlip5p extends StatefulWidget {
-  const CoinFlip5p({Key? key, this.devModeOn}) : super(key: key);
+class CoinFlip6p extends StatefulWidget {
+  const CoinFlip6p({Key? key, this.devModeOn}) : super(key: key);
   final devModeOn;
 
   @override
@@ -16,7 +16,7 @@ class CoinFlip5p extends StatefulWidget {
   CoinFlipState createState() => CoinFlipState(devModeOn);
 }
 
-class CoinFlipState extends State<CoinFlip5p> {
+class CoinFlipState extends State<CoinFlip6p> {
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
     systemStatusBarContrastEnforced: false,
     systemNavigationBarColor: Colors.transparent,
@@ -31,6 +31,7 @@ class CoinFlipState extends State<CoinFlip5p> {
   bool var3 = false;
   bool var4 = false;
   bool var5 = false;
+  bool var6 = false;
   bool win = false;
   var topWin = 0;
   var rng = Random();
@@ -56,35 +57,42 @@ class CoinFlipState extends State<CoinFlip5p> {
           if (var3 == true) {
             if (var4 == true) {
               if (var5 == true) {
-                ("tapped");
-                setState(() {
-                  randInt = Random().nextInt(5);
-                });
-                if (randInt == 0) {
+                if (var6 == true) {
+                  ("tapped");
                   setState(() {
-                    topWin = 1;
-                    (topWin);
+                    randInt = Random().nextInt(6);
                   });
-                } else if (randInt == 1) {
-                  setState(() {
-                    topWin = 2;
-                    (topWin);
-                  });
-                } else if (randInt == 2) {
-                  setState(() {
-                    topWin = 3;
-                    (topWin);
-                  });
-                } else if (randInt == 3) {
-                  setState(() {
-                    topWin = 4;
-                    (topWin);
-                  });
-                } else {
-                  setState(() {
-                    topWin = 5;
-                    (topWin);
-                  });
+                  if (randInt == 0) {
+                    setState(() {
+                      topWin = 1;
+                      (topWin);
+                    });
+                  } else if (randInt == 1) {
+                    setState(() {
+                      topWin = 2;
+                      (topWin);
+                    });
+                  } else if (randInt == 2) {
+                    setState(() {
+                      topWin = 3;
+                      (topWin);
+                    });
+                  } else if (randInt == 3) {
+                    setState(() {
+                      topWin = 4;
+                      (topWin);
+                    });
+                  } else if (randInt == 4) {
+                    setState(() {
+                      topWin = 5;
+                      (topWin);
+                    });
+                  } else {
+                    setState(() {
+                      topWin = 6;
+                      (topWin);
+                    });
+                  }
                 }
               }
             }
@@ -108,7 +116,7 @@ class CoinFlipState extends State<CoinFlip5p> {
         //   setState(() {
         //     top = false;
         //     var2= false;
-        //     var5 = false;
+        //     bottom = false;
         //     topWin = 0;
         //   });
         // });
@@ -471,82 +479,169 @@ class CoinFlipState extends State<CoinFlip5p> {
                                                     ],
                                                   )))))),
                             ]),
-                            GestureDetector(
-                                onLongPressDown: ((details) => {
-                                      setState(() {
-                                        var5 = true;
-                                      }),
-                                    }),
-                                onLongPressStart: ((details) => {
-                                      Platform.isMacOS
-                                          ? null
-                                          : Vibration.vibrate(
-                                              duration: 10, amplitude: 128),
-                                      setState(() {
-                                        var5 = true;
-                                      }),
-                                      gesture(),
-                                    }),
-                                onLongPressEnd: ((details) => {
-                                      Platform.isMacOS
-                                          ? null
-                                          : Vibration.vibrate(
-                                              duration: 10, amplitude: 128),
-                                      setState(() {
-                                        var5 = true;
-                                      }),
-                                      gesture(),
-                                    }),
-                                onLongPressCancel: () {
-                                  Platform.isMacOS
-                                      ? null
-                                      : Vibration.vibrate(
-                                          duration: 10, amplitude: 128);
-                                  setState(() {
-                                    var5 = false;
-                                  });
-                                  gesture();
-                                },
-                                child: Padding(
-                                    padding: const EdgeInsets.only(top: 7),
-                                    child: SizedBox(
-                                        width: double.infinity,
-                                        height: (height / 3),
-                                        child: Hero(
-                                            tag: 'var5',
-                                            child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(22),
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                        color: const ui
-                                                                .Color.fromARGB(
-                                                            146, 79, 61, 38)),
-                                                    Visibility(
-                                                        visible: var5,
-                                                        child: Stack(children: [
-                                                          Container(
+                            Row(children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(top: 7),
+                                  child: SizedBox(
+                                      width: (width / 2) - 18.5,
+                                      height: (height / 3),
+                                      child: GestureDetector(
+                                          onLongPressDown: ((details) => {
+                                                setState(() {
+                                                  var5 = true;
+                                                }),
+                                              }),
+                                          onLongPressStart: ((details) => {
+                                                Platform.isMacOS
+                                                    ? null
+                                                    : Vibration.vibrate(
+                                                        duration: 10,
+                                                        amplitude: 128),
+                                                setState(() {
+                                                  var5 = true;
+                                                }),
+                                                gesture(),
+                                              }),
+                                          onLongPressEnd: ((details) => {
+                                                Platform.isMacOS
+                                                    ? null
+                                                    : Vibration.vibrate(
+                                                        duration: 10,
+                                                        amplitude: 128),
+                                                setState(() {
+                                                  var5 = true;
+                                                }),
+                                                gesture(),
+                                              }),
+                                          onLongPressCancel: () {
+                                            Platform.isMacOS
+                                                ? null
+                                                : Vibration.vibrate(
+                                                    duration: 10,
+                                                    amplitude: 128);
+                                            setState(() {
+                                              var5 = false;
+                                            });
+                                            gesture();
+                                          },
+                                          child: Hero(
+                                              tag: 'var5',
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(22),
+                                                  child: Stack(
+                                                    children: [
+                                                      Container(
+                                                          color: const ui
+                                                                  .Color.fromARGB(
+                                                              146, 79, 61, 38)),
+                                                      Visibility(
+                                                          visible: var5,
+                                                          child:
+                                                              Stack(children: [
+                                                            Container(
                                                               color: const ui
                                                                       .Color.fromARGB(
                                                                   255,
                                                                   255,
                                                                   123,
-                                                                  0)),
-                                                          const Center(
-                                                              child: Text(
-                                                                  'Ready',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          30)))
-                                                        ])),
-                                                  ],
-                                                )))))),
+                                                                  0),
+                                                            ),
+                                                            const RotatedBox(
+                                                                quarterTurns: 1,
+                                                                child: Center(
+                                                                    child: Text(
+                                                                        'Ready',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 30))))
+                                                          ])),
+                                                    ],
+                                                  )))))),
+                              Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 7, left: 7),
+                                  child: SizedBox(
+                                      width: (width / 2) - 18.5,
+                                      height: (height / 3),
+                                      child: GestureDetector(
+                                          onLongPressDown: ((details) => {
+                                                setState(() {
+                                                  var6 = true;
+                                                }),
+                                              }),
+                                          onLongPressStart: ((details) => {
+                                                Platform.isMacOS
+                                                    ? null
+                                                    : Vibration.vibrate(
+                                                        duration: 10,
+                                                        amplitude: 128),
+                                                setState(() {
+                                                  var6 = true;
+                                                }),
+                                                gesture(),
+                                              }),
+                                          onLongPressEnd: ((details) => {
+                                                Platform.isMacOS
+                                                    ? null
+                                                    : Vibration.vibrate(
+                                                        duration: 10,
+                                                        amplitude: 128),
+                                                setState(() {
+                                                  var6 = true;
+                                                }),
+                                                gesture(),
+                                              }),
+                                          onLongPressCancel: () {
+                                            Platform.isMacOS
+                                                ? null
+                                                : Vibration.vibrate(
+                                                    duration: 10,
+                                                    amplitude: 128);
+                                            setState(() {
+                                              var6 = false;
+                                            });
+                                            gesture();
+                                          },
+                                          child: Hero(
+                                              tag: 'var6',
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(22),
+                                                  child: Stack(
+                                                    children: [
+                                                      Container(
+                                                          color: const ui
+                                                                  .Color.fromARGB(
+                                                              146, 47, 81, 84)),
+                                                      Visibility(
+                                                          visible: var6,
+                                                          child:
+                                                              Stack(children: [
+                                                            Container(
+                                                              color: const ui
+                                                                      .Color.fromARGB(
+                                                                  255,
+                                                                  0,
+                                                                  234,
+                                                                  255),
+                                                            ),
+                                                            const RotatedBox(
+                                                                quarterTurns: 3,
+                                                                child: Center(
+                                                                    child: Text(
+                                                                        'Ready',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 30))))
+                                                          ])),
+                                                    ],
+                                                  )))))),
+                            ]),
                           ],
                         ))))));
   }
@@ -563,7 +658,6 @@ class Win extends StatelessWidget {
     double height = MediaQuery.of(context).size.height -
         kBottomNavigationBarHeight -
         MediaQuery.of(context).padding.top;
-    print(topWin);
     return GestureDetector(
         onTap: () {
           Platform.isMacOS == true
@@ -572,7 +666,7 @@ class Win extends StatelessWidget {
           Navigator.pushReplacement(
               context,
               CupertinoPageRoute(
-                builder: (context) => CoinFlip5p(
+                builder: (context) => CoinFlip6p(
                   devModeOn: devModeOn,
                 ),
               ));
@@ -607,7 +701,9 @@ class Win extends StatelessWidget {
                                                   ? 'var3'
                                                   : topWin == 4
                                                       ? 'var4'
-                                                      : 'var5',
+                                                      : topWin == 5
+                                                          ? 'var5'
+                                                          : 'var6',
                                       child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(22),
@@ -626,12 +722,19 @@ class Win extends StatelessWidget {
                                                             ? const ui
                                                                     .Color.fromARGB(
                                                                 255, 255, 0, 0)
-                                                            : const ui
-                                                                    .Color.fromARGB(
-                                                                255,
-                                                                255,
-                                                                123,
-                                                                0),
+                                                            : topWin == 5
+                                                                ? const ui
+                                                                        .Color.fromARGB(
+                                                                    255,
+                                                                    255,
+                                                                    123,
+                                                                    0)
+                                                                : const ui
+                                                                        .Color.fromARGB(
+                                                                    255,
+                                                                    0,
+                                                                    234,
+                                                                    255),
                                           )))))),
                     )))));
   }

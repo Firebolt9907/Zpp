@@ -17,7 +17,7 @@ class CoinFlip3p extends StatefulWidget {
 }
 
 class CoinFlipState extends State<CoinFlip3p> {
-  static SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+  static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
     systemStatusBarContrastEnforced: false,
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
@@ -26,9 +26,9 @@ class CoinFlipState extends State<CoinFlip3p> {
   // ignore: prefer_typing_uninitialized_variables
   final devModeOn;
 
-  bool top = false;
-  bool middle = false;
-  bool bottom = false;
+  bool var1 = false;
+  bool var2 = false;
+  bool var3 = false;
   bool win = false;
   var topWin = 0;
   var rng = Random();
@@ -48,9 +48,9 @@ class CoinFlipState extends State<CoinFlip3p> {
         MediaQuery.of(context).padding.top -
         kToolbarHeight;
     gesture() async {
-      if (top == true) {
-        if (middle == true) {
-          if (bottom == true) {
+      if (var1 == true) {
+        if (var2 == true) {
+          if (var3 == true) {
             ("tapped");
             setState(() {
               randInt = Random().nextInt(3);
@@ -89,9 +89,9 @@ class CoinFlipState extends State<CoinFlip3p> {
               ),
             )); //.then((value) {
         //   setState(() {
-        //     top = false;
-        //     middle = false;
-        //     bottom = false;
+        //     var1= false;
+        //     var2= false;
+        //     var3= false;
         //     topWin = 0;
         //   });
         // });
@@ -131,7 +131,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                             GestureDetector(
                                 onLongPressDown: ((details) => {
                                       setState(() {
-                                        top = true;
+                                        var1 = true;
                                       }),
                                     }),
                                 onLongPressStart: ((details) => {
@@ -140,7 +140,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                           : Vibration.vibrate(
                                               duration: 10, amplitude: 128),
                                       setState(() {
-                                        top = true;
+                                        var1 = true;
                                       }),
                                       gesture(),
                                     }),
@@ -150,7 +150,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                           : Vibration.vibrate(
                                               duration: 10, amplitude: 128),
                                       setState(() {
-                                        top = true;
+                                        var1 = true;
                                       }),
                                       gesture(),
                                     }),
@@ -160,7 +160,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                       : Vibration.vibrate(
                                           duration: 10, amplitude: 128);
                                   setState(() {
-                                    top = false;
+                                    var1 = false;
                                   });
                                   gesture();
                                 },
@@ -179,7 +179,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                                         const ui.Color.fromARGB(
                                                             149, 47, 48, 84)),
                                                 Visibility(
-                                                    visible: top,
+                                                    visible: var1,
                                                     child: Stack(children: [
                                                       Container(
                                                         color: const ui
@@ -205,7 +205,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                             GestureDetector(
                                 onLongPressDown: ((details) => {
                                       setState(() {
-                                        middle = true;
+                                        var2 = true;
                                       }),
                                     }),
                                 onLongPressStart: ((details) => {
@@ -214,7 +214,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                           : Vibration.vibrate(
                                               duration: 10, amplitude: 128),
                                       setState(() {
-                                        middle = true;
+                                        var2 = true;
                                       }),
                                       gesture(),
                                     }),
@@ -224,7 +224,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                           : Vibration.vibrate(
                                               duration: 10, amplitude: 128),
                                       setState(() {
-                                        middle = true;
+                                        var2 = true;
                                       }),
                                       gesture(),
                                     }),
@@ -234,7 +234,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                       : Vibration.vibrate(
                                           duration: 10, amplitude: 128);
                                   setState(() {
-                                    middle = false;
+                                    var2 = false;
                                   });
                                   gesture();
                                 },
@@ -255,7 +255,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                                                 .Color.fromARGB(
                                                             148, 54, 84, 47)),
                                                     Visibility(
-                                                        visible: middle,
+                                                        visible: var2,
                                                         child: Stack(children: [
                                                           Container(
                                                             color: const ui
@@ -280,7 +280,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                             GestureDetector(
                                 onLongPressDown: ((details) => {
                                       setState(() {
-                                        bottom = true;
+                                        var3 = true;
                                       }),
                                     }),
                                 onLongPressStart: ((details) => {
@@ -289,7 +289,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                           : Vibration.vibrate(
                                               duration: 10, amplitude: 128),
                                       setState(() {
-                                        bottom = true;
+                                        var3 = true;
                                       }),
                                       gesture(),
                                     }),
@@ -299,7 +299,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                           : Vibration.vibrate(
                                               duration: 10, amplitude: 128),
                                       setState(() {
-                                        bottom = true;
+                                        var3 = true;
                                       }),
                                       gesture(),
                                     }),
@@ -309,7 +309,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                       : Vibration.vibrate(
                                           duration: 10, amplitude: 128);
                                   setState(() {
-                                    bottom = false;
+                                    var3 = false;
                                   });
                                   gesture();
                                 },
@@ -331,7 +331,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                                                 .Color.fromARGB(
                                                             147, 79, 38, 38)),
                                                     Visibility(
-                                                        visible: bottom,
+                                                        visible: var3,
                                                         child: Stack(children: [
                                                           Container(
                                                               color: const ui
