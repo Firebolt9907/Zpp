@@ -821,6 +821,16 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                     ],
                                                   )))))),
                             ]),
+                            const Padding(
+                                padding: EdgeInsets.only(top: 7),
+                                child: Text(
+                                  'Have everyone tap and hold a box',
+                                  textAlign: ui.TextAlign.center,
+                                  style: TextStyle(
+                                      color:
+                                          ui.Color.fromARGB(255, 169, 169, 169),
+                                      fontSize: 10),
+                                )),
                           ],
                         ))))));
   }

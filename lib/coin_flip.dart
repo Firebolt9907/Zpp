@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 
-class CoinFlip extends StatefulWidget {
-  const CoinFlip({Key? key, this.devModeOn}) : super(key: key);
+class CoinFlip2p extends StatefulWidget {
+  const CoinFlip2p({Key? key, this.devModeOn}) : super(key: key);
   final devModeOn;
 
   @override
@@ -14,7 +14,7 @@ class CoinFlip extends StatefulWidget {
   CoinFlipState createState() => CoinFlipState(devModeOn);
 }
 
-class CoinFlipState extends State<CoinFlip> {
+class CoinFlipState extends State<CoinFlip2p> {
   static SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
     systemStatusBarContrastEnforced: false,
     systemNavigationBarContrastEnforced: false,
@@ -210,7 +210,7 @@ class CoinFlipState extends State<CoinFlip> {
                                   gesture();
                                 },
                                 child: Padding(
-                                    padding: EdgeInsets.only(bottom: 55),
+                                    padding: const EdgeInsets.only(bottom: 0),
                                     child: SizedBox(
                                         width: double.infinity,
                                         height: (height / 2) - 20,
@@ -249,6 +249,16 @@ class CoinFlipState extends State<CoinFlip> {
                                                         ])),
                                                   ],
                                                 )))))),
+                            const Padding(
+                                padding: EdgeInsets.only(top: 7),
+                                child: Text(
+                                  'Have everyone tap and hold a box',
+                                  textAlign: ui.TextAlign.center,
+                                  style: TextStyle(
+                                      color:
+                                          ui.Color.fromARGB(255, 169, 169, 169),
+                                      fontSize: 10),
+                                )),
                           ],
                         ))))));
   }
@@ -286,7 +296,7 @@ class Win extends StatelessWidget {
                             Navigator.pushReplacement(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => CoinFlip(
+                                  builder: (context) => CoinFlip2p(
                                     devModeOn: devModeOn,
                                   ),
                                 ));

@@ -314,8 +314,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                                   gesture();
                                 },
                                 child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 7, bottom: 55),
+                                    padding: const EdgeInsets.only(top: 7),
                                     child: SizedBox(
                                         width: double.infinity,
                                         height: (height / 3),
@@ -354,6 +353,16 @@ class CoinFlipState extends State<CoinFlip3p> {
                                                         ])),
                                                   ],
                                                 )))))),
+                            const Padding(
+                                padding: EdgeInsets.only(top: 7),
+                                child: Text(
+                                  'Have everyone tap and hold a box',
+                                  textAlign: ui.TextAlign.center,
+                                  style: TextStyle(
+                                      color:
+                                          ui.Color.fromARGB(255, 169, 169, 169),
+                                      fontSize: 10),
+                                )),
                           ],
                         ))))));
   }
