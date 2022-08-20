@@ -240,6 +240,10 @@ class RefreshHomeState extends State<RefreshHome> {
                                           divisions: 6,
                                           value: coinFlip,
                                           onChanged: (value) {
+                                            Platform.isMacOS
+                                                ? null
+                                                : Vibration.vibrate(
+                                                    duration: 10);
                                             setState(() {
                                               value;
                                               coinFlip =
