@@ -3,6 +3,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -76,32 +77,36 @@ class DevModeState extends State<DevMode> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoScaffold(
-        body: Center(
-      child: Column(children: [
-        const Padding(padding: EdgeInsets.fromLTRB(0, 200, 0, 0)),
-        CupertinoSwitch(
-          activeColor: Colors.white,
-          thumbColor: on ? Colors.greenAccent : Colors.redAccent,
-          trackColor: Colors.grey,
-          value: on,
-          onChanged: (value) => setState(() {
-            on = !on;
-            if (on == true) {
-              addBoolToSF('devModeOn', false);
-            } else {
-              addBoolToSF('devModeOn', true);
-            }
-          }),
-        ),
-        CupertinoButton.filled(
-            onPressed: () {
-              Phoenix.rebirth(context);
-              Navigator.pop(context);
-            },
-            child: const Text("Apply"))
-      ]),
-    ));
+    return CupertinoPageScaffold(
+        backgroundColor: on ? Colors.greenAccent : Colors.redAccent,
+        child: Center(
+          child: Column(children: [
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 100, 0, 50),
+                child: Text('Dev Mode', style: TextStyle(fontSize: 40))),
+            CupertinoSwitch(
+              activeColor: Colors.grey,
+              thumbColor: on ? Colors.greenAccent : Colors.redAccent,
+              trackColor: on ? Colors.grey : Colors.grey,
+              value: on,
+              onChanged: (value) => setState(() {
+                on = !on;
+                if (on == true) {
+                  addBoolToSF('devModeOn', false);
+                } else {
+                  addBoolToSF('devModeOn', true);
+                }
+              }),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 25)),
+            CupertinoButton.filled(
+                onPressed: () {
+                  Phoenix.rebirth(context);
+                  Navigator.pop(context);
+                },
+                child: const Text("Apply"))
+          ]),
+        ));
   }
 }
 

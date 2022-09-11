@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/services.dart';
+import 'package:shake/shake.dart';
 import 'package:vibration/vibration.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,8 +60,10 @@ void main() async {
   ));
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
       overlays: [SystemUiOverlay.top]);
-  await Firebase.initializeApp();
-  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  Platform.isWindows ? null : await Firebase.initializeApp();
+  Platform.isWindows
+      ? null
+      : await FirebaseMessaging.instance.setAutoInitEnabled(true);
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
@@ -73,6 +76,11 @@ void main() async {
               ? null
               : _cameras = await availableCameras();
   FlutterNativeSplash.remove();
+  ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
+    _launchURL("mailto:rememberthisrishu@gmail.com?subject=Feedback on Zpp");
+  });
+  Platform.isAndroid ? addBoolToSF('devModeOn', false) : null;
+  detector.startListening;
   runApp(OverlaySupport.global(
     child: Phoenix(
       child: MyApp(),
@@ -172,18 +180,19 @@ class _FutureCameraState extends State<FutureCamera> {
     precacheImage(const AssetImage('assets/skull.png'), context);
     precacheImage(const AssetImage('assets/editor.png'), context);
     var size = MediaQuery.of(context).size;
+    var height = MediaQuery.of(context).size.height;
     if (!controller.value.isInitialized) {
       return CupertinoPageScaffold(
           // navigationBar:
           //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
           child: AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  systemStatusBarContrastEnforced: false,
-                  systemNavigationBarContrastEnforced: false,
-                  systemNavigationBarColor: Colors.transparent,
-                  systemNavigationBarDividerColor: Colors.transparent,
-                  systemNavigationBarIconBrightness: Brightness.dark,
-                  statusBarIconBrightness: Brightness.dark),
+                systemStatusBarContrastEnforced: false,
+                systemNavigationBarContrastEnforced: false,
+                systemNavigationBarColor: Colors.transparent,
+                systemNavigationBarDividerColor: Colors.transparent,
+                systemNavigationBarIconBrightness: Brightness.dark,
+              ),
               sized: false,
               child: SafeArea(
                   bottom: false,
@@ -199,18 +208,23 @@ class _FutureCameraState extends State<FutureCamera> {
                             onTap: () {
                               Navigator.pop(context);
                             },
-                            child: const Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Image(
-                                  image: AssetImage('assets/wow.png'),
-                                ))),
+                            child: const SafeArea(
+                                child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Image(
+                                      image: AssetImage('assets/wow.png'),
+                                    )))),
                         const Padding(
                             padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
                             child: Align(
                                 alignment: Alignment.topLeft,
-                                child: CupertinoNavigationBarBackButton(
-                                    // previousPageTitle: "Home",
-                                    ))),
+                                child: Padding(
+                                    padding: EdgeInsets.only(top: 8),
+                                    child: RotatedBox(
+                                        quarterTurns: 1,
+                                        child: CupertinoNavigationBarBackButton(
+                                            // previousPageTitle: "Home",
+                                            ))))),
                         const Align(
                             alignment: Alignment.topCenter,
                             child: Padding(
@@ -229,11 +243,11 @@ class _FutureCameraState extends State<FutureCamera> {
           //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
           child: AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  systemStatusBarContrastEnforced: false,
-                  systemNavigationBarColor: Colors.transparent,
-                  systemNavigationBarDividerColor: Colors.transparent,
-                  systemNavigationBarIconBrightness: Brightness.dark,
-                  statusBarIconBrightness: Brightness.dark),
+                systemStatusBarContrastEnforced: false,
+                systemNavigationBarColor: Colors.transparent,
+                systemNavigationBarDividerColor: Colors.transparent,
+                systemNavigationBarIconBrightness: Brightness.dark,
+              ),
               sized: false,
               child: Stack(children: [
                 Container(
@@ -247,7 +261,9 @@ class _FutureCameraState extends State<FutureCamera> {
                         borderRadius: BorderRadius.circular(8.0),
                         child: ClipRect(
                           child: Transform.scale(
-                            scale: 1.16,
+                            scale: (height /
+                                    controller.value.previewSize!.height) *
+                                1.1,
                             child: Center(
                               child: AspectRatio(
                                 aspectRatio: 1 / controller.value.aspectRatio,
@@ -263,18 +279,23 @@ class _FutureCameraState extends State<FutureCamera> {
                             devModeOn == false ? controller.dispose() : null;
                           });
                         },
-                        child: const Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Image(
-                              image: AssetImage('assets/wow.png'),
-                            ))),
+                        child: const SafeArea(
+                            child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Image(
+                                  image: AssetImage('assets/wow.png'),
+                                )))),
                     const Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
                         child: Align(
                             alignment: Alignment.topLeft,
-                            child: CupertinoNavigationBarBackButton(
-                                // previousPageTitle: "Home",
-                                ))),
+                            child: Padding(
+                                padding: EdgeInsets.only(top: 8),
+                                child: RotatedBox(
+                                    quarterTurns: 1,
+                                    child: CupertinoNavigationBarBackButton(
+                                        // previousPageTitle: "Home",
+                                        ))))),
                     const Align(
                         alignment: Alignment.topCenter,
                         child: Padding(
@@ -289,15 +310,16 @@ class _FutureCameraState extends State<FutureCamera> {
               ])));
     } else {
       return CupertinoPageScaffold(
+          backgroundColor: Colors.black,
           // navigationBar:
           //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
           child: AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  systemStatusBarContrastEnforced: false,
-                  systemNavigationBarColor: Colors.transparent,
-                  systemNavigationBarDividerColor: Colors.transparent,
-                  systemNavigationBarIconBrightness: Brightness.dark,
-                  statusBarIconBrightness: Brightness.dark),
+                systemStatusBarContrastEnforced: false,
+                systemNavigationBarColor: Colors.transparent,
+                systemNavigationBarDividerColor: Colors.transparent,
+                systemNavigationBarIconBrightness: Brightness.dark,
+              ),
               sized: false,
               child: Stack(children: [
                 Container(

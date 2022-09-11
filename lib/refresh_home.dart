@@ -7,6 +7,7 @@ import 'package:Zpp/coin_flip_6p.dart';
 import 'package:Zpp/coin_flip_7p.dart';
 import 'package:Zpp/coin_flip_8p.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -50,6 +51,7 @@ class RefreshHomeState extends State<RefreshHome> {
     // controller.initialize();
   }
 
+  double left = 0;
   bool devModeOn = true;
   bool spam = true;
   double coinFlip = 2;
@@ -81,8 +83,12 @@ class RefreshHomeState extends State<RefreshHome> {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return CupertinoPageScaffold(
         resizeToAvoidBottomInset: true,
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text('Zpp'),
+        navigationBar: CupertinoNavigationBar(
+          backgroundColor:
+              context.isDarkMode == true ? Colors.black : Colors.white,
+          border: Border.all(color: Colors.transparent),
+          middle: const Padding(
+              padding: EdgeInsets.only(left: 8, right: 8), child: Text('Zpp')),
           automaticallyImplyLeading: true,
         ),
         backgroundColor:
@@ -163,305 +169,385 @@ class RefreshHomeState extends State<RefreshHome> {
                               borderRadius: BorderRadius.circular(10.0),
                               child: ListView(
                                 children: [
-                                  // Padding(
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 20),
-                                      child: SimpleListTile(
-                                        onTap: () {
-                                          Platform.isMacOS
-                                              ? null
-                                              : Vibration.vibrate(duration: 10);
-                                          devModeOn == false
-                                              ? Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) => coinFlip ==
-                                                            2.0
-                                                        ? CoinFlip2p(
-                                                            devModeOn:
-                                                                devModeOn,
-                                                          )
-                                                        : coinFlip == 3.0
-                                                            ? CoinFlip3p(
+                                  DelayedDisplay(
+                                      delay: const Duration(milliseconds: 0),
+                                      child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20),
+                                          child: SimpleListTile(
+                                            onTap: () {
+                                              Platform.isMacOS
+                                                  ? null
+                                                  : Vibration.vibrate(
+                                                      duration: 10);
+                                              devModeOn == false
+                                                  ? Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                        builder: (context) => coinFlip ==
+                                                                2.0
+                                                            ? CoinFlip2p(
                                                                 devModeOn:
                                                                     devModeOn,
                                                               )
-                                                            : coinFlip == 4.0
-                                                                ? CoinFlip4p(
+                                                            : coinFlip == 3.0
+                                                                ? CoinFlip3p(
                                                                     devModeOn:
                                                                         devModeOn,
                                                                   )
                                                                 : coinFlip ==
-                                                                        5.0
-                                                                    ? CoinFlip5p(
+                                                                        4.0
+                                                                    ? CoinFlip4p(
                                                                         devModeOn:
                                                                             devModeOn,
                                                                       )
                                                                     : coinFlip ==
-                                                                            6.0
-                                                                        ? CoinFlip6p(
+                                                                            5.0
+                                                                        ? CoinFlip5p(
                                                                             devModeOn:
                                                                                 devModeOn,
                                                                           )
                                                                         : coinFlip ==
-                                                                                7.0
-                                                                            ? CoinFlip7p(
+                                                                                6.0
+                                                                            ? CoinFlip6p(
                                                                                 devModeOn: devModeOn,
                                                                               )
-                                                                            : CoinFlip8p(
-                                                                                devModeOn: devModeOn,
-                                                                              ),
-                                                  ))
-                                              : Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      curve: Curves.easeOutExpo,
-                                                      child: coinFlip == 2.0
-                                                          ? const CoinFlip2p()
-                                                          : coinFlip == 3.0
-                                                              ? const CoinFlip3p()
-                                                              : coinFlip == 4.0
-                                                                  ? const CoinFlip4p()
+                                                                            : coinFlip == 7.0
+                                                                                ? CoinFlip7p(
+                                                                                    devModeOn: devModeOn,
+                                                                                  )
+                                                                                : CoinFlip8p(
+                                                                                    devModeOn: devModeOn,
+                                                                                  ),
+                                                      ))
+                                                  : Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                          type:
+                                                              PageTransitionType
+                                                                  .rightToLeft,
+                                                          curve: Curves
+                                                              .easeOutExpo,
+                                                          child: coinFlip == 2.0
+                                                              ? const CoinFlip2p()
+                                                              : coinFlip == 3.0
+                                                                  ? const CoinFlip3p()
                                                                   : coinFlip ==
-                                                                          5.0
-                                                                      ? const CoinFlip5p()
+                                                                          4.0
+                                                                      ? const CoinFlip4p()
                                                                       : coinFlip ==
-                                                                              6.0
-                                                                          ? const CoinFlip6p()
-                                                                          : coinFlip == 7.0
-                                                                              ? const CoinFlip7p()
-                                                                              : const CoinFlip8p()));
-                                        },
-                                        title: CupertinoSlider(
-                                          min: 2,
-                                          max: 8,
-                                          divisions: 6,
-                                          value: coinFlip,
-                                          onChanged: (value) {
-                                            Platform.isMacOS
-                                                ? null
-                                                : Vibration.vibrate(
-                                                    duration: 10);
-                                            setState(() {
-                                              value;
-                                              coinFlip =
-                                                  value; //.roundToDouble();
-                                            });
-                                          },
-                                        ),
-                                        subtitle: Text(
-                                          'Coin Flip ${coinFlip.toStringAsFixed(coinFlip.truncateToDouble() == coinFlip ? 0 : 1)}p',
-                                          style: TextStyle(
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        trailing: Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          color: context.isDarkMode == true
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        leading: Transform.scale(
-                                            scale: 2.2,
-                                            child: Image(
-                                              image: context.isDarkMode == true
-                                                  ? const AssetImage(
-                                                      'assets/coin_light.png')
-                                                  : const AssetImage(
-                                                      'assets/coin_dark.png'),
-                                              // fit: BoxFit.cover
-                                            )),
-                                        borderRadius: BorderRadius.circular(15),
-                                        tileColor: Colors.grey[300]!,
-                                        circleColor: context.isDarkMode == true
-                                            ? Colors.black
-                                            : Colors.white,
-                                        circleDiameter: 80,
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            const Color.fromARGB(
-                                                255, 9, 255, 0),
-                                            context.isDarkMode == true
-                                                ? Colors.black
-                                                : Colors.white
-                                          ],
-                                        ),
-                                      )),
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: SimpleListTile(
-                                        onTap: () {
-                                          Future.delayed(
-                                              devModeOn
-                                                  ? const Duration(
-                                                      milliseconds: 2500)
-                                                  : const Duration(
-                                                      milliseconds: 0), () {
-                                            CupertinoScaffold
-                                                .showCupertinoModalBottomSheet(
-                                                    expand: false,
-                                                    bounce: false,
-                                                    useRootNavigator: false,
-                                                    context: context,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    builder: (context) =>
-                                                        const FutureCamera(),
-                                                    duration: const Duration(
-                                                        milliseconds: 150));
-                                          });
-                                        },
-                                        title: Text(
-                                          'Future Predictor',
-                                          style: TextStyle(
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        subtitle: Text(
-                                          'See yourself in 200 years',
-                                          style: TextStyle(
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        trailing: Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          color: context.isDarkMode == true
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        leading: Icon(Icons.camera_alt,
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            size: 45),
-                                        borderRadius: BorderRadius.circular(15),
-                                        tileColor: Colors.grey[300]!,
-                                        circleColor: context.isDarkMode == true
-                                            ? Colors.black
-                                            : Colors.white,
-                                        circleDiameter: 80,
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            const Color.fromARGB(
-                                                255, 255, 0, 0),
-                                            context.isDarkMode == true
-                                                ? Colors.black
-                                                : Colors.white
-                                          ],
-                                        ),
-                                      )),
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: SimpleListTile(
-                                        onTap: () => _launchURL(
-                                            "https://deusexmachinaftc.wixsite.com/home"),
-                                        title: Text(
-                                          'Deus Ex Machina',
-                                          style: TextStyle(
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        trailing: Icon(
-                                          Icons.open_in_new_rounded,
-                                          color: context.isDarkMode == true
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        leading: Transform.scale(
-                                            scale: 0.9,
-                                            child: const Image(
-                                              image: AssetImage(
-                                                  'assets/demlogo.png'),
-                                              // fit: BoxFit.cover
-                                            )),
-                                        borderRadius: BorderRadius.circular(15),
-                                        tileColor: Colors.grey[300]!,
-                                        circleColor: context.isDarkMode == true
-                                            ? Colors.black
-                                            : Colors.white,
-                                        circleDiameter: 80,
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            const Color.fromARGB(
-                                                255, 255, 225, 0),
-                                            context.isDarkMode == true
-                                                ? Colors.black
-                                                : Colors.white
-                                          ],
-                                        ),
-                                      )),
-                                  Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10, bottom: 40),
-                                      child: SimpleListTile(
-                                        onTap: () => devModeOn == false
-                                            ? Navigator.push(
-                                                context,
-                                                CupertinoPageRoute(
+                                                                              5.0
+                                                                          ? const CoinFlip5p()
+                                                                          : coinFlip == 6.0
+                                                                              ? const CoinFlip6p()
+                                                                              : coinFlip == 7.0
+                                                                                  ? const CoinFlip7p()
+                                                                                  : const CoinFlip8p()));
+                                            },
+                                            title: SizedBox(
+                                              width: double.infinity,
+                                              child: CupertinoSlider(
+                                                min: 2,
+                                                max: 8,
+                                                divisions: 6,
+                                                value: coinFlip,
+                                                onChanged: (value) {
+                                                  Platform.isMacOS
+                                                      ? null
+                                                      : Vibration.vibrate(
+                                                          duration: 10);
+                                                  setState(() {
+                                                    value;
+                                                    coinFlip =
+                                                        value; //.roundToDouble();
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              'Coin Flip ${coinFlip.toStringAsFixed(coinFlip.truncateToDouble() == coinFlip ? 0 : 1)}p',
+                                              style: TextStyle(
+                                                color:
+                                                    context.isDarkMode == true
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            trailing: Icon(
+                                              Icons.arrow_forward_ios_rounded,
+                                              color: context.isDarkMode == true
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
+                                            leading: Transform.scale(
+                                                scale: 2.2,
+                                                child: Image(
+                                                  image: context.isDarkMode ==
+                                                          true
+                                                      ? const AssetImage(
+                                                          'assets/coin_light.png')
+                                                      : const AssetImage(
+                                                          'assets/coin_dark.png'),
+                                                  // fit: BoxFit.cover
+                                                )),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            tileColor: Colors.grey[300]!,
+                                            circleColor:
+                                                context.isDarkMode == true
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                            circleDiameter: 80,
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                const Color.fromARGB(
+                                                    255, 9, 255, 0),
+                                                context.isDarkMode == true
+                                                    ? Colors.black
+                                                    : Colors.white
+                                              ],
+                                            ),
+                                          ))),
+                                  DelayedDisplay(
+                                      delay: const Duration(milliseconds: 200),
+                                      child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: SimpleListTile(
+                                            onTap: () {
+                                              Future.delayed(
+                                                  devModeOn
+                                                      ? const Duration(
+                                                          milliseconds: 2500)
+                                                      : const Duration(
+                                                          milliseconds: 0), () {
+                                                CupertinoScaffold
+                                                    .showCupertinoModalBottomSheet(
+                                                  expand: false,
+                                                  bounce: false,
+                                                  useRootNavigator: false,
+                                                  context: context,
+                                                  backgroundColor:
+                                                      Colors.transparent,
                                                   builder: (context) =>
-                                                      const MySettings(),
-                                                ))
-                                            : Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                    type: PageTransitionType
-                                                        .rightToLeft,
-                                                    curve: Curves.easeOutExpo,
-                                                    child: const MySettings())),
-                                        title: Text(
-                                          'Settings',
-                                          style: TextStyle(
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        trailing: Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          color: context.isDarkMode == true
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        leading: Icon(Icons.settings,
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            size: 45),
-                                        borderRadius: BorderRadius.circular(15),
-                                        tileColor: Colors.grey[300]!,
-                                        circleColor: context.isDarkMode == true
-                                            ? Colors.black
-                                            : Colors.white,
-                                        circleDiameter: 80,
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            const Color.fromARGB(
-                                                255, 123, 123, 123),
-                                            context.isDarkMode == true
-                                                ? Colors.black
-                                                : Colors.white
-                                          ],
-                                        ),
-                                      )),
+                                                      const FutureCamera(),
+                                                );
+                                              });
+                                            },
+                                            title: Text(
+                                              'Future Predictor',
+                                              style: TextStyle(
+                                                color:
+                                                    context.isDarkMode == true
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              'See yourself in 200 years',
+                                              style: TextStyle(
+                                                color:
+                                                    context.isDarkMode == true
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            trailing: Icon(
+                                              Icons.arrow_forward_ios_rounded,
+                                              color: context.isDarkMode == true
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
+                                            leading: Icon(Icons.camera_alt,
+                                                color:
+                                                    context.isDarkMode == true
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                size: 45),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            tileColor: Colors.grey[300]!,
+                                            circleColor:
+                                                context.isDarkMode == true
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                            circleDiameter: 80,
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                const Color.fromARGB(
+                                                    255, 255, 0, 0),
+                                                context.isDarkMode == true
+                                                    ? Colors.black
+                                                    : Colors.white
+                                              ],
+                                            ),
+                                          ))),
+                                  // Padding(
+                                  //     padding: const EdgeInsets.only(top: 10),
+                                  //     child: SimpleListTile(
+                                  //       onTap: () => devModeOn == false
+                                  //           ? Navigator.push(
+                                  //               context,
+                                  //               CupertinoPageRoute(
+                                  //                 builder: (context) =>
+                                  //                     const MySettings(),
+                                  //               ))
+                                  //           : Navigator.push(
+                                  //               context,
+                                  //               PageTransition(
+                                  //                   type: PageTransitionType
+                                  //                       .rightToLeft,
+                                  //                   curve: Curves.easeOutExpo,
+                                  //                   child: const MySettings())),
+                                  //       title: Text(
+                                  //         'Settings',
+                                  //         style: TextStyle(
+                                  //           color: context.isDarkMode == true
+                                  //               ? Colors.white
+                                  //               : Colors.black,
+                                  //           fontWeight: FontWeight.bold,
+                                  //           fontSize: 20,
+                                  //         ),
+                                  //       ),
+                                  //       trailing: Icon(
+                                  //         Icons.arrow_forward_ios_rounded,
+                                  //         color: context.isDarkMode == true
+                                  //             ? Colors.white
+                                  //             : Colors.black,
+                                  //       ),
+                                  //       leading: Icon(Icons.settings,
+                                  //           color: context.isDarkMode == true
+                                  //               ? Colors.white
+                                  //               : Colors.black,
+                                  //           size: 45),
+                                  //       borderRadius: BorderRadius.circular(15),
+                                  //       tileColor: Colors.grey[300]!,
+                                  //       circleColor: context.isDarkMode == true
+                                  //           ? Colors.black
+                                  //           : Colors.white,
+                                  //       circleDiameter: 80,
+                                  //       gradient: LinearGradient(
+                                  //         colors: [
+                                  //           const Color.fromARGB(
+                                  //               255, 123, 123, 123),
+                                  //           context.isDarkMode == true
+                                  //               ? Colors.black
+                                  //               : Colors.white
+                                  //         ],
+                                  //       ),
+                                  //     )),
+                                  // Padding(
+                                  //     padding: const EdgeInsets.only(top: 10),
+                                  //     child: SimpleListTile(
+                                  //       onTap: () => _launchURL(
+                                  //           "https://deusexmachinaftc.wixsite.com/home"),
+                                  //       title: Text(
+                                  //         'Deus Ex Machina',
+                                  //         style: TextStyle(
+                                  //           color: context.isDarkMode == true
+                                  //               ? Colors.white
+                                  //               : Colors.black,
+                                  //           fontWeight: FontWeight.bold,
+                                  //           fontSize: 20,
+                                  //         ),
+                                  //       ),
+                                  //       trailing: Icon(
+                                  //         Icons.open_in_new_rounded,
+                                  //         color: context.isDarkMode == true
+                                  //             ? Colors.white
+                                  //             : Colors.black,
+                                  //       ),
+                                  //       leading: Transform.scale(
+                                  //           scale: 0.9,
+                                  //           child: const Image(
+                                  //             image: AssetImage(
+                                  //                 'assets/demlogo.png'),
+                                  //             // fit: BoxFit.cover
+                                  //           )),
+                                  //       borderRadius: BorderRadius.circular(15),
+                                  //       tileColor: Colors.grey[300]!,
+                                  //       circleColor: context.isDarkMode == true
+                                  //           ? Colors.black
+                                  //           : Colors.white,
+                                  //       circleDiameter: 80,
+                                  //       gradient: LinearGradient(
+                                  //         colors: [
+                                  //           const Color.fromARGB(
+                                  //               255, 255, 225, 0),
+                                  //           context.isDarkMode == true
+                                  //               ? Colors.black
+                                  //               : Colors.white
+                                  //         ],
+                                  //       ),
+                                  //     )),
+                                  DelayedDisplay(
+                                      delay: const Duration(milliseconds: 400),
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10, bottom: 40),
+                                          child: SimpleListTile(
+                                            onTap: () => devModeOn == false
+                                                ? Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          const MySettings(),
+                                                    ))
+                                                : Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        curve:
+                                                            Curves.easeOutExpo,
+                                                        child:
+                                                            const MySettings())),
+                                            title: Text(
+                                              'Settings',
+                                              style: TextStyle(
+                                                color:
+                                                    context.isDarkMode == true
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            trailing: Icon(
+                                              Icons.arrow_forward_ios_rounded,
+                                              color: context.isDarkMode == true
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
+                                            leading: Icon(Icons.settings,
+                                                color:
+                                                    context.isDarkMode == true
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                size: 45),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            tileColor: Colors.grey[300]!,
+                                            circleColor:
+                                                context.isDarkMode == true
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                            circleDiameter: 80,
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                const Color.fromARGB(
+                                                    255, 123, 123, 123),
+                                                context.isDarkMode == true
+                                                    ? Colors.black
+                                                    : Colors.white
+                                              ],
+                                            ),
+                                          ))),
                                 ],
                               ))),
                     )))));

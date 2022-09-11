@@ -31,12 +31,12 @@ class MySocial extends StatelessWidget {
         child: CupertinoPageScaffold(
             child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: const SystemUiOverlayStyle(
-                    systemNavigationBarContrastEnforced: false,
-                    systemStatusBarContrastEnforced: false,
-                    systemNavigationBarColor: Colors.transparent,
-                    systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness: Brightness.dark,
-                    statusBarIconBrightness: Brightness.dark),
+                  systemNavigationBarContrastEnforced: false,
+                  systemStatusBarContrastEnforced: false,
+                  systemNavigationBarColor: Colors.transparent,
+                  systemNavigationBarDividerColor: Colors.transparent,
+                  systemNavigationBarIconBrightness: Brightness.dark,
+                ),
                 sized: false,
                 child: ConstrainedBox(
                     constraints: BoxConstraints(

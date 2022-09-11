@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:simple_list_tile/simple_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:swipe_deck/swipe_deck.dart';
 
 import 'about_us.dart';
 import 'main.dart';
@@ -58,10 +59,13 @@ class MySettingsState extends State<MySettings> {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(8.0),
         child: CupertinoPageScaffold(
-            navigationBar: const CupertinoNavigationBar(
-              middle: Text('Settings'),
+            navigationBar: CupertinoNavigationBar(
+              backgroundColor:
+                  context.isDarkMode == true ? Colors.black : Colors.white,
+              border: Border.all(color: const Color.fromARGB(0, 255, 255, 255)),
+              middle: const Text('Settings'),
               previousPageTitle: 'Home',
               automaticallyImplyLeading: true,
             ),
@@ -87,7 +91,7 @@ class MySettingsState extends State<MySettings> {
                                   context,
                                   PageTransition(
                                       type: PageTransitionType.leftToRight,
-                                      child: AboutUs())),
+                                      child: const AboutUs())),
                           child: Padding(
                               padding: const EdgeInsets.all(20),
                               child: ClipRRect(
@@ -131,58 +135,61 @@ class MySettingsState extends State<MySettings> {
                                       )),
                                     ],
                                   )))),
-                      SimpleListTile(
-                        onTap: () {
-                          Future.delayed(
-                              devModeOn == true
-                                  ? const Duration(milliseconds: 500)
-                                  : const Duration(milliseconds: 0), () {
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => const MySocial(),
-                                ));
-                          });
-                        },
-                        title: Text(
-                          'My Socials',
-                          style: TextStyle(
-                            color: context.isDarkMode == true
-                                ? Colors.white
-                                : Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: context.isDarkMode == true
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                        leading: Icon(Icons.share,
-                            color: context.isDarkMode == true
-                                ? Colors.white
-                                : Colors.black,
-                            size: 45),
-                        borderRadius: BorderRadius.circular(15),
-                        tileColor: Colors.grey[300]!,
-                        circleColor: context.isDarkMode == true
-                            ? Colors.black
-                            : Colors.white,
-                        circleDiameter: 80,
-                        gradient: LinearGradient(
-                          colors: [
-                            const Color.fromARGB(255, 9, 255, 0),
-                            context.isDarkMode == true
-                                ? Colors.black
-                                : Colors.white
-                          ],
-                        ),
-                      ),
                       Padding(
                           padding: const EdgeInsets.only(
-                              left: 5, right: 10, top: 10),
+                              left: 5, right: 20, top: 10),
+                          child: SimpleListTile(
+                            onTap: () {
+                              Future.delayed(
+                                  devModeOn == true
+                                      ? const Duration(milliseconds: 500)
+                                      : const Duration(milliseconds: 0), () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => const MySocial(),
+                                    ));
+                              });
+                            },
+                            title: Text(
+                              'My Socials',
+                              style: TextStyle(
+                                color: context.isDarkMode == true
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            trailing: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: context.isDarkMode == true
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                            leading: Icon(Icons.share,
+                                color: context.isDarkMode == true
+                                    ? Colors.white
+                                    : Colors.black,
+                                size: 45),
+                            borderRadius: BorderRadius.circular(15),
+                            tileColor: Colors.grey[300]!,
+                            circleColor: context.isDarkMode == true
+                                ? Colors.black
+                                : Colors.white,
+                            circleDiameter: 80,
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color.fromARGB(255, 9, 255, 0),
+                                context.isDarkMode == true
+                                    ? Colors.black
+                                    : Colors.white
+                              ],
+                            ),
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              left: 5, right: 20, top: 10, bottom: 60),
                           child: SimpleListTile(
                             onTap: () {
                               _launchURL(
