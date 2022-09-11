@@ -35,7 +35,6 @@ class CandidatesPage extends StatelessWidget {
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),
     statusBarBrightness: ui.Brightness.dark,
-    systemNavigationBarIconBrightness: Brightness.dark,
   );
   @override
   var devMode = 0;

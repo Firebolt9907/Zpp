@@ -63,6 +63,7 @@ dependencies:
   camera: ^0.10.0
   animated_text_kit: ^4.2.2
   provider: ^6.0.3
+  flutter_bounceable: ^1.0.3
   overlay_support: ^2.0.1
   state_persistence: ^0.1.0
   swipe_deck: ^1.1.0

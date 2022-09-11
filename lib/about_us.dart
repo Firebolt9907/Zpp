@@ -55,7 +55,6 @@ class AboutUsState extends State<AboutUs> {
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: ui.Color.fromARGB(0, 0, 0, 0),
     statusBarBrightness: ui.Brightness.dark,
-    systemNavigationBarIconBrightness: Brightness.dark,
   );
   @override
   void dispose() {
@@ -168,7 +167,7 @@ class AboutUsState extends State<AboutUs> {
                                                       BorderRadius.circular(
                                                           20.0),
                                                   child: Image.asset(
-                                                    "assets/images/amogus.jpg",
+                                                    "assets/amogus.jpg",
                                                     fit: BoxFit.cover,
                                                   )))
                                           : ClipRRect(
@@ -699,7 +698,6 @@ class YourMomJokes extends StatelessWidget {
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
-    systemNavigationBarIconBrightness: Brightness.dark,
   );
   @override
   Widget build(BuildContext context) {
@@ -752,7 +750,6 @@ class EmbarrasingDate extends StatelessWidget {
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
-    systemNavigationBarIconBrightness: Brightness.dark,
   );
   @override
   Widget build(BuildContext context) {

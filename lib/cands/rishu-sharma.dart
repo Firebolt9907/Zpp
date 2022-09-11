@@ -20,7 +20,6 @@ class MySettingsState extends State<RishuSharma> {
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
-    systemNavigationBarIconBrightness: Brightness.dark,
   );
   @override
   void initState() {

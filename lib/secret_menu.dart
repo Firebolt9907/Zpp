@@ -25,7 +25,6 @@ class DevConfirm extends StatelessWidget {
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
-    systemNavigationBarIconBrightness: Brightness.dark,
   );
   @override
   Widget build(BuildContext context) {
