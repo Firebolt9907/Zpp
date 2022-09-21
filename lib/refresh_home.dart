@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:io';
 import 'package:Zpp/candidates.dart';
 import 'package:Zpp/coin_flip.dart';
@@ -22,6 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:camera/camera.dart';
 import 'package:simple_list_tile/simple_list_tile.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 // import 'package:overlay_support/overlay_support.dart';
 // import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
@@ -33,9 +36,13 @@ import 'settings.dart';
 import 'my_social.dart';
 import 'main.dart';
 import 'candidates.dart';
+import 'secret_menu.dart';
 
 class RefreshHome extends StatefulWidget {
-  const RefreshHome({Key? key}) : super(key: key);
+  const RefreshHome({Key? key, this.darkDynamic, this.lightDynamic})
+      : super(key: key);
+  final darkDynamic;
+  final lightDynamic;
   @override
   RefreshHomeState createState() => RefreshHomeState();
 }
@@ -44,6 +51,9 @@ class RefreshHomeState extends State<RefreshHome> {
   final _offsetToArmed = 90.0;
   late CameraController controller;
   late List<CameraDescription> _cameras;
+
+  // final darkDynamic;
+  // final lightDynamic;
 
   @override
   void initState() {
@@ -82,598 +92,1036 @@ class RefreshHomeState extends State<RefreshHome> {
     //       }
     //     : null;
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
-    return CupertinoPageScaffold(
-        resizeToAvoidBottomInset: true,
-        navigationBar: CupertinoNavigationBar(
-          backgroundColor:
-              context.isDarkMode == true ? Colors.black : Colors.white,
-          border: Border.all(color: Colors.transparent),
-          middle: const Padding(
-              padding: EdgeInsets.only(left: 8, right: 8), child: Text('Zpp')),
-          automaticallyImplyLeading: true,
-        ),
-        backgroundColor:
-            context.isDarkMode == true ? Colors.black : Colors.white,
-        // navigationBar:
-        //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle(
-              // systemStatusBarContrastEnforced: false,
-              systemNavigationBarColor: Colors.transparent,
-              systemNavigationBarContrastEnforced: false,
-              systemNavigationBarDividerColor: Colors.transparent,
-              systemNavigationBarIconBrightness: context.isDarkMode == true
-                  ? Brightness.light
-                  : Brightness.dark,
-            ),
-            sized: false,
-            child: SafeArea(
-                child: CustomRefreshIndicator(
-                    onRefresh: () => Future.delayed(
-                          const Duration(seconds: 1),
-                        ),
-                    offsetToArmed: _offsetToArmed,
-                    onStateChanged: (IndicatorStateChange change) {
-                      if (devModeOn == false) {
-                        if (change.didChange(
-                            from: IndicatorState.dragging,
-                            to: IndicatorState.armed)) {
-                          Vibration.vibrate(duration: 5, amplitude: 255);
-                        } else if (change.didChange(
-                            from: IndicatorState.armed,
-                            to: IndicatorState.loading)) {
-                          Vibration.vibrate(duration: 10, amplitude: 128);
+    return DynamicColorBuilder(
+        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+      return CupertinoPageScaffold(
+          resizeToAvoidBottomInset: true,
+          navigationBar: CupertinoNavigationBar(
+            backgroundColor: context.isDarkMode == true
+                ? darkDynamic?.background ?? Colors.black
+                : lightDynamic?.background ?? Colors.white,
+            border: Border.all(color: Colors.transparent),
+            middle: const Padding(
+                padding: EdgeInsets.only(left: 8, right: 8),
+                child: Text('Zpp')),
+            automaticallyImplyLeading: true,
+          ),
+          backgroundColor: context.isDarkMode == true
+              ? darkDynamic?.background ?? Colors.black
+              : lightDynamic?.primary ?? Colors.white,
+          // navigationBar:
+          //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle(
+                // systemStatusBarContrastEnforced: false,
+                systemNavigationBarColor: Colors.transparent,
+                systemNavigationBarContrastEnforced: false,
+                systemNavigationBarDividerColor: Colors.transparent,
+                systemNavigationBarIconBrightness: context.isDarkMode == true
+                    ? Brightness.light
+                    : Brightness.dark,
+              ),
+              sized: false,
+              child: SafeArea(
+                  bottom: false,
+                  child: CustomRefreshIndicator(
+                      onRefresh: () => Future.delayed(
+                            const Duration(seconds: 1),
+                          ),
+                      offsetToArmed: _offsetToArmed,
+                      onStateChanged: (IndicatorStateChange change) {
+                        if (devModeOn == false) {
+                          if (change.didChange(
+                              from: IndicatorState.dragging,
+                              to: IndicatorState.armed)) {
+                            Vibration.vibrate(duration: 5, amplitude: 255);
+                          } else if (change.didChange(
+                              from: IndicatorState.armed,
+                              to: IndicatorState.loading)) {
+                            Vibration.vibrate(duration: 10, amplitude: 128);
+                          }
                         }
-                      }
-                      //else if (change.didChange(
-                      //     from: IndicatorState.armed, to: IndicatorState.loading)) {
-                      //   _vibrate();
-                      // }
-                    },
-                    builder: (context, child, controller) => AnimatedBuilder(
-                        animation: controller,
-                        child: child,
-                        builder: (context, child) {
-                          return Stack(children: <Widget>[
-                            Container(
-                                color: context.isDarkMode == true
-                                    ? Colors.black
-                                    : Colors.white,
-                                child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    child: ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                            bottomLeft: Radius.circular(15.0),
-                                            bottomRight: Radius.circular(15.0)),
-                                        child: SizedBox(
-                                            width: double.infinity,
-                                            height: _offsetToArmed *
-                                                controller.value *
-                                                2,
-                                            child:
-                                                const rive.RiveAnimation.asset(
-                                              "assets/falling.riv",
-                                              fit: BoxFit.cover,
-                                            ))))),
-                            Transform.translate(
-                                offset: Offset(
-                                    0.0, _offsetToArmed * controller.value * 2),
-                                child: child),
-                          ]);
-                        }),
-                    child: Material(
-                      color: CupertinoTheme.of(context).scaffoldBackgroundColor,
-                      child: Padding(
-                          padding: const EdgeInsets.only(right: 20, left: 10),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: ListView(
-                                children: [
-                                  DelayedDisplay(
-                                      delay: const Duration(milliseconds: 0),
-                                      child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20),
-                                          child: Bounceable(
-                                              onTap: () {
-                                                Platform.isMacOS
-                                                    ? null
-                                                    : Vibration.vibrate(
-                                                        duration: 10);
-                                                devModeOn == false
-                                                    ? Navigator.push(
-                                                        context,
-                                                        CupertinoPageRoute(
-                                                          builder: (context) => coinFlip ==
-                                                                  2.0
-                                                              ? CoinFlip2p(
-                                                                  devModeOn:
-                                                                      devModeOn,
-                                                                )
-                                                              : coinFlip == 3.0
-                                                                  ? CoinFlip3p(
-                                                                      devModeOn:
-                                                                          devModeOn,
-                                                                    )
-                                                                  : coinFlip ==
-                                                                          4.0
-                                                                      ? CoinFlip4p(
-                                                                          devModeOn:
-                                                                              devModeOn,
-                                                                        )
-                                                                      : coinFlip ==
-                                                                              5.0
-                                                                          ? CoinFlip5p(
-                                                                              devModeOn: devModeOn,
-                                                                            )
-                                                                          : coinFlip == 6.0
-                                                                              ? CoinFlip6p(
-                                                                                  devModeOn: devModeOn,
-                                                                                )
-                                                                              : coinFlip == 7.0
-                                                                                  ? CoinFlip7p(
-                                                                                      devModeOn: devModeOn,
-                                                                                    )
-                                                                                  : CoinFlip8p(
-                                                                                      devModeOn: devModeOn,
-                                                                                    ),
-                                                        ))
-                                                    : Navigator.push(
-                                                        context,
-                                                        PageTransition(
-                                                            type:
-                                                                PageTransitionType
-                                                                    .rightToLeft,
-                                                            curve: Curves
-                                                                .easeOutExpo,
-                                                            child: coinFlip ==
-                                                                    2.0
-                                                                ? const CoinFlip2p()
-                                                                : coinFlip ==
-                                                                        3.0
-                                                                    ? const CoinFlip3p()
-                                                                    : coinFlip ==
-                                                                            4.0
-                                                                        ? const CoinFlip4p()
-                                                                        : coinFlip ==
-                                                                                5.0
-                                                                            ? const CoinFlip5p()
-                                                                            : coinFlip == 6.0
-                                                                                ? const CoinFlip6p()
-                                                                                : coinFlip == 7.0
-                                                                                    ? const CoinFlip7p()
-                                                                                    : const CoinFlip8p()));
-                                              },
-                                              child: SimpleListTile(
-                                                onTap: () {
-                                                  Platform.isMacOS
-                                                      ? null
-                                                      : Vibration.vibrate(
-                                                          duration: 10);
-                                                  devModeOn == false
-                                                      ? Navigator.push(
-                                                          context,
-                                                          CupertinoPageRoute(
-                                                            builder: (context) => coinFlip ==
-                                                                    2.0
-                                                                ? CoinFlip2p(
+                        //else if (change.didChange(
+                        //     from: IndicatorState.armed, to: IndicatorState.loading)) {
+                        //   _vibrate();
+                        // }
+                      },
+                      builder: (context, child, controller) => AnimatedBuilder(
+                          animation: controller,
+                          child: child,
+                          builder: (context, child) {
+                            return Stack(children: <Widget>[
+                              Container(
+                                  color: context.isDarkMode == true
+                                      ? darkDynamic?.background ?? Colors.black
+                                      : lightDynamic?.background ??
+                                          Colors.white,
+                                  child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0.0, 0.0, 0.0, 0.0),
+                                      child: ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                              bottomLeft: Radius.circular(15.0),
+                                              bottomRight:
+                                                  Radius.circular(15.0)),
+                                          child: SizedBox(
+                                              width: double.infinity,
+                                              height: _offsetToArmed *
+                                                  controller.value *
+                                                  2,
+                                              child: const rive
+                                                  .RiveAnimation.asset(
+                                                "assets/falling.riv",
+                                                fit: BoxFit.cover,
+                                              ))))),
+                              Transform.translate(
+                                  offset: Offset(0.0,
+                                      _offsetToArmed * controller.value * 2),
+                                  child: child),
+                            ]);
+                          }),
+                      child: Material(
+                        color: context.isDarkMode == true
+                            ? darkDynamic?.background ?? Colors.black
+                            : lightDynamic?.background ?? Colors.white,
+                        child: Padding(
+                            padding: const EdgeInsets.only(right: 20, left: 10),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: ListView(
+                                  children: [
+                                    DelayedDisplay(
+                                        delay: const Duration(milliseconds: 0),
+                                        child: Dismissible(
+                                            resizeDuration: const Duration(
+                                                milliseconds: 10),
+                                            direction:
+                                                DismissDirection.startToEnd,
+                                            onDismissed: (dismissed) {
+                                              devModeOn == false
+                                                  ? Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                        builder: (context) => coinFlip ==
+                                                                2.0
+                                                            ? CoinFlip2p(
+                                                                devModeOn:
+                                                                    devModeOn,
+                                                              )
+                                                            : coinFlip == 3.0
+                                                                ? CoinFlip3p(
                                                                     devModeOn:
                                                                         devModeOn,
                                                                   )
                                                                 : coinFlip ==
-                                                                        3.0
-                                                                    ? CoinFlip3p(
+                                                                        4.0
+                                                                    ? CoinFlip4p(
                                                                         devModeOn:
                                                                             devModeOn,
                                                                       )
                                                                     : coinFlip ==
-                                                                            4.0
-                                                                        ? CoinFlip4p(
+                                                                            5.0
+                                                                        ? CoinFlip5p(
                                                                             devModeOn:
                                                                                 devModeOn,
                                                                           )
                                                                         : coinFlip ==
-                                                                                5.0
-                                                                            ? CoinFlip5p(
+                                                                                6.0
+                                                                            ? CoinFlip6p(
                                                                                 devModeOn: devModeOn,
                                                                               )
-                                                                            : coinFlip == 6.0
-                                                                                ? CoinFlip6p(
+                                                                            : coinFlip == 7.0
+                                                                                ? CoinFlip7p(
                                                                                     devModeOn: devModeOn,
                                                                                   )
-                                                                                : coinFlip == 7.0
-                                                                                    ? CoinFlip7p(
+                                                                                : CoinFlip8p(
+                                                                                    devModeOn: devModeOn,
+                                                                                  ),
+                                                      ))
+                                                  : Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                          type:
+                                                              PageTransitionType
+                                                                  .rightToLeft,
+                                                          curve: Curves
+                                                              .easeOutExpo,
+                                                          child: coinFlip == 2.0
+                                                              ? const CoinFlip2p()
+                                                              : coinFlip == 3.0
+                                                                  ? const CoinFlip3p()
+                                                                  : coinFlip ==
+                                                                          4.0
+                                                                      ? const CoinFlip4p()
+                                                                      : coinFlip ==
+                                                                              5.0
+                                                                          ? const CoinFlip5p()
+                                                                          : coinFlip == 6.0
+                                                                              ? const CoinFlip6p()
+                                                                              : coinFlip == 7.0
+                                                                                  ? const CoinFlip7p()
+                                                                                  : const CoinFlip8p()));
+                                              Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 500), () {
+                                                setState(() {});
+                                              });
+                                            },
+                                            onUpdate: (details) {
+                                              // setState(() {
+                                              print(details.progress);
+                                              // });
+                                            },
+                                            key: UniqueKey(),
+                                            background: const Center(
+                                                child: Text('Open?',
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors.white))),
+                                            child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20),
+                                                child: Bounceable(
+                                                    onTap: () {
+                                                      Platform.isWindows
+                                                          ? null
+                                                          : Platform.isMacOS
+                                                              ? null
+                                                              : Vibration
+                                                                  .vibrate(
+                                                                      duration:
+                                                                          10);
+                                                      devModeOn == false
+                                                          ? Navigator.push(
+                                                              context,
+                                                              CupertinoPageRoute(
+                                                                builder: (context) => coinFlip ==
+                                                                        2.0
+                                                                    ? CoinFlip2p(
+                                                                        devModeOn:
+                                                                            devModeOn,
+                                                                      )
+                                                                    : coinFlip ==
+                                                                            3.0
+                                                                        ? CoinFlip3p(
+                                                                            devModeOn:
+                                                                                devModeOn,
+                                                                          )
+                                                                        : coinFlip ==
+                                                                                4.0
+                                                                            ? CoinFlip4p(
+                                                                                devModeOn: devModeOn,
+                                                                              )
+                                                                            : coinFlip == 5.0
+                                                                                ? CoinFlip5p(
+                                                                                    devModeOn: devModeOn,
+                                                                                  )
+                                                                                : coinFlip == 6.0
+                                                                                    ? CoinFlip6p(
                                                                                         devModeOn: devModeOn,
                                                                                       )
-                                                                                    : CoinFlip8p(
-                                                                                        devModeOn: devModeOn,
-                                                                                      ),
-                                                          ))
-                                                      : Navigator.push(
-                                                          context,
-                                                          PageTransition(
-                                                              type: PageTransitionType
-                                                                  .rightToLeft,
-                                                              curve: Curves
-                                                                  .easeOutExpo,
-                                                              child: coinFlip ==
-                                                                      2.0
-                                                                  ? const CoinFlip2p()
-                                                                  : coinFlip ==
-                                                                          3.0
-                                                                      ? const CoinFlip3p()
+                                                                                    : coinFlip == 7.0
+                                                                                        ? CoinFlip7p(
+                                                                                            devModeOn: devModeOn,
+                                                                                          )
+                                                                                        : CoinFlip8p(
+                                                                                            devModeOn: devModeOn,
+                                                                                          ),
+                                                              ))
+                                                          : Navigator.push(
+                                                              context,
+                                                              PageTransition(
+                                                                  type: PageTransitionType
+                                                                      .rightToLeft,
+                                                                  curve: Curves
+                                                                      .easeOutExpo,
+                                                                  child: coinFlip ==
+                                                                          2.0
+                                                                      ? const CoinFlip2p()
                                                                       : coinFlip ==
-                                                                              4.0
-                                                                          ? const CoinFlip4p()
-                                                                          : coinFlip == 5.0
-                                                                              ? const CoinFlip5p()
-                                                                              : coinFlip == 6.0
-                                                                                  ? const CoinFlip6p()
-                                                                                  : coinFlip == 7.0
-                                                                                      ? const CoinFlip7p()
-                                                                                      : const CoinFlip8p()));
-                                                },
-                                                title: SizedBox(
-                                                  width: double.infinity,
-                                                  child: CupertinoSlider(
-                                                    min: 2,
-                                                    max: 8,
-                                                    divisions: 6,
-                                                    value: coinFlip,
-                                                    onChanged: (value) {
-                                                      Platform.isMacOS
-                                                          ? null
-                                                          : Vibration.vibrate(
-                                                              duration: 10);
-                                                      setState(() {
-                                                        value;
-                                                        coinFlip =
-                                                            value; //.roundToDouble();
-                                                      });
+                                                                              3.0
+                                                                          ? const CoinFlip3p()
+                                                                          : coinFlip == 4.0
+                                                                              ? const CoinFlip4p()
+                                                                              : coinFlip == 5.0
+                                                                                  ? const CoinFlip5p()
+                                                                                  : coinFlip == 6.0
+                                                                                      ? const CoinFlip6p()
+                                                                                      : coinFlip == 7.0
+                                                                                          ? const CoinFlip7p()
+                                                                                          : const CoinFlip8p()));
                                                     },
-                                                  ),
-                                                ),
-                                                subtitle: Text(
-                                                  'Coin Flip ${coinFlip.toStringAsFixed(coinFlip.truncateToDouble() == coinFlip ? 0 : 1)}p',
-                                                  style: TextStyle(
-                                                    color: context.isDarkMode ==
-                                                            true
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 19.5,
-                                                  ),
-                                                ),
-                                                trailing: Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_rounded,
-                                                  color:
-                                                      context.isDarkMode == true
-                                                          ? Colors.white
-                                                          : Colors.black,
-                                                ),
-                                                leading: Transform.scale(
-                                                    scale: 2.2,
-                                                    child: Image(
-                                                      image: context
+                                                    child: SimpleListTile(
+                                                      onTap: () {
+                                                        Platform.isMacOS
+                                                            ? null
+                                                            : Vibration.vibrate(
+                                                                duration: 10);
+                                                        devModeOn == false
+                                                            ? Navigator.push(
+                                                                context,
+                                                                CupertinoPageRoute(
+                                                                  builder: (context) => coinFlip ==
+                                                                          2.0
+                                                                      ? CoinFlip2p(
+                                                                          devModeOn:
+                                                                              devModeOn,
+                                                                        )
+                                                                      : coinFlip ==
+                                                                              3.0
+                                                                          ? CoinFlip3p(
+                                                                              devModeOn: devModeOn,
+                                                                            )
+                                                                          : coinFlip == 4.0
+                                                                              ? CoinFlip4p(
+                                                                                  devModeOn: devModeOn,
+                                                                                )
+                                                                              : coinFlip == 5.0
+                                                                                  ? CoinFlip5p(
+                                                                                      devModeOn: devModeOn,
+                                                                                    )
+                                                                                  : coinFlip == 6.0
+                                                                                      ? CoinFlip6p(
+                                                                                          devModeOn: devModeOn,
+                                                                                        )
+                                                                                      : coinFlip == 7.0
+                                                                                          ? CoinFlip7p(
+                                                                                              devModeOn: devModeOn,
+                                                                                            )
+                                                                                          : CoinFlip8p(
+                                                                                              devModeOn: devModeOn,
+                                                                                            ),
+                                                                ))
+                                                            : Navigator.push(
+                                                                context,
+                                                                PageTransition(
+                                                                    type: PageTransitionType
+                                                                        .rightToLeft,
+                                                                    curve: Curves
+                                                                        .easeOutExpo,
+                                                                    child: coinFlip ==
+                                                                            2.0
+                                                                        ? const CoinFlip2p()
+                                                                        : coinFlip ==
+                                                                                3.0
+                                                                            ? const CoinFlip3p()
+                                                                            : coinFlip == 4.0
+                                                                                ? const CoinFlip4p()
+                                                                                : coinFlip == 5.0
+                                                                                    ? const CoinFlip5p()
+                                                                                    : coinFlip == 6.0
+                                                                                        ? const CoinFlip6p()
+                                                                                        : coinFlip == 7.0
+                                                                                            ? const CoinFlip7p()
+                                                                                            : const CoinFlip8p()));
+                                                      },
+                                                      title: SizedBox(
+                                                        width: double.infinity,
+                                                        child: CupertinoSlider(
+                                                          thumbColor:
+                                                              Colors.white,
+                                                          activeColor: context
+                                                                      .isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.secondary ??
+                                                                  CupertinoColors
+                                                                      .activeBlue
+                                                              : lightDynamic
+                                                                      ?.secondary ??
+                                                                  CupertinoColors
+                                                                      .activeBlue,
+                                                          min: 2,
+                                                          max: 8,
+                                                          divisions: 6,
+                                                          value: coinFlip,
+                                                          onChanged: (value) {
+                                                            Platform.isMacOS
+                                                                ? null
+                                                                : Vibration
+                                                                    .vibrate(
+                                                                        duration:
+                                                                            10);
+                                                            setState(() {
+                                                              value;
+                                                              coinFlip =
+                                                                  value; //.roundToDouble();
+                                                            });
+                                                          },
+                                                        ),
+                                                      ),
+                                                      subtitle: Expanded(
+                                                          child: Text(
+                                                        'Coin Flip ${coinFlip.toStringAsFixed(coinFlip.truncateToDouble() == coinFlip ? 0 : 1)}p',
+                                                        style: TextStyle(
+                                                          color: context
+                                                                      .isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.primary ??
+                                                                  Colors.white
+                                                              : lightDynamic
+                                                                      ?.primary ??
+                                                                  Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 19.5,
+                                                        ),
+                                                      )),
+                                                      trailing: Icon(
+                                                        Icons
+                                                            .arrow_forward_ios_rounded,
+                                                        color: context
+                                                                    .isDarkMode ==
+                                                                true
+                                                            ? darkDynamic
+                                                                    ?.primary ??
+                                                                Colors.white
+                                                            : lightDynamic
+                                                                    ?.primary ??
+                                                                Colors.black,
+                                                      ),
+                                                      leading: Transform.scale(
+                                                          scale: 2.2,
+                                                          child: Image(
+                                                            image: context
+                                                                        .isDarkMode ==
+                                                                    true
+                                                                ? const AssetImage(
+                                                                    'assets/coin_light.png')
+                                                                : const AssetImage(
+                                                                    'assets/coin_dark.png'),
+                                                            // fit: BoxFit.cover
+                                                          )),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      tileColor:
+                                                          Colors.grey[300]!,
+                                                      circleColor: context
                                                                   .isDarkMode ==
                                                               true
-                                                          ? const AssetImage(
-                                                              'assets/coin_light.png')
-                                                          : const AssetImage(
-                                                              'assets/coin_dark.png'),
-                                                      // fit: BoxFit.cover
-                                                    )),
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                tileColor: Colors.grey[300]!,
-                                                circleColor:
-                                                    context.isDarkMode == true
-                                                        ? Colors.black
-                                                        : Colors.white,
-                                                circleDiameter: 80,
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    const Color.fromARGB(
-                                                        255, 9, 255, 0),
-                                                    context.isDarkMode == true
-                                                        ? Colors.black
-                                                        : Colors.white
-                                                  ],
-                                                ),
-                                              )))),
-                                  DelayedDisplay(
-                                      delay: const Duration(milliseconds: 200),
-                                      child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10),
-                                          child: Bounceable(
-                                              onTap: () {
-                                                Future.delayed(
-                                                    devModeOn
-                                                        ? const Duration(
-                                                            milliseconds: 2500)
-                                                        : const Duration(
-                                                            milliseconds: 0),
-                                                    () {
-                                                  CupertinoScaffold
-                                                      .showCupertinoModalBottomSheet(
-                                                    expand: false,
-                                                    bounce: false,
-                                                    useRootNavigator: false,
-                                                    context: context,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    builder: (context) =>
-                                                        const FutureCamera(),
-                                                  );
-                                                });
-                                              },
-                                              child: SimpleListTile(
-                                                onTap: () {
-                                                  Future.delayed(
-                                                      devModeOn
-                                                          ? const Duration(
-                                                              milliseconds:
-                                                                  2500)
-                                                          : const Duration(
-                                                              milliseconds: 0),
-                                                      () {
-                                                    CupertinoScaffold
-                                                        .showCupertinoModalBottomSheet(
-                                                      expand: false,
-                                                      bounce: false,
-                                                      useRootNavigator: false,
-                                                      context: context,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      builder: (context) =>
-                                                          const FutureCamera(),
-                                                    );
-                                                  });
-                                                },
-                                                title: Text(
-                                                  'Future Predictor',
-                                                  style: TextStyle(
-                                                    color: context.isDarkMode ==
-                                                            true
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 19.5,
-                                                  ),
-                                                ),
-                                                subtitle: Text(
-                                                  'See yourself in 200 years',
-                                                  style: TextStyle(
-                                                    color: context.isDarkMode ==
-                                                            true
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontSize: 15,
-                                                  ),
-                                                ),
-                                                trailing: Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_rounded,
-                                                  color:
-                                                      context.isDarkMode == true
-                                                          ? Colors.white
-                                                          : Colors.black,
-                                                ),
-                                                leading: Icon(Icons.camera_alt,
-                                                    color: context.isDarkMode ==
-                                                            true
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    size: 45),
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                tileColor: Colors.grey[300]!,
-                                                circleColor:
-                                                    context.isDarkMode == true
-                                                        ? Colors.black
-                                                        : Colors.white,
-                                                circleDiameter: 80,
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    const Color.fromARGB(
-                                                        255, 255, 0, 0),
-                                                    context.isDarkMode == true
-                                                        ? Colors.black
-                                                        : Colors.white
-                                                  ],
-                                                ),
-                                              )))),
-                                  // Padding(
-                                  //     padding: const EdgeInsets.only(top: 10),
-                                  //     child: SimpleListTile(
-                                  //       onTap: () => devModeOn == false
-                                  //           ? Navigator.push(
-                                  //               context,
-                                  //               CupertinoPageRoute(
-                                  //                 builder: (context) =>
-                                  //                     const MySettings(),
-                                  //               ))
-                                  //           : Navigator.push(
-                                  //               context,
-                                  //               PageTransition(
-                                  //                   type: PageTransitionType
-                                  //                       .rightToLeft,
-                                  //                   curve: Curves.easeOutExpo,
-                                  //                   child: const MySettings())),
-                                  //       title: Text(
-                                  //         'Settings',
-                                  //         style: TextStyle(
-                                  //           color: context.isDarkMode == true
-                                  //               ? Colors.white
-                                  //               : Colors.black,
-                                  //           fontWeight: FontWeight.bold,
-                                  //           fontSize: 20,
-                                  //         ),
-                                  //       ),
-                                  //       trailing: Icon(
-                                  //         Icons.arrow_forward_ios_rounded,
-                                  //         color: context.isDarkMode == true
-                                  //             ? Colors.white
-                                  //             : Colors.black,
-                                  //       ),
-                                  //       leading: Icon(Icons.settings,
-                                  //           color: context.isDarkMode == true
-                                  //               ? Colors.white
-                                  //               : Colors.black,
-                                  //           size: 45),
-                                  //       borderRadius: BorderRadius.circular(15),
-                                  //       tileColor: Colors.grey[300]!,
-                                  //       circleColor: context.isDarkMode == true
-                                  //           ? Colors.black
-                                  //           : Colors.white,
-                                  //       circleDiameter: 80,
-                                  //       gradient: LinearGradient(
-                                  //         colors: [
-                                  //           const Color.fromARGB(
-                                  //               255, 123, 123, 123),
-                                  //           context.isDarkMode == true
-                                  //               ? Colors.black
-                                  //               : Colors.white
-                                  //         ],
-                                  //       ),
-                                  //     )),
-                                  // Padding(
-                                  //     padding: const EdgeInsets.only(top: 10),
-                                  //     child: SimpleListTile(
-                                  //       onTap: () => _launchURL(
-                                  //           "https://deusexmachinaftc.wixsite.com/home"),
-                                  //       title: Text(
-                                  //         'Deus Ex Machina',
-                                  //         style: TextStyle(
-                                  //           color: context.isDarkMode == true
-                                  //               ? Colors.white
-                                  //               : Colors.black,
-                                  //           fontWeight: FontWeight.bold,
-                                  //           fontSize: 20,
-                                  //         ),
-                                  //       ),
-                                  //       trailing: Icon(
-                                  //         Icons.open_in_new_rounded,
-                                  //         color: context.isDarkMode == true
-                                  //             ? Colors.white
-                                  //             : Colors.black,
-                                  //       ),
-                                  //       leading: Transform.scale(
-                                  //           scale: 0.9,
-                                  //           child: const Image(
-                                  //             image: AssetImage(
-                                  //                 'assets/demlogo.png'),
-                                  //             // fit: BoxFit.cover
-                                  //           )),
-                                  //       borderRadius: BorderRadius.circular(15),
-                                  //       tileColor: Colors.grey[300]!,
-                                  //       circleColor: context.isDarkMode == true
-                                  //           ? Colors.black
-                                  //           : Colors.white,
-                                  //       circleDiameter: 80,
-                                  //       gradient: LinearGradient(
-                                  //         colors: [
-                                  //           const Color.fromARGB(
-                                  //               255, 255, 225, 0),
-                                  //           context.isDarkMode == true
-                                  //               ? Colors.black
-                                  //               : Colors.white
-                                  //         ],
-                                  //       ),
-                                  //     )),
-                                  DelayedDisplay(
-                                      delay: const Duration(milliseconds: 400),
-                                      child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10, bottom: 40),
-                                          child: Bounceable(
-                                              onTap: () {
-                                                devModeOn == false
-                                                    ? Navigator.push(
-                                                        context,
-                                                        CupertinoPageRoute(
+                                                          ? darkDynamic
+                                                                  ?.background ??
+                                                              Colors.black
+                                                          : lightDynamic
+                                                                  ?.background ??
+                                                              Colors.white,
+                                                      circleDiameter: 80,
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          const Color.fromARGB(
+                                                              255, 9, 255, 0),
+                                                          context.isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.background ??
+                                                                  Colors.black
+                                                              : lightDynamic
+                                                                      ?.background ??
+                                                                  Colors.white,
+                                                        ],
+                                                      ),
+                                                    ))))),
+                                    DelayedDisplay(
+                                        delay:
+                                            const Duration(milliseconds: 200),
+                                        child: Dismissible(
+                                            resizeDuration: const Duration(
+                                                milliseconds: 10),
+                                            direction:
+                                                DismissDirection.startToEnd,
+                                            onDismissed: (dismissed) {
+                                              CupertinoScaffold
+                                                  .showCupertinoModalBottomSheet(
+                                                expand: false,
+                                                bounce: false,
+                                                useRootNavigator: false,
+                                                context: context,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                builder: (context) =>
+                                                    const FutureCamera(),
+                                              );
+                                              Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 500), () {
+                                                setState(() {});
+                                              });
+                                            },
+                                            onUpdate: (details) {
+                                              // setState(() {
+                                              print(details.progress);
+                                              // });
+                                            },
+                                            key: UniqueKey(),
+                                            background: const Center(
+                                                child: Text('Open?',
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors.white))),
+                                            child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10),
+                                                child: Bounceable(
+                                                    onTap: () {
+                                                      Future.delayed(
+                                                          devModeOn
+                                                              ? const Duration(
+                                                                  milliseconds:
+                                                                      2500)
+                                                              : const Duration(
+                                                                  milliseconds:
+                                                                      0), () {
+                                                        CupertinoScaffold
+                                                            .showCupertinoModalBottomSheet(
+                                                          expand: false,
+                                                          bounce: false,
+                                                          useRootNavigator:
+                                                              false,
+                                                          context: context,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
                                                           builder: (context) =>
-                                                              const MySettings(),
-                                                        ))
-                                                    : Navigator.push(
-                                                        context,
-                                                        PageTransition(
-                                                            type:
-                                                                PageTransitionType
-                                                                    .rightToLeft,
-                                                            curve: Curves
-                                                                .easeOutExpo,
-                                                            child:
-                                                                const MySettings()));
-                                              },
-                                              child: SimpleListTile(
-                                                onTap: () {
-                                                  devModeOn == false
-                                                      ? Navigator.push(
+                                                              const FutureCamera(),
+                                                        );
+                                                      });
+                                                    },
+                                                    child: SimpleListTile(
+                                                      onTap: () {
+                                                        Future.delayed(
+                                                            devModeOn
+                                                                ? const Duration(
+                                                                    milliseconds:
+                                                                        2500)
+                                                                : const Duration(
+                                                                    milliseconds:
+                                                                        0), () {
+                                                          CupertinoScaffold
+                                                              .showCupertinoModalBottomSheet(
+                                                            expand: false,
+                                                            bounce: false,
+                                                            useRootNavigator:
+                                                                false,
+                                                            context: context,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            builder: (context) =>
+                                                                const FutureCamera(),
+                                                          );
+                                                        });
+                                                      },
+                                                      title: Text(
+                                                        'Future Predictor',
+                                                        style: TextStyle(
+                                                          color: context
+                                                                      .isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.primary ??
+                                                                  Colors.white
+                                                              : lightDynamic
+                                                                      ?.primary ??
+                                                                  Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 19.5,
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        'See yourself in 200 years',
+                                                        style: TextStyle(
+                                                          color: context
+                                                                      .isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.primary ??
+                                                                  Colors.white
+                                                              : lightDynamic
+                                                                      ?.primary ??
+                                                                  Colors.black,
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                      trailing: Icon(
+                                                        Icons
+                                                            .arrow_forward_ios_rounded,
+                                                        color: context
+                                                                    .isDarkMode ==
+                                                                true
+                                                            ? darkDynamic
+                                                                    ?.primary ??
+                                                                Colors.white
+                                                            : lightDynamic
+                                                                    ?.primary ??
+                                                                Colors.black,
+                                                      ),
+                                                      leading: Icon(
+                                                          Icons.camera_alt,
+                                                          color:
+                                                              context.isDarkMode ==
+                                                                      true
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black,
+                                                          size: 45),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      tileColor:
+                                                          Colors.grey[300]!,
+                                                      circleColor: context
+                                                                  .isDarkMode ==
+                                                              true
+                                                          ? darkDynamic
+                                                                  ?.background ??
+                                                              Colors.black
+                                                          : lightDynamic
+                                                                  ?.background ??
+                                                              Colors.white,
+                                                      circleDiameter: 80,
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          const Color.fromARGB(
+                                                              255, 255, 0, 0),
+                                                          context.isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.background ??
+                                                                  Colors.black
+                                                              : lightDynamic
+                                                                      ?.background ??
+                                                                  Colors.white,
+                                                        ],
+                                                      ),
+                                                    ))))),
+                                    DelayedDisplay(
+                                        delay:
+                                            const Duration(milliseconds: 300),
+                                        child: Dismissible(
+                                            onResize: () {},
+                                            resizeDuration: const Duration(
+                                                milliseconds: 10),
+                                            direction:
+                                                DismissDirection.startToEnd,
+                                            onDismissed: (dismissed) {
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        RandomWord(
+                                                            darkDynamic:
+                                                                darkDynamic,
+                                                            lightDynamic:
+                                                                lightDynamic),
+                                                  ));
+                                              Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 500), () {
+                                                setState(() {});
+                                              });
+                                            },
+                                            onUpdate: (details) {
+                                              // setState(() {
+                                              // });
+                                            },
+                                            key: UniqueKey(),
+                                            background: const Center(
+                                                child: Text('Open?',
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors.white))),
+                                            child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10),
+                                                child: Bounceable(
+                                                    onTap: () {
+                                                      Navigator.push(
                                                           context,
                                                           CupertinoPageRoute(
                                                             builder: (context) =>
-                                                                const MySettings(),
-                                                          ))
-                                                      : Navigator.push(
-                                                          context,
-                                                          PageTransition(
-                                                              type: PageTransitionType
+                                                                RandomWord(
+                                                                    darkDynamic:
+                                                                        darkDynamic,
+                                                                    lightDynamic:
+                                                                        lightDynamic),
+                                                          ));
+                                                    },
+                                                    child: SimpleListTile(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            CupertinoPageRoute(
+                                                              builder: (context) => RandomWord(
+                                                                  darkDynamic:
+                                                                      darkDynamic,
+                                                                  lightDynamic:
+                                                                      lightDynamic),
+                                                            ));
+                                                      },
+                                                      title: Text(
+                                                        'Word of the Day',
+                                                        style: TextStyle(
+                                                          color: context
+                                                                      .isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.primary ??
+                                                                  Colors.white
+                                                              : lightDynamic
+                                                                      ?.primary ??
+                                                                  Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 19.5,
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        'Find new Words and Definitions',
+                                                        style: TextStyle(
+                                                          color: context
+                                                                      .isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.primary ??
+                                                                  Colors.white
+                                                              : lightDynamic
+                                                                      ?.primary ??
+                                                                  Colors.black,
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                      trailing: Icon(
+                                                        Icons
+                                                            .arrow_forward_ios_rounded,
+                                                        color: context
+                                                                    .isDarkMode ==
+                                                                true
+                                                            ? darkDynamic
+                                                                    ?.primary ??
+                                                                Colors.white
+                                                            : lightDynamic
+                                                                    ?.primary ??
+                                                                Colors.black,
+                                                      ),
+                                                      leading: Icon(
+                                                          Icons.abc_rounded,
+                                                          color:
+                                                              context.isDarkMode ==
+                                                                      true
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black,
+                                                          size: 55),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      tileColor:
+                                                          Colors.grey[300]!,
+                                                      circleColor: context
+                                                                  .isDarkMode ==
+                                                              true
+                                                          ? darkDynamic
+                                                                  ?.background ??
+                                                              Colors.black
+                                                          : lightDynamic
+                                                                  ?.background ??
+                                                              Colors.white,
+                                                      circleDiameter: 80,
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          const Color.fromARGB(
+                                                              255, 255, 0, 251),
+                                                          context.isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.background ??
+                                                                  Colors.black
+                                                              : lightDynamic
+                                                                      ?.background ??
+                                                                  Colors.white,
+                                                        ],
+                                                      ),
+                                                    ))))),
+                                    // Padding(
+                                    //     padding: const EdgeInsets.only(top: 10),
+                                    //     child: SimpleListTile(
+                                    //       onTap: () => devModeOn == false
+                                    //           ? Navigator.push(
+                                    //               context,
+                                    //               CupertinoPageRoute(
+                                    //                 builder: (context) =>
+                                    //                     const MySettings(darkDynamic: darkDynamic, lightDynamic: lightDynamic),
+                                    //               ))
+                                    //           : Navigator.push(
+                                    //               context,
+                                    //               PageTransition(
+                                    //                   type: PageTransitionType
+                                    //                       .rightToLeft,
+                                    //                   curve: Curves.easeOutExpo,
+                                    //                   child: const MySettings(darkDynamic: darkDynamic, lightDynamic: lightDynamic))),
+                                    //       title: Text(
+                                    //         'Settings',
+                                    //         style: TextStyle(
+                                    //           color: context.isDarkMode == true
+                                    //               ? Colors.white
+                                    //               : Colors.black,
+                                    //           fontWeight: FontWeight.bold,
+                                    //           fontSize: 20,
+                                    //         ),
+                                    //       ),
+                                    //       trailing: Icon(
+                                    //         Icons.arrow_forward_ios_rounded,
+                                    //         color: context.isDarkMode == true
+                                    //             ? Colors.white
+                                    //             : Colors.black,
+                                    //       ),
+                                    //       leading: Icon(Icons.settings,
+                                    //           color: context.isDarkMode == true
+                                    //               ? Colors.white
+                                    //               : Colors.black,
+                                    //           size: 45),
+                                    //       borderRadius: BorderRadius.circular(15),
+                                    //       tileColor: Colors.grey[300]!,
+                                    //       circleColor: context.isDarkMode == true
+                                    //           ? Colors.black
+                                    //           : Colors.white,
+                                    //       circleDiameter: 80,
+                                    //       gradient: LinearGradient(
+                                    //         colors: [
+                                    //           const Color.fromARGB(
+                                    //               255, 123, 123, 123),
+                                    //           context.isDarkMode == true
+                                    //               ? Colors.black
+                                    //               : Colors.white
+                                    //         ],
+                                    //       ),
+                                    //     )),
+                                    // Padding(
+                                    //     padding: const EdgeInsets.only(top: 10),
+                                    //     child: SimpleListTile(
+                                    //       onTap: () => _launchURL(
+                                    //           "https://deusexmachinaftc.wixsite.com/home"),
+                                    //       title: Text(
+                                    //         'Deus Ex Machina',
+                                    //         style: TextStyle(
+                                    //           color: context.isDarkMode == true
+                                    //               ? Colors.white
+                                    //               : Colors.black,
+                                    //           fontWeight: FontWeight.bold,
+                                    //           fontSize: 20,
+                                    //         ),
+                                    //       ),
+                                    //       trailing: Icon(
+                                    //         Icons.open_in_new_rounded,
+                                    //         color: context.isDarkMode == true
+                                    //             ? Colors.white
+                                    //             : Colors.black,
+                                    //       ),
+                                    //       leading: Transform.scale(
+                                    //           scale: 0.9,
+                                    //           child: const Image(
+                                    //             image: AssetImage(
+                                    //                 'assets/demlogo.png'),
+                                    //             // fit: BoxFit.cover
+                                    //           )),
+                                    //       borderRadius: BorderRadius.circular(15),
+                                    //       tileColor: Colors.grey[300]!,
+                                    //       circleColor: context.isDarkMode == true
+                                    //           ? Colors.black
+                                    //           : Colors.white,
+                                    //       circleDiameter: 80,
+                                    //       gradient: LinearGradient(
+                                    //         colors: [
+                                    //           const Color.fromARGB(
+                                    //               255, 255, 225, 0),
+                                    //           context.isDarkMode == true
+                                    //               ? Colors.black
+                                    //               : Colors.white
+                                    //         ],
+                                    //       ),
+                                    //     )),
+                                    DelayedDisplay(
+                                        delay:
+                                            const Duration(milliseconds: 400),
+                                        child: Dismissible(
+                                            resizeDuration: const Duration(
+                                                milliseconds: 10),
+                                            direction:
+                                                DismissDirection.startToEnd,
+                                            onDismissed: (dismissed) {
+                                              devModeOn == false
+                                                  ? Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            MySettings(
+                                                                darkDynamic:
+                                                                    darkDynamic,
+                                                                lightDynamic:
+                                                                    lightDynamic),
+                                                      ))
+                                                  : Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                          type:
+                                                              PageTransitionType
                                                                   .rightToLeft,
-                                                              curve: Curves
-                                                                  .easeOutExpo,
-                                                              child:
-                                                                  const MySettings()));
-                                                },
-                                                title: Text(
-                                                  'Settings',
-                                                  style: TextStyle(
-                                                    color: context.isDarkMode ==
-                                                            true
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                  ),
-                                                ),
-                                                trailing: Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_rounded,
-                                                  color:
-                                                      context.isDarkMode == true
-                                                          ? Colors.white
-                                                          : Colors.black,
-                                                ),
-                                                leading: Icon(Icons.settings,
-                                                    color: context.isDarkMode ==
-                                                            true
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    size: 45),
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                tileColor: Colors.grey[300]!,
-                                                circleColor:
-                                                    context.isDarkMode == true
-                                                        ? Colors.black
-                                                        : Colors.white,
-                                                circleDiameter: 80,
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    const Color.fromARGB(
-                                                        255, 123, 123, 123),
-                                                    context.isDarkMode == true
-                                                        ? Colors.black
-                                                        : Colors.white
-                                                  ],
-                                                ),
-                                              )))),
-                                ],
-                              ))),
-                    )))));
+                                                          curve: Curves
+                                                              .easeOutExpo,
+                                                          child: MySettings(
+                                                              darkDynamic:
+                                                                  darkDynamic,
+                                                              lightDynamic:
+                                                                  lightDynamic)));
+                                              Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 500), () {
+                                                setState(() {});
+                                              });
+                                            },
+                                            onUpdate: (details) {
+                                              // setState(() {
+                                              print(details.progress);
+                                              // });
+                                            },
+                                            key: UniqueKey(),
+                                            background: const Center(
+                                                child: Text('Open?',
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors.white))),
+                                            child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10, bottom: 40),
+                                                child: Bounceable(
+                                                    onTap: () {
+                                                      devModeOn == false
+                                                          ? Navigator.push(
+                                                              context,
+                                                              CupertinoPageRoute(
+                                                                builder: (context) => MySettings(
+                                                                    darkDynamic:
+                                                                        darkDynamic,
+                                                                    lightDynamic:
+                                                                        lightDynamic),
+                                                              ))
+                                                          : Navigator.push(
+                                                              context,
+                                                              PageTransition(
+                                                                  type: PageTransitionType
+                                                                      .rightToLeft,
+                                                                  curve: Curves
+                                                                      .easeOutExpo,
+                                                                  child: MySettings(
+                                                                      darkDynamic:
+                                                                          darkDynamic,
+                                                                      lightDynamic:
+                                                                          lightDynamic)));
+                                                    },
+                                                    child: SimpleListTile(
+                                                      onTap: () {
+                                                        devModeOn == false
+                                                            ? Navigator.push(
+                                                                context,
+                                                                CupertinoPageRoute(
+                                                                  builder: (context) => MySettings(
+                                                                      darkDynamic:
+                                                                          darkDynamic,
+                                                                      lightDynamic:
+                                                                          lightDynamic),
+                                                                ))
+                                                            : Navigator.push(
+                                                                context,
+                                                                PageTransition(
+                                                                    type: PageTransitionType
+                                                                        .rightToLeft,
+                                                                    curve: Curves
+                                                                        .easeOutExpo,
+                                                                    child: MySettings(
+                                                                        darkDynamic:
+                                                                            darkDynamic,
+                                                                        lightDynamic:
+                                                                            lightDynamic)));
+                                                      },
+                                                      title: Text(
+                                                        'Settings',
+                                                        style: TextStyle(
+                                                          color: context
+                                                                      .isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.primary ??
+                                                                  Colors.white
+                                                              : lightDynamic
+                                                                      ?.primary ??
+                                                                  Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                      trailing: Icon(
+                                                        Icons
+                                                            .arrow_forward_ios_rounded,
+                                                        color: context
+                                                                    .isDarkMode ==
+                                                                true
+                                                            ? darkDynamic
+                                                                    ?.primary ??
+                                                                Colors.white
+                                                            : lightDynamic
+                                                                    ?.primary ??
+                                                                Colors.black,
+                                                      ),
+                                                      leading: Icon(
+                                                          Icons.settings,
+                                                          color:
+                                                              context.isDarkMode ==
+                                                                      true
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black,
+                                                          size: 45),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      tileColor:
+                                                          Colors.grey[300]!,
+                                                      circleColor: context
+                                                                  .isDarkMode ==
+                                                              true
+                                                          ? darkDynamic
+                                                                  ?.background ??
+                                                              Colors.black
+                                                          : lightDynamic
+                                                                  ?.background ??
+                                                              Colors.white,
+                                                      circleDiameter: 80,
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              123,
+                                                              123,
+                                                              123),
+                                                          context.isDarkMode ==
+                                                                  true
+                                                              ? darkDynamic
+                                                                      ?.background ??
+                                                                  Colors.black
+                                                              : lightDynamic
+                                                                      ?.background ??
+                                                                  Colors.white,
+                                                        ],
+                                                      ),
+                                                    ))))),
+                                  ],
+                                ))),
+                      )))));
+    });
   }
 }
 

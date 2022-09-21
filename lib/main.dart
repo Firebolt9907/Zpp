@@ -8,6 +8,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/services.dart';
 import 'package:shake/shake.dart';
@@ -64,10 +65,12 @@ void main() async {
   Platform.isWindows
       ? null
       : await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+  Platform.isWindows
+      ? null
+      : await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
   Platform.isMacOS
       ? null
       : Platform.isWindows
@@ -79,11 +82,15 @@ void main() async {
   ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
     _launchURL("mailto:rememberthisrishu@gmail.com?subject=Feedback on Zpp");
   });
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   Platform.isAndroid ? addBoolToSF('devModeOn', false) : null;
-  detector.startListening;
+  bool i = (prefs.getBool('devModeOn') ?? true);
+  print(i);
+  Platform.isWindows ? null : detector.startListening;
   runApp(OverlaySupport.global(
     child: Phoenix(
-      child: MyApp(),
+      child: MyApp(i: i),
     ),
   ));
 }
@@ -328,18 +335,18 @@ class _FutureCameraState extends State<FutureCamera> {
                     width: double.infinity),
                 Stack(
                   // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
-                  children: const [
-                    Center(
+                  children: [
+                    const Center(
                         child: Image(
                             image: AssetImage('assets/skull.png'),
                             fit: BoxFit.cover)),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                       child: Image(
                           image: AssetImage('assets/editor.png'),
                           fit: BoxFit.cover),
                     ),
-                    Align(
+                    const Align(
                         alignment: Alignment.topCenter,
                         child: Padding(
                             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -350,10 +357,14 @@ class _FutureCameraState extends State<FutureCamera> {
                                     fontWeight: FontWeight.bold)))),
                     Align(
                         alignment: Alignment.topLeft,
-                        child: CupertinoNavigationBarBackButton(
-                            color: Colors.transparent
-                            // previousPageTitle: "Home",
-                            )),
+                        child: GestureDetector(
+                            child: Container(
+                                height: 40,
+                                width: 40,
+                                color: Colors.transparent),
+                            onTap: () {
+                              Navigator.pop(context);
+                            })),
                   ],
                 ),
               ])));
