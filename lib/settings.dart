@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:Zpp/credits.dart';
 import 'package:Zpp/secret_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -90,157 +91,160 @@ class MySettingsState extends State<MySettings> {
                 child: ListView(
                     // physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      Dismissible(
-                          resizeDuration: const Duration(milliseconds: 10),
-                          direction: DismissDirection.vertical,
-                          onDismissed: (dismissed) {
-                            if (dismissed == DismissDirection.down) {
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => DevConfirm(),
-                                  ));
-                            } else {
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => const Credits(),
-                                  ));
-                            }
-                            Future.delayed(const Duration(milliseconds: 500),
-                                () {
-                              setState(() {});
-                            });
-                          },
-                          onUpdate: (details) {
-                            // setState(() {
-                            print(details.progress);
-                            // });
-                          },
-                          key: UniqueKey(),
-                          background: Column(children: [
-                            Center(
-                                child: Text('found me :)',
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white))),
-                            Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Text('Opening Credits'))
-                          ]),
-                          child: Bounceable(
-                              onTap: () {
-                                devModeOn == false
-                                    ? Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) => AboutUs(
+                      Stack(children: [
+                        Bounceable(
+                            onTap: () {
+                              devModeOn == false
+                                  ? Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) => AboutUs(
+                                            darkDynamic: widget.darkDynamic,
+                                            lightDynamic: widget.lightDynamic),
+                                      ))
+                                  : Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          type: PageTransitionType.leftToRight,
+                                          child: AboutUs(
                                               darkDynamic: widget.darkDynamic,
                                               lightDynamic:
-                                                  widget.lightDynamic),
-                                        ))
-                                    : Navigator.push(
-                                        context,
-                                        PageTransition(
-                                            type:
-                                                PageTransitionType.leftToRight,
-                                            child: AboutUs(
-                                                darkDynamic: widget.darkDynamic,
-                                                lightDynamic:
-                                                    widget.lightDynamic)));
-                              },
-                              child: Dismissible(
-                                  resizeDuration:
-                                      const Duration(milliseconds: 10),
-                                  direction: DismissDirection.vertical,
-                                  onDismissed: (dismissed) {
-                                    print(dismissed);
-                                    if (dismissed == DismissDirection.down) {
-                                      Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) => DevConfirm(),
-                                          ));
-                                    } else {
-                                      Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) =>
-                                                const Credits(),
-                                          ));
-                                    }
-                                    Future.delayed(
-                                        const Duration(milliseconds: 500), () {
-                                      setState(() {});
-                                    });
-                                  },
-                                  onUpdate: (details) {
-                                    // setState(() {
-                                    print(details.progress);
-                                    // });
-                                  },
-                                  key: UniqueKey(),
-                                  background: const Center(
-                                      child: Text('found me :)',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white))),
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(20),
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          child: Stack(
-                                            alignment: Alignment.bottomCenter,
-                                            children: [
-                                              AspectRatio(
-                                                  aspectRatio: 4 / 5,
-                                                  child: Hero(
-                                                      transitionOnUserGestures:
-                                                          true,
-                                                      tag: 'sus',
-                                                      child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      15.0),
-                                                          child: const Image(
-                                                              image: AssetImage(
-                                                                  'assets/amogus.jpg'),
-                                                              fit: BoxFit
-                                                                  .cover)))),
-                                              ClipRRect(
-                                                  // Clip it cleanly.
+                                                  widget.lightDynamic)));
+                            },
+                            child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Dismissible(
+                                        resizeDuration:
+                                            const Duration(milliseconds: 10),
+                                        direction: DismissDirection.vertical,
+                                        onDismissed: (dismissed) {
+                                          if (dismissed ==
+                                              DismissDirection.down) {
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      DevConfirm(),
+                                                ));
+                                          } else {
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      const Credits(),
+                                                ));
+                                          }
+                                          Future.delayed(
+                                              const Duration(milliseconds: 500),
+                                              () {
+                                            setState(() {});
+                                          });
+                                        },
+                                        onUpdate: (details) {
+                                          // setState(() {
+                                          // print(details.progress);
+                                          // });
+                                        },
+                                        key: UniqueKey(),
+                                        background: Stack(children: [
+                                          ClipRect(
+                                              // Clip it cleanly.
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
                                                   child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 10, sigmaY: 10),
-                                                child: Container(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.1),
-                                                  alignment: Alignment.center,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(vertical: 5),
-                                                    child: Text(
-                                                      'My Friends',
+                                                      filter: ImageFilter.blur(
+                                                          sigmaX: 10,
+                                                          sigmaY: 10),
+                                                      child: Container(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.1),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: const Padding(
+                                                              padding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0),
+                                                              child: Align(
+                                                                  alignment: Alignment
+                                                                      .topCenter,
+                                                                  child: Text(
+                                                                      'Open Dev Options',
+                                                                      style: TextStyle(fontSize: 20, color: Colors.white)))))))),
+                                          const Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 20),
+                                                  child: Text('Opening Credits',
                                                       style: TextStyle(
-                                                          fontSize: 40,
-                                                          color: context
-                                                                      .isDarkMode ==
-                                                                  true
-                                                              ? widget.darkDynamic
-                                                                      ?.primary ??
-                                                                  Colors.white
-                                                              : widget.lightDynamic
-                                                                      ?.primary ??
-                                                                  Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                          fontSize: 20,
+                                                          color:
+                                                              Colors.white)))),
+                                        ]),
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            child: Stack(
+                                              alignment: Alignment.bottomCenter,
+                                              children: [
+                                                AspectRatio(
+                                                    aspectRatio: 4 / 5,
+                                                    child: Hero(
+                                                        transitionOnUserGestures:
+                                                            true,
+                                                        tag: 'sus',
+                                                        child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15.0),
+                                                            child: const Image(
+                                                                height: 400,
+                                                                width: 500,
+                                                                image: AssetImage(
+                                                                    'assets/amogus.jpg'),
+                                                                fit: BoxFit
+                                                                    .cover)))),
+                                                ClipRRect(
+                                                    // Clip it cleanly.
+                                                    child: BackdropFilter(
+                                                  filter: ImageFilter.blur(
+                                                      sigmaX: 10, sigmaY: 10),
+                                                  child: Container(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.1),
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 5),
+                                                      child: Text(
+                                                        'My Friends',
+                                                        style: TextStyle(
+                                                            fontSize: 40,
+                                                            color: context
+                                                                        .isDarkMode ==
+                                                                    true
+                                                                ? widget.darkDynamic
+                                                                        ?.primary ??
+                                                                    Colors.white
+                                                                : widget.lightDynamic
+                                                                        ?.primary ??
+                                                                    Colors
+                                                                        .white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              )),
-                                            ],
-                                          )))))),
+                                                )),
+                                              ],
+                                            )))))),
+                      ]),
                       Padding(
                           padding: const EdgeInsets.only(top: 10),
                           child: Dismissible(
@@ -263,11 +267,6 @@ class MySettingsState extends State<MySettings> {
                                     const Duration(milliseconds: 500), () {
                                   setState(() {});
                                 });
-                              },
-                              onUpdate: (details) {
-                                // setState(() {
-                                print(details.progress);
-                                // });
                               },
                               key: UniqueKey(),
                               background: const Center(

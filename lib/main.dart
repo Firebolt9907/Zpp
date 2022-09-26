@@ -293,9 +293,9 @@ class _FutureCameraState extends State<FutureCamera> {
                                   image: AssetImage('assets/wow.png'),
                                 )))),
                     const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                        padding: EdgeInsets.only(top: 12, right: 8),
                         child: Align(
-                            alignment: Alignment.topLeft,
+                            alignment: Alignment.topRight,
                             child: Padding(
                                 padding: EdgeInsets.only(top: 8),
                                 child: RotatedBox(

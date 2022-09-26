@@ -8,6 +8,7 @@ import 'package:Zpp/coin_flip_5p.dart';
 import 'package:Zpp/coin_flip_6p.dart';
 import 'package:Zpp/coin_flip_7p.dart';
 import 'package:Zpp/coin_flip_8p.dart';
+import 'package:Zpp/random-word.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:delayed_display/delayed_display.dart';
@@ -198,6 +199,12 @@ class RefreshHomeState extends State<RefreshHome> {
                                             direction:
                                                 DismissDirection.startToEnd,
                                             onDismissed: (dismissed) {
+                                              Platform.isMacOS
+                                                  ? null
+                                                  : Platform.isWindows
+                                                      ? null
+                                                      : Vibration.vibrate(
+                                                          duration: 10);
                                               devModeOn == false
                                                   ? Navigator.push(
                                                       context,
@@ -269,7 +276,6 @@ class RefreshHomeState extends State<RefreshHome> {
                                             },
                                             onUpdate: (details) {
                                               // setState(() {
-                                              print(details.progress);
                                               // });
                                             },
                                             key: UniqueKey(),
@@ -283,6 +289,14 @@ class RefreshHomeState extends State<RefreshHome> {
                                                     top: 20),
                                                 child: Bounceable(
                                                     onTap: () {
+                                                      Platform.isMacOS
+                                                          ? null
+                                                          : Platform.isWindows
+                                                              ? null
+                                                              : Vibration
+                                                                  .vibrate(
+                                                                      duration:
+                                                                          10);
                                                       Platform.isWindows
                                                           ? null
                                                           : Platform.isMacOS
@@ -355,8 +369,12 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       onTap: () {
                                                         Platform.isMacOS
                                                             ? null
-                                                            : Vibration.vibrate(
-                                                                duration: 10);
+                                                            : Platform.isWindows
+                                                                ? null
+                                                                : Vibration
+                                                                    .vibrate(
+                                                                        duration:
+                                                                            10);
                                                         devModeOn == false
                                                             ? Navigator.push(
                                                                 context,
@@ -436,12 +454,12 @@ class RefreshHomeState extends State<RefreshHome> {
                                                           divisions: 6,
                                                           value: coinFlip,
                                                           onChanged: (value) {
-                                                            Platform.isMacOS
-                                                                ? null
-                                                                : Vibration
-                                                                    .vibrate(
-                                                                        duration:
-                                                                            10);
+                                                            // Platform.isMacOS
+                                                            //     ? null
+                                                            //     : Vibration
+                                                            //         .vibrate(
+                                                            //             duration:
+                                                            //                 10);
                                                             setState(() {
                                                               value;
                                                               coinFlip =
@@ -532,6 +550,12 @@ class RefreshHomeState extends State<RefreshHome> {
                                             direction:
                                                 DismissDirection.startToEnd,
                                             onDismissed: (dismissed) {
+                                              Platform.isMacOS
+                                                  ? null
+                                                  : Platform.isWindows
+                                                      ? null
+                                                      : Vibration.vibrate(
+                                                          duration: 10);
                                               CupertinoScaffold
                                                   .showCupertinoModalBottomSheet(
                                                 expand: false,
@@ -548,11 +572,6 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       milliseconds: 500), () {
                                                 setState(() {});
                                               });
-                                            },
-                                            onUpdate: (details) {
-                                              // setState(() {
-                                              print(details.progress);
-                                              // });
                                             },
                                             key: UniqueKey(),
                                             background: const Center(
@@ -573,6 +592,14 @@ class RefreshHomeState extends State<RefreshHome> {
                                                               : const Duration(
                                                                   milliseconds:
                                                                       0), () {
+                                                        Platform.isMacOS
+                                                            ? null
+                                                            : Platform.isWindows
+                                                                ? null
+                                                                : Vibration
+                                                                    .vibrate(
+                                                                        duration:
+                                                                            10);
                                                         CupertinoScaffold
                                                             .showCupertinoModalBottomSheet(
                                                           expand: false,
@@ -590,11 +617,19 @@ class RefreshHomeState extends State<RefreshHome> {
                                                     },
                                                     child: SimpleListTile(
                                                       onTap: () {
+                                                        Platform.isMacOS
+                                                            ? null
+                                                            : Platform.isWindows
+                                                                ? null
+                                                                : Vibration
+                                                                    .vibrate(
+                                                                        duration:
+                                                                            10);
                                                         Future.delayed(
                                                             devModeOn
                                                                 ? const Duration(
                                                                     milliseconds:
-                                                                        2500)
+                                                                        0)
                                                                 : const Duration(
                                                                     milliseconds:
                                                                         0), () {
@@ -707,16 +742,37 @@ class RefreshHomeState extends State<RefreshHome> {
                                             direction:
                                                 DismissDirection.startToEnd,
                                             onDismissed: (dismissed) {
-                                              Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        RandomWord(
-                                                            darkDynamic:
-                                                                darkDynamic,
-                                                            lightDynamic:
-                                                                lightDynamic),
-                                                  ));
+                                              Platform.isMacOS
+                                                  ? null
+                                                  : Platform.isWindows
+                                                      ? null
+                                                      : Vibration.vibrate(
+                                                          duration: 10);
+                                              // Navigator.push(
+                                              //     context,
+                                              //     CupertinoPageRoute(
+                                              //       builder: (context) =>
+                                              //           RandomWord(
+                                              //               darkDynamic:
+                                              //                   darkDynamic,
+                                              //               lightDynamic:
+                                              //                   lightDynamic),
+                                              //     ));
+                                              CupertinoScaffold
+                                                  .showCupertinoModalBottomSheet(
+                                                expand: false,
+                                                bounce: false,
+                                                enableDrag: false,
+                                                useRootNavigator: false,
+                                                context: context,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                builder: (context) =>
+                                                    RandomWord(
+                                                  darkDynamic: darkDynamic,
+                                                  lightDynamic: lightDynamic,
+                                                ),
+                                              );
                                               Future.delayed(
                                                   const Duration(
                                                       milliseconds: 500), () {
@@ -738,28 +794,71 @@ class RefreshHomeState extends State<RefreshHome> {
                                                     top: 10),
                                                 child: Bounceable(
                                                     onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          CupertinoPageRoute(
-                                                            builder: (context) =>
-                                                                RandomWord(
-                                                                    darkDynamic:
-                                                                        darkDynamic,
-                                                                    lightDynamic:
-                                                                        lightDynamic),
-                                                          ));
+                                                      Platform.isMacOS
+                                                          ? null
+                                                          : Platform.isWindows
+                                                              ? null
+                                                              : Vibration
+                                                                  .vibrate(
+                                                                      duration:
+                                                                          10);
+                                                      // Navigator.push(
+                                                      //     context,
+                                                      //     CupertinoPageRoute(
+                                                      //       builder: (context) =>
+                                                      //           RandomWord(
+                                                      //               darkDynamic:
+                                                      //                   darkDynamic,
+                                                      //               lightDynamic:
+                                                      //                   lightDynamic),
+                                                      //     ));
+                                                      CupertinoScaffold
+                                                          .showCupertinoModalBottomSheet(
+                                                        expand: false,
+                                                        bounce: false,
+                                                        enableDrag: false,
+                                                        useRootNavigator: false,
+                                                        context: context,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        builder: (context) =>
+                                                            RandomWord(
+                                                          darkDynamic:
+                                                              darkDynamic,
+                                                          lightDynamic:
+                                                              lightDynamic,
+                                                        ),
+                                                      );
                                                     },
                                                     child: SimpleListTile(
                                                       onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            CupertinoPageRoute(
-                                                              builder: (context) => RandomWord(
-                                                                  darkDynamic:
-                                                                      darkDynamic,
-                                                                  lightDynamic:
-                                                                      lightDynamic),
-                                                            ));
+                                                        Platform.isMacOS
+                                                            ? null
+                                                            : Platform.isWindows
+                                                                ? null
+                                                                : Vibration
+                                                                    .vibrate(
+                                                                        duration:
+                                                                            10);
+                                                        CupertinoScaffold
+                                                            .showCupertinoModalBottomSheet(
+                                                          expand: false,
+                                                          bounce: false,
+                                                          enableDrag: false,
+                                                          useRootNavigator:
+                                                              false,
+                                                          context: context,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          builder: (context) =>
+                                                              RandomWord(
+                                                            darkDynamic:
+                                                                darkDynamic,
+                                                            lightDynamic:
+                                                                lightDynamic,
+                                                          ),
+                                                        );
                                                       },
                                                       title: Text(
                                                         'Word of the Day',
@@ -981,11 +1080,6 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       milliseconds: 500), () {
                                                 setState(() {});
                                               });
-                                            },
-                                            onUpdate: (details) {
-                                              // setState(() {
-                                              print(details.progress);
-                                              // });
                                             },
                                             key: UniqueKey(),
                                             background: const Center(
