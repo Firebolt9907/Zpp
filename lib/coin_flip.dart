@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:vibration/vibration.dart';
 
 class CoinFlip2p extends StatefulWidget {
@@ -24,17 +27,26 @@ class CoinFlipState extends State<CoinFlip2p> {
     statusBarIconBrightness: ui.Brightness.light,
     systemNavigationBarIconBrightness: Brightness.light,
   );
+
   // ignore: prefer_typing_uninitialized_variables
   final devModeOn;
 
   bool var1 = false;
   bool var2 = false;
   bool win = false;
+  bool shown = false;
+  bool exited = false;
   var topWin = 0;
   var rng = Random();
 
   int randInt = 0;
+
   CoinFlipState(this.devModeOn);
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,165 +91,227 @@ class CoinFlipState extends State<CoinFlip2p> {
       });
     }
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-            systemStatusBarContrastEnforced: false,
-            systemNavigationBarColor: Colors.transparent,
-            systemNavigationBarDividerColor: Colors.transparent,
-            systemNavigationBarIconBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.light),
-        sized: false,
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(12.0),
-            child: CupertinoPageScaffold(
-                child: Scaffold(
-                    backgroundColor: Colors.black,
-                    extendBodyBehindAppBar: true,
-                    body: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                        child: ListView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            GestureDetector(
-                                onLongPressDown: ((details) => {
-                                      setState(() {
-                                        var1 = true;
+    return OverlaySupport.local(
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: const SystemUiOverlayStyle(
+                systemStatusBarContrastEnforced: false,
+                systemNavigationBarColor: Colors.transparent,
+                systemNavigationBarDividerColor: Colors.transparent,
+                systemNavigationBarIconBrightness: Brightness.light,
+                statusBarIconBrightness: Brightness.light),
+            sized: false,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(12.0),
+                child: CupertinoPageScaffold(
+                    child: Scaffold(
+                        backgroundColor: Colors.black,
+                        extendBodyBehindAppBar: true,
+                        body: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                          child: ListView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: [
+                              GestureDetector(
+                                  onLongPressDown: ((details) => {
+                                        setState(() {
+                                          var1 = true;
+                                        }),
                                       }),
-                                    }),
-                                onLongPressStart: ((details) => {
-                                      Vibration.vibrate(
-                                          duration: 10, amplitude: 128),
-                                      setState(() {
-                                        var1 = true;
+                                  onLongPressStart: ((details) => {
+                                        Vibration.vibrate(
+                                            duration: 10, amplitude: 128),
+                                        setState(() {
+                                          var1 = true;
+                                        }),
+                                        gesture(),
                                       }),
-                                      gesture(),
-                                    }),
-                                onLongPressEnd: ((details) => {
-                                      Vibration.vibrate(
-                                          duration: 10, amplitude: 128),
-                                      setState(() {
-                                        var1 = true;
+                                  onLongPressEnd: ((details) => {
+                                        Vibration.vibrate(
+                                            duration: 10, amplitude: 128),
+                                        setState(() {
+                                          var1 = true;
+                                        }),
+                                        gesture(),
                                       }),
-                                      gesture(),
-                                    }),
-                                onLongPressCancel: () {
-                                  Vibration.vibrate(
-                                      duration: 10, amplitude: 128);
-                                  setState(() {
-                                    var1 = false;
-                                  });
-                                  gesture();
-                                },
-                                child: Padding(
-                                    padding: const EdgeInsets.only(top: 7),
-                                    child: SizedBox(
-                                        width: double.infinity,
-                                        height: (height / 2) - 20,
-                                        child: Hero(
-                                            tag: 'top',
-                                            child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(22),
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                        color: const ui
-                                                                .Color.fromARGB(
-                                                            149, 47, 48, 84)),
-                                                    Visibility(
-                                                        visible: var1,
-                                                        child: Stack(children: [
-                                                          Container(
-                                                            color: const ui
-                                                                    .Color.fromARGB(
-                                                                255,
-                                                                7,
-                                                                69,
-                                                                255),
-                                                          ),
-                                                          const RotatedBox(
-                                                              quarterTurns: 2,
-                                                              child: Center(
-                                                                  child: Text(
-                                                                      'Ready',
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .white,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          fontSize:
-                                                                              30))))
-                                                        ])),
-                                                  ],
-                                                )))))),
-                            const CupertinoNavigationBar(
-                              middle: Text('Coin Flip',
-                                  style: TextStyle(color: Colors.white)),
-                              automaticallyImplyLeading: true,
-                              previousPageTitle: "Home",
-                              transitionBetweenRoutes: true,
-                              border: null,
-                              backgroundColor: Colors.black,
-                            ),
-                            GestureDetector(
-                                onLongPressDown: ((details) => {
-                                      setState(() {
-                                        var2 = true;
-                                      }),
-                                    }),
-                                onLongPressStart: ((details) => {
-                                      Vibration.vibrate(
-                                          duration: 10, amplitude: 128),
-                                      setState(() {
-                                        var2 = true;
-                                      }),
-                                      gesture(),
-                                    }),
-                                onLongPressEnd: ((details) => {
-                                      Vibration.vibrate(
-                                          duration: 10, amplitude: 128),
-                                      setState(() {
-                                        var2 = true;
-                                      }),
-                                      gesture(),
-                                    }),
-                                onLongPressCancel: () {
-                                  Vibration.vibrate(
-                                      duration: 10, amplitude: 128);
-                                  setState(() {
-                                    var2 = false;
-                                  });
-                                  gesture();
-                                },
-                                child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 0),
-                                    child: SizedBox(
-                                        width: double.infinity,
-                                        height: (height / 2) - 20,
-                                        child: Hero(
-                                            tag: 'bottom',
-                                            child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(22),
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                        color: const ui
-                                                                .Color.fromARGB(
-                                                            147, 79, 38, 38)),
-                                                    Visibility(
-                                                        visible: var2,
-                                                        child: Stack(children: [
-                                                          Container(
+                                  onLongPressCancel: () {
+                                    Vibration.vibrate(
+                                        duration: 10, amplitude: 128);
+                                    setState(() {
+                                      var1 = false;
+                                    });
+                                    gesture();
+                                  },
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(top: 7),
+                                      child: SizedBox(
+                                          width: double.infinity,
+                                          height: (height / 2) - 20,
+                                          child: Hero(
+                                              tag: 'top',
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(22),
+                                                  child: Stack(
+                                                    children: [
+                                                      Container(
+                                                          color: const ui
+                                                                  .Color.fromARGB(
+                                                              149, 47, 48, 84)),
+                                                      const RotatedBox(
+                                                          quarterTurns: 2,
+                                                          child: Center(
+                                                              child: Padding(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              30),
+                                                                  child: FittedBox(
+                                                                      fit: BoxFit
+                                                                          .fitWidth,
+                                                                      child: Text(
+                                                                          'Tap and Hold to Ready Up',
+                                                                          textAlign: TextAlign
+                                                                              .center,
+                                                                          style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 30)))))),
+                                                      Visibility(
+                                                          visible: var1,
+                                                          child:
+                                                              Stack(children: [
+                                                            Container(
                                                               color: const ui
                                                                       .Color.fromARGB(
                                                                   255,
-                                                                  255,
-                                                                  0,
-                                                                  0)),
-                                                          const Center(
+                                                                  7,
+                                                                  69,
+                                                                  255),
+                                                            ),
+                                                            const RotatedBox(
+                                                                quarterTurns: 2,
+                                                                child: Center(
+                                                                    child: Text(
+                                                                        'Ready',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 30))))
+                                                          ])),
+                                                    ],
+                                                  )))))),
+                              Stack(children: [
+                                CupertinoNavigationBar(
+                                  middle: Text('Coin Flip',
+                                      style: TextStyle(color: Colors.white)),
+                                  automaticallyImplyLeading: true,
+                                  previousPageTitle: "Home",
+                                  transitionBetweenRoutes: false,
+                                  border: null,
+                                  backgroundColor: Colors.black,
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(left: 15),
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                            padding: EdgeInsets.only(top: 1.5),
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Only on',
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 7.5),
+                                                      child: SizedBox(
+                                                          height: 40,
+                                                          width: 17.5,
+                                                          child: ClipRect(
+                                                              child: Transform.scale(
+                                                                  scale: 1.4,
+                                                                  child: Image(
+                                                                      image: AssetImage(
+                                                                          'assets/bolt.png'),
+                                                                      fit: BoxFit
+                                                                          .cover))))),
+                                                  Text(
+                                                    'Zpp',
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ])))),
+                              ]),
+                              GestureDetector(
+                                  onLongPressDown: ((details) => {
+                                        setState(() {
+                                          var2 = true;
+                                        }),
+                                      }),
+                                  onLongPressStart: ((details) => {
+                                        Vibration.vibrate(
+                                            duration: 10, amplitude: 128),
+                                        setState(() {
+                                          var2 = true;
+                                        }),
+                                        gesture(),
+                                      }),
+                                  onLongPressEnd: ((details) => {
+                                        Vibration.vibrate(
+                                            duration: 10, amplitude: 128),
+                                        setState(() {
+                                          var2 = true;
+                                        }),
+                                        gesture(),
+                                      }),
+                                  onLongPressCancel: () {
+                                    Vibration.vibrate(
+                                        duration: 10, amplitude: 128);
+                                    setState(() {
+                                      var2 = false;
+                                    });
+                                    gesture();
+                                  },
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 0),
+                                      child: SizedBox(
+                                          width: double.infinity,
+                                          height: (height / 2) - 20,
+                                          child: Hero(
+                                              tag: 'bottom',
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(22),
+                                                  child: Stack(
+                                                    children: [
+                                                      Container(
+                                                          color: const ui
+                                                                  .Color.fromARGB(
+                                                              147, 79, 38, 38)),
+                                                      const Center(
+                                                          child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          30),
                                                               child: Text(
-                                                                  'Ready',
+                                                                  'Tap and Hold to Ready Up',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .white,
@@ -245,21 +319,41 @@ class CoinFlipState extends State<CoinFlip2p> {
                                                                           FontWeight
                                                                               .bold,
                                                                       fontSize:
-                                                                          30)))
-                                                        ])),
-                                                  ],
-                                                )))))),
-                            const Padding(
-                                padding: EdgeInsets.only(top: 7),
-                                child: Text(
-                                  'Have everyone tap and hold a box',
-                                  textAlign: ui.TextAlign.center,
-                                  style: TextStyle(
-                                      color:
-                                          ui.Color.fromARGB(255, 169, 169, 169),
-                                      fontSize: 10),
-                                )),
-                          ],
+                                                                          30)))),
+                                                      Visibility(
+                                                          visible: var2,
+                                                          child: Stack(
+                                                              children: [
+                                                                Container(
+                                                                    color: const ui
+                                                                            .Color.fromARGB(
+                                                                        255,
+                                                                        255,
+                                                                        0,
+                                                                        0)),
+                                                                const Center(
+                                                                    child: Text(
+                                                                        'Ready',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 30)))
+                                                              ])),
+                                                    ],
+                                                  )))))),
+                              const Padding(
+                                  padding: EdgeInsets.only(top: 7),
+                                  child: Text(
+                                    'Have everyone tap and hold a box',
+                                    textAlign: ui.TextAlign.center,
+                                    style: TextStyle(
+                                        color: ui.Color.fromARGB(
+                                            255, 169, 169, 169),
+                                        fontSize: 10),
+                                  )),
+                            ],
+                          ),
                         ))))));
   }
 }
@@ -269,6 +363,7 @@ class Win extends StatelessWidget {
   final devModeOn;
 
   const Win({super.key, required this.topWin, this.devModeOn});
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -302,22 +397,28 @@ class Win extends StatelessWidget {
                                 ));
                           },
                           child: Padding(
-                              padding: const EdgeInsets.only(top: 40),
-                              child: SizedBox(
-                                  width: double.infinity,
-                                  height: height,
-                                  child: Hero(
-                                      tag: topWin == 1 ? 'top' : 'bottom',
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(22),
-                                          child: Container(
-                                            color: topWin == 1
-                                                ? const ui.Color.fromARGB(
-                                                    255, 7, 69, 255)
-                                                : const ui.Color.fromARGB(
-                                                    255, 255, 0, 0),
-                                          )))))),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: MediaQuery.of(context)
+                                              .viewPadding
+                                              .top >
+                                          MediaQuery.of(context)
+                                              .viewPadding
+                                              .bottom
+                                      ? MediaQuery.of(context).viewPadding.top
+                                      : MediaQuery.of(context)
+                                          .viewPadding
+                                          .bottom),
+                              child: Hero(
+                                  tag: topWin == 1 ? 'top' : 'bottom',
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(22),
+                                      child: Container(
+                                        color: topWin == 1
+                                            ? const ui.Color.fromARGB(
+                                                255, 7, 69, 255)
+                                            : const ui.Color.fromARGB(
+                                                255, 255, 0, 0),
+                                      ))))),
                     )))));
   }
 }

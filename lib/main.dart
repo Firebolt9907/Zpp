@@ -6,8 +6,12 @@
 // import 'package:line_icons/line_icons.dart';
 // import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
+import 'dart:ui';
+import 'dart:ui' as ui;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +28,7 @@ import 'dart:async';
 import 'package:overlay_support/overlay_support.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 import 'my_app.dart';
 import 'my_social.dart';
@@ -45,6 +50,30 @@ extension DarkMode on BuildContext {
   bool get isDarkMode {
     final brightness = MediaQuery.of(this).platformBrightness;
     return brightness == Brightness.dark;
+  }
+}
+
+final GlobalKey _key = GlobalKey();
+void _share() async {
+  RenderRepaintBoundary boundary =
+      _key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+
+  ui.Image image = await boundary.toImage();
+  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  if (byteData != null) {
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    await WcFlutterShare.share(
+        text: 'Download Zpp Now! ',
+        sharePopupTitle: 'share',
+        fileName: 'ZppShare.png',
+        mimeType: 'image/png',
+        iPadConfig: IPadConfig(
+          originX: 0,
+          originY: 0,
+          originHeight: 0,
+          originWidth: 0,
+        ),
+        bytesOfFile: Uint8List.fromList(pngBytes));
   }
 }
 
@@ -80,7 +109,7 @@ void main() async {
               : _cameras = await availableCameras();
   FlutterNativeSplash.remove();
   ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
-    _launchURL("mailto:rememberthisrishu@gmail.com?subject=Feedback on Zpp");
+    _share();
   });
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -90,7 +119,7 @@ void main() async {
   Platform.isWindows ? null : detector.startListening;
   runApp(OverlaySupport.global(
     child: Phoenix(
-      child: MyApp(i: i),
+      child: RepaintBoundary(key: _key, child: MyApp(i: i)),
     ),
   ));
 }
@@ -187,9 +216,10 @@ class _FutureCameraState extends State<FutureCamera> {
     precacheImage(const AssetImage('assets/skull.png'), context);
     precacheImage(const AssetImage('assets/editor.png'), context);
     var size = MediaQuery.of(context).size;
-    var height = MediaQuery.of(context).size.height;
+    var height = MediaQuery.of(context).size.height - 60;
     if (!controller.value.isInitialized) {
       return CupertinoPageScaffold(
+          backgroundColor: Colors.transparent,
           // navigationBar:
           //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
           child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -203,14 +233,35 @@ class _FutureCameraState extends State<FutureCamera> {
               sized: false,
               child: SafeArea(
                   bottom: false,
-                  child: Stack(children: [
-                    Container(
-                        color: Colors.black,
-                        height: double.infinity,
-                        width: double.infinity),
+                  child: Stack(alignment: Alignment.topRight, children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                            child: Container(
+                                color: Colors.white.withOpacity(0.1)))),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 60),
+                        child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(8.0),
+                                bottomRight: Radius.circular(8.0),
+                                topLeft: Radius.circular(18.0),
+                                topRight: Radius.circular(18.0)),
+                            child: Container(
+                                height: height,
+                                width: double.infinity,
+                                color: Colors.black))),
                     Stack(
+                      alignment: Alignment.topRight,
                       // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
                       children: [
+                        const Center(
+                            child: Hero(
+                                transitionOnUserGestures: true,
+                                tag: 'camera',
+                                child: Icon(Icons.camera_alt,
+                                    color: Colors.white, size: 100))),
                         GestureDetector(
                             onTap: () {
                               Navigator.pop(context);
@@ -221,22 +272,27 @@ class _FutureCameraState extends State<FutureCamera> {
                                     child: Image(
                                       image: AssetImage('assets/wow.png'),
                                     )))),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                            child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Padding(
-                                    padding: EdgeInsets.only(top: 8),
-                                    child: RotatedBox(
-                                        quarterTurns: 1,
-                                        child: CupertinoNavigationBarBackButton(
-                                            // previousPageTitle: "Home",
-                                            ))))),
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: Bounceable(
+                                scaleFactor: 0.2,
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const SizedBox(
+                                  width: 52,
+                                  child: Padding(
+                                      padding: EdgeInsets.only(top: 3),
+                                      child: Image(
+                                          image: AssetImage(
+                                              'assets/snap-close.png'),
+                                          fit: BoxFit.cover)),
+                                ))),
                         const Align(
                             alignment: Alignment.topCenter,
                             child: Padding(
-                                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                                child: Text("Yourself in 200 years",
+                                padding: EdgeInsets.fromLTRB(0, 18, 0, 0),
+                                child: Text("See Yourself in 200 years",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -246,6 +302,7 @@ class _FutureCameraState extends State<FutureCamera> {
                   ]))));
     } else if (visibility == true) {
       return CupertinoPageScaffold(
+          backgroundColor: Colors.transparent,
           // navigationBar:
           //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
           child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -256,68 +313,102 @@ class _FutureCameraState extends State<FutureCamera> {
                 systemNavigationBarIconBrightness: Brightness.dark,
               ),
               sized: false,
-              child: Stack(children: [
-                Container(
-                    color: Colors.black,
-                    height: double.infinity,
-                    width: double.infinity),
-                Stack(
-                  // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: ClipRect(
-                          child: Transform.scale(
-                            scale: (height /
-                                    controller.value.previewSize!.height) *
-                                1.1,
-                            child: Center(
-                              child: AspectRatio(
-                                aspectRatio: 1 / controller.value.aspectRatio,
-                                child: CameraPreview(controller),
+              child: Stack(alignment: Alignment.topRight, children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                        child:
+                            Container(color: Colors.white.withOpacity(0.1)))),
+                Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Container(
+                            color: Colors.black,
+                            height: double.infinity,
+                            width: double.infinity))),
+                Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: Stack(
+                      // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
+                      children: [
+                        ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(8.0),
+                                bottomRight: Radius.circular(8.0),
+                                topLeft: Radius.circular(18.0),
+                                topRight: Radius.circular(18.0)),
+                            child: ClipRect(
+                              child: Transform.scale(
+                                scale: (height /
+                                        controller.value.previewSize!.height) *
+                                    1.5,
+                                child: Center(
+                                  child: AspectRatio(
+                                    aspectRatio:
+                                        1 / controller.value.aspectRatio,
+                                    child: CameraPreview(controller),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )),
-                    GestureDetector(
+                            )),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                visibility = false;
+                                devModeOn == false
+                                    ? controller.dispose()
+                                    : null;
+                              });
+                            },
+                            child: const SafeArea(
+                                child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Image(
+                                      image: AssetImage('assets/wow.png'),
+                                    )))),
+                      ],
+                    )),
+                // const Padding(
+                //     padding: EdgeInsets.only(top: 15, right: 8),
+                //     child: Align(
+                //         alignment: Alignment.topRight,
+                //         child: Padding(
+                //             padding: EdgeInsets.only(top: 8),
+                //             child: RotatedBox(
+                //                 quarterTurns: 1,
+                //                 child: CupertinoNavigationBarBackButton(
+                //                     // previousPageTitle: "Home",
+                //                     ))))),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Bounceable(
+                        scaleFactor: 0.2,
                         onTap: () {
-                          setState(() {
-                            visibility = false;
-                            devModeOn == false ? controller.dispose() : null;
-                          });
+                          Navigator.pop(context);
                         },
-                        child: const SafeArea(
-                            child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Image(
-                                  image: AssetImage('assets/wow.png'),
-                                )))),
-                    const Padding(
-                        padding: EdgeInsets.only(top: 12, right: 8),
-                        child: Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                                padding: EdgeInsets.only(top: 8),
-                                child: RotatedBox(
-                                    quarterTurns: 1,
-                                    child: CupertinoNavigationBarBackButton(
-                                        // previousPageTitle: "Home",
-                                        ))))),
-                    const Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                            child: Text("Yourself in 200 years",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)))),
-                  ],
-                ),
+                        child: const SizedBox(
+                          width: 52,
+                          child: Padding(
+                              padding: EdgeInsets.only(top: 3),
+                              child: Image(
+                                  image: AssetImage('assets/snap-close.png'),
+                                  fit: BoxFit.cover)),
+                        ))),
+                const Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 18, 0, 0),
+                        child: Text("See Yourself in 200 years",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)))),
               ])));
     } else {
       return CupertinoPageScaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.transparent,
           // navigationBar:
           //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
           child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -329,10 +420,20 @@ class _FutureCameraState extends State<FutureCamera> {
               ),
               sized: false,
               child: Stack(children: [
-                Container(
-                    color: Colors.black,
-                    height: double.infinity,
-                    width: double.infinity),
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                        child:
+                            Container(color: Colors.white.withOpacity(0.1)))),
+                Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Container(
+                            color: Colors.black,
+                            height: double.infinity,
+                            width: double.infinity))),
                 Stack(
                   // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
                   children: [
@@ -340,31 +441,128 @@ class _FutureCameraState extends State<FutureCamera> {
                         child: Image(
                             image: AssetImage('assets/skull.png'),
                             fit: BoxFit.cover)),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Image(
-                          image: AssetImage('assets/editor.png'),
-                          fit: BoxFit.cover),
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: Bounceable(
+                            scaleFactor: 0.2,
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const SizedBox(
+                              width: 52,
+                              child: Padding(
+                                  padding: EdgeInsets.only(top: 3),
+                                  child: Image(
+                                      image:
+                                          AssetImage('assets/snap-close.png'),
+                                      fit: BoxFit.cover)),
+                            ))),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: GestureDetector(
+                          onTap: () {
+                            showOverlayNotification((context) {
+                              return Padding(
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context)
+                                              .viewPadding
+                                              .top +
+                                          15),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          150,
+                                      height: 50,
+                                      child: Stack(children: [
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(112328),
+                                            child: BackdropFilter(
+                                                filter: ImageFilter.blur(
+                                                    sigmaX: 20, sigmaY: 20),
+                                                child: Container(
+                                                    color: Colors.white
+                                                        .withOpacity(0.1)))),
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: Container(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                          "No editing for u Bozo",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 20))
+                                                    ])))
+                                      ])));
+                            }, duration: Duration(milliseconds: 4000));
+                          },
+                          child: SizedBox(
+                              width: 60,
+                              child: Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                  child: Image(
+                                      image: AssetImage('assets/snap-edit.png'),
+                                      fit: BoxFit.cover)))),
                     ),
                     const Align(
                         alignment: Alignment.topCenter,
                         child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                            child: Text("Yourself in 200 years",
+                            padding: EdgeInsets.fromLTRB(0, 18, 0, 0),
+                            child: Text("See Yourself in 200 years",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold)))),
                     Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                            child: Container(
-                                height: 40,
-                                width: 40,
-                                color: Colors.transparent),
-                            onTap: () {
-                              Navigator.pop(context);
-                            })),
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                            padding: EdgeInsets.only(
+                                bottom: 40 +
+                                    MediaQuery.of(context).viewPadding.bottom),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Only on',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 7.5),
+                                      child: SizedBox(
+                                          height: 40,
+                                          width: 17.5,
+                                          child: ClipRect(
+                                              child: Transform.scale(
+                                                  scale: 1.4,
+                                                  child: Image(
+                                                      image: AssetImage(
+                                                          'assets/bolt.png'),
+                                                      fit: BoxFit.cover))))),
+                                  Text(
+                                    'Zpp',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ])))
                   ],
                 ),
               ])));

@@ -65,8 +65,10 @@ class TestText extends StatelessWidget {
 }
 
 class DevMode extends StatefulWidget {
-  const DevMode({Key? key}) : super(key: key);
-
+  const DevMode({Key? key, this.darkDynamic, this.lightDynamic})
+      : super(key: key);
+  final darkDynamic;
+  final lightDynamic;
   @override
   State<DevMode> createState() => DevModeState();
 }
@@ -76,36 +78,45 @@ class DevModeState extends State<DevMode> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        backgroundColor: on ? Colors.greenAccent : Colors.redAccent,
-        child: Center(
-          child: Column(children: [
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 100, 0, 50),
-                child: Text('Dev Mode', style: TextStyle(fontSize: 40))),
-            CupertinoSwitch(
-              activeColor: Colors.grey,
-              thumbColor: on ? Colors.greenAccent : Colors.redAccent,
-              trackColor: on ? Colors.grey : Colors.grey,
-              value: on,
-              onChanged: (value) => setState(() {
-                on = !on;
-                if (on == true) {
-                  addBoolToSF('devModeOn', false);
-                } else {
-                  addBoolToSF('devModeOn', true);
-                }
-              }),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 25)),
-            CupertinoButton.filled(
-                onPressed: () {
-                  Phoenix.rebirth(context);
-                  Navigator.pop(context);
-                },
-                child: const Text("Apply"))
-          ]),
-        ));
+    return CupertinoScaffold(
+        body: CupertinoPageScaffold(
+            backgroundColor: on ? Colors.greenAccent : Colors.redAccent,
+            child: Center(
+              child: Column(children: [
+                const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 100, 0, 50),
+                    child: Text('Dev Mode', style: TextStyle(fontSize: 40))),
+                CupertinoSwitch(
+                  activeColor: Colors.grey,
+                  thumbColor: on ? Colors.greenAccent : Colors.redAccent,
+                  trackColor: on ? Colors.grey : Colors.grey,
+                  value: on,
+                  onChanged: (value) => setState(() {
+                    on = !on;
+                    if (on == true) {
+                      addBoolToSF('devModeOn', false);
+                    } else {
+                      addBoolToSF('devModeOn', true);
+                    }
+                  }),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 25)),
+                CupertinoButton(
+                    color: context.isDarkMode == true
+                        ? widget.darkDynamic?.primary ?? Colors.black
+                        : widget.lightDynamic?.primary ?? Colors.white,
+                    onPressed: () {
+                      Phoenix.rebirth(context);
+                      Navigator.pop(context);
+                    },
+                    child: Text("Apply",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: context.isDarkMode == true
+                                ? Colors.black
+                                : Colors.white)))
+              ]),
+            )));
   }
 }
 

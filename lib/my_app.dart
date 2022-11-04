@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Zpp/about_us.dart';
 import 'package:Zpp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -35,6 +36,11 @@ class MyApp extends StatelessWidget {
                     child: DynamicColorBuilder(builder:
                         (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
                       return CupertinoApp(
+                        onGenerateRoute: (settings) {
+                          return CupertinoPageRoute(
+                              settings: settings,
+                              builder: (context) => Container());
+                        },
                         scrollBehavior: const MaterialScrollBehavior(
                           androidOverscrollIndicator:
                               AndroidOverscrollIndicator.stretch,
@@ -78,6 +84,8 @@ class MyApp extends StatelessWidget {
                                       child: CircularProgressIndicator());
                                 }
                               }),
+                          '/about_us': (BuildContext context) =>
+                              const CupertinoScaffold(body: AboutUs()),
                           '/settings': (BuildContext context) =>
                               const CupertinoScaffold(body: MySettings()),
                         },
