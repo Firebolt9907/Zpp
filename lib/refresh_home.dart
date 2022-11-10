@@ -11,6 +11,7 @@ import 'package:Zpp/coin_flip_6p.dart';
 import 'package:Zpp/coin_flip_7p.dart';
 import 'package:Zpp/coin_flip_8p.dart';
 import 'package:Zpp/random-word.dart';
+import 'package:battery_info/battery_info_plugin.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:delayed_display/delayed_display.dart';
@@ -29,6 +30,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:camera/camera.dart';
 import 'package:simple_list_tile/simple_list_tile.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+
+import 'package:battery_info/battery_info_plugin.dart';
+import 'package:battery_info/model/android_battery_info.dart';
+import 'package:battery_info/enums/charging_status.dart';
+import 'package:battery_info/model/iso_battery_info.dart';
 
 // import 'package:overlay_support/overlay_support.dart';
 // import 'package:flutter_slidable/flutter_slidable.dart';
@@ -61,10 +67,13 @@ class RefreshHomeState extends State<RefreshHome> {
   // final darkDynamic;
   // final lightDynamic;
 
+  var batteryLevel;
+
   @override
   void initState() {
     super.initState();
     _loadCounter();
+    _getBattery();
     // controller.initialize();
   }
 
@@ -73,6 +82,8 @@ class RefreshHomeState extends State<RefreshHome> {
   bool spam = true;
   double coinFlip = 2;
   double value = 2.0;
+  bool topDismissed = false;
+  bool bottomDismissed = false;
 
   _loadCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -80,6 +91,15 @@ class RefreshHomeState extends State<RefreshHome> {
     setState(() {
       devModeOn = (prefs.getBool('devModeOn') ?? true);
       spam = (prefs.getBool('spam') ?? true);
+    });
+  }
+
+  _getBattery() async {
+    var ios = (await BatteryInfoPlugin().iosBatteryInfo)!.batteryLevel;
+    var android = (await BatteryInfoPlugin().androidBatteryInfo)!.batteryLevel;
+    var battery = Platform.isIOS ? ios : android;
+    setState(() {
+      batteryLevel = int.tryParse('$battery');
     });
   }
 
@@ -116,7 +136,7 @@ class RefreshHomeState extends State<RefreshHome> {
           ),
           backgroundColor: context.isDarkMode == true
               ? darkDynamic?.background ?? Colors.black
-              : lightDynamic?.primary ?? Colors.white,
+              : lightDynamic?.onBackground ?? Colors.white,
           // navigationBar:
           //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
           child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -190,6 +210,48 @@ class RefreshHomeState extends State<RefreshHome> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
                         child: ListView(children: [
+                          false
+                              ? Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          20,
+                                      height: 100,
+                                      child: Stack(children: [
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(18),
+                                            child: BackdropFilter(
+                                                filter: ImageFilter.blur(
+                                                    sigmaX: 20, sigmaY: 20),
+                                                child: Container(
+                                                    color: Colors.white
+                                                        .withOpacity(0.1)))),
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: Container(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15,
+                                                                  right: 15),
+                                                          child: Text(
+                                                              batteryLevel
+                                                                  .toString()))
+                                                    ])))
+                                      ])))
+                              : Container(),
                           Stack(
                             // padding: const EdgeInsets.only(bottom: 0),
                             children: [
@@ -206,6 +268,13 @@ class RefreshHomeState extends State<RefreshHome> {
                                                 ? null
                                                 : Vibration.vibrate(
                                                     duration: 10);
+                                        Future.delayed(
+                                            Duration(milliseconds: 3500), () {
+                                          setState(() {
+                                            topDismissed = false;
+                                            bottomDismissed = false;
+                                          });
+                                        });
                                         devModeOn == false
                                             ? Navigator.push(
                                                 context,
@@ -376,46 +445,44 @@ class RefreshHomeState extends State<RefreshHome> {
                                                               duration: 10);
                                                   showOverlayNotification(
                                                       (context) {
-                                                    return Padding(
-                                                        padding: EdgeInsets.only(
-                                                            top: MediaQuery.of(
-                                                                        context)
-                                                                    .viewPadding
-                                                                    .top +
-                                                                5),
-                                                        child: SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                20,
-                                                            height: 50,
-                                                            child: Stack(
-                                                                children: [
-                                                                  ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              18),
-                                                                      child: BackdropFilter(
-                                                                          filter: ImageFilter.blur(
-                                                                              sigmaX:
-                                                                                  20,
-                                                                              sigmaY:
-                                                                                  20),
-                                                                          child:
-                                                                              Container(color: Colors.white.withOpacity(0.1)))),
-                                                                  ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              15),
-                                                                      child: Container(
-                                                                          alignment: Alignment.center,
-                                                                          child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: const [
-                                                                            RotatedBox(
-                                                                                quarterTurns: 2,
-                                                                                child: Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)))))
-                                                                          ])))
-                                                                ])));
+                                                    return Dismissible(
+                                                        key: UniqueKey(),
+                                                        direction:
+                                                            DismissDirection.up,
+                                                        onDismissed:
+                                                            ((direction) {
+                                                          setState(() {
+                                                            topDismissed = true;
+                                                          });
+                                                        }),
+                                                        child: Visibility(
+                                                            visible:
+                                                                !topDismissed,
+                                                            child: Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    top: MediaQuery.of(context)
+                                                                            .viewPadding
+                                                                            .top +
+                                                                        5),
+                                                                child: SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width -
+                                                                        20,
+                                                                    height: 50,
+                                                                    child: Stack(
+                                                                        children: [
+                                                                          ClipRRect(
+                                                                              borderRadius: BorderRadius.circular(18),
+                                                                              child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20), child: Container(color: Colors.white.withOpacity(0.1)))),
+                                                                          ClipRRect(
+                                                                              borderRadius: BorderRadius.circular(15),
+                                                                              child: Container(
+                                                                                  alignment: Alignment.center,
+                                                                                  child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: const [
+                                                                                    RotatedBox(quarterTurns: 2, child: Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)))))
+                                                                                  ])))
+                                                                        ])))));
                                                   },
                                                       duration: const Duration(
                                                           milliseconds: 3000));
@@ -424,46 +491,46 @@ class RefreshHomeState extends State<RefreshHome> {
                                                           NotificationPosition
                                                               .bottom,
                                                       (context) {
-                                                    return Padding(
-                                                        padding: EdgeInsets.only(
-                                                            bottom: MediaQuery.of(
-                                                                        context)
-                                                                    .viewPadding
-                                                                    .bottom +
-                                                                20),
-                                                        child: SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                20,
-                                                            height: 50,
-                                                            child: Stack(
-                                                                children: [
-                                                                  ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              18),
-                                                                      child: BackdropFilter(
-                                                                          filter: ImageFilter.blur(
-                                                                              sigmaX:
-                                                                                  20,
-                                                                              sigmaY:
-                                                                                  20),
-                                                                          child:
-                                                                              Container(color: Colors.white.withOpacity(0.1)))),
-                                                                  ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              15),
-                                                                      child: Container(
-                                                                          alignment: Alignment.center,
-                                                                          child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                                                            const Padding(
-                                                                                padding: const EdgeInsets.only(left: 15, right: 15),
-                                                                                child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20))))
-                                                                          ])))
-                                                                ])));
+                                                    return Dismissible(
+                                                        key: UniqueKey(),
+                                                        direction:
+                                                            DismissDirection
+                                                                .down,
+                                                        onDismissed:
+                                                            ((direction) {
+                                                          setState(() {
+                                                            bottomDismissed =
+                                                                true;
+                                                          });
+                                                        }),
+                                                        child: Visibility(
+                                                            visible:
+                                                                !bottomDismissed,
+                                                            child: Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    bottom: MediaQuery.of(context)
+                                                                            .viewPadding
+                                                                            .bottom +
+                                                                        20),
+                                                                child: SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width -
+                                                                        20,
+                                                                    height: 50,
+                                                                    child: Stack(
+                                                                        children: [
+                                                                          ClipRRect(
+                                                                              borderRadius: BorderRadius.circular(18),
+                                                                              child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20), child: Container(color: Colors.white.withOpacity(0.1)))),
+                                                                          ClipRRect(
+                                                                              borderRadius: BorderRadius.circular(15),
+                                                                              child: Container(
+                                                                                  alignment: Alignment.center,
+                                                                                  child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                                                                    const Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20))))
+                                                                                  ])))
+                                                                        ])))));
                                                   },
                                                       duration: const Duration(
                                                           milliseconds: 3000));
@@ -658,13 +725,18 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       duration: 10);
                                           CupertinoScaffold
                                               .showCupertinoModalBottomSheet(
+                                            shadow: BoxShadow(
+                                                color: Colors.transparent),
                                             expand: false,
                                             bounce: false,
                                             useRootNavigator: false,
                                             context: context,
                                             backgroundColor: Colors.transparent,
-                                            builder: (context) =>
-                                                const FutureCamera(),
+                                            builder: (context) => FutureCamera(
+                                                topPadding:
+                                                    MediaQuery.of(context)
+                                                        .viewPadding
+                                                        .top),
                                           );
                                           Future.delayed(
                                               const Duration(milliseconds: 500),
@@ -702,6 +774,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                 duration: 10);
                                                     CupertinoScaffold
                                                         .showCupertinoModalBottomSheet(
+                                                      shadow: BoxShadow(
+                                                          color: Colors
+                                                              .transparent),
                                                       expand: false,
                                                       bounce: false,
                                                       useRootNavigator: false,
@@ -709,7 +784,12 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       backgroundColor:
                                                           Colors.transparent,
                                                       builder: (context) =>
-                                                          const FutureCamera(),
+                                                          FutureCamera(
+                                                              topPadding:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .viewPadding
+                                                                      .top),
                                                     );
                                                   });
                                                 },
@@ -735,6 +815,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                     0), () {
                                                       CupertinoScaffold
                                                           .showCupertinoModalBottomSheet(
+                                                        shadow: BoxShadow(
+                                                            color: Colors
+                                                                .transparent),
                                                         expand: false,
                                                         bounce: false,
                                                         useRootNavigator: false,
@@ -742,7 +825,11 @@ class RefreshHomeState extends State<RefreshHome> {
                                                         backgroundColor:
                                                             Colors.transparent,
                                                         builder: (context) =>
-                                                            const FutureCamera(),
+                                                            FutureCamera(
+                                                                topPadding: MediaQuery.of(
+                                                                        context)
+                                                                    .viewPadding
+                                                                    .top),
                                                       );
                                                     });
                                                   },
@@ -865,6 +952,8 @@ class RefreshHomeState extends State<RefreshHome> {
                                           //     ));
                                           CupertinoScaffold
                                               .showCupertinoModalBottomSheet(
+                                            shadow: BoxShadow(
+                                                color: Colors.transparent),
                                             expand: false,
                                             bounce: false,
                                             enableDrag: true,
@@ -872,6 +961,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                             context: context,
                                             backgroundColor: Colors.transparent,
                                             builder: (context) => RandomWord(
+                                              topPadding: MediaQuery.of(context)
+                                                  .viewPadding
+                                                  .top,
                                               darkDynamic: darkDynamic,
                                               lightDynamic: lightDynamic,
                                             ),
@@ -919,6 +1011,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                   //     ));
                                                   CupertinoScaffold
                                                       .showCupertinoModalBottomSheet(
+                                                    shadow: BoxShadow(
+                                                        color:
+                                                            Colors.transparent),
                                                     expand: false,
                                                     bounce: false,
                                                     enableDrag: true,
@@ -928,6 +1023,10 @@ class RefreshHomeState extends State<RefreshHome> {
                                                         Colors.transparent,
                                                     builder: (context) =>
                                                         RandomWord(
+                                                      topPadding:
+                                                          MediaQuery.of(context)
+                                                              .viewPadding
+                                                              .top,
                                                       darkDynamic: darkDynamic,
                                                       lightDynamic:
                                                           lightDynamic,
@@ -944,6 +1043,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                 duration: 10);
                                                     CupertinoScaffold
                                                         .showCupertinoModalBottomSheet(
+                                                      shadow: BoxShadow(
+                                                          color: Colors
+                                                              .transparent),
                                                       expand: false,
                                                       bounce: false,
                                                       enableDrag: true,
@@ -953,6 +1055,11 @@ class RefreshHomeState extends State<RefreshHome> {
                                                           Colors.transparent,
                                                       builder: (context) =>
                                                           RandomWord(
+                                                        topPadding:
+                                                            MediaQuery.of(
+                                                                    context)
+                                                                .viewPadding
+                                                                .top,
                                                         darkDynamic:
                                                             darkDynamic,
                                                         lightDynamic:
@@ -1160,6 +1267,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                     CupertinoPageRoute(
                                                       builder: (context) =>
                                                           CupertinoScaffold(
+                                                              transitionBackgroundColor:
+                                                                  Colors
+                                                                      .transparent,
                                                               body: MySettings(
                                                                   darkDynamic:
                                                                       darkDynamic,
@@ -1174,6 +1284,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                         curve:
                                                             Curves.easeOutExpo,
                                                         child: CupertinoScaffold(
+                                                            transitionBackgroundColor:
+                                                                Colors
+                                                                    .transparent,
                                                             body: MySettings(
                                                                 darkDynamic:
                                                                     darkDynamic,
@@ -1207,6 +1320,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                             context,
                                                             CupertinoPageRoute(
                                                               builder: (context) => CupertinoScaffold(
+                                                                  transitionBackgroundColor:
+                                                                      Colors
+                                                                          .transparent,
                                                                   body: MySettings(
                                                                       darkDynamic:
                                                                           darkDynamic,
@@ -1221,6 +1337,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                 curve: Curves
                                                                     .easeOutExpo,
                                                                 child: CupertinoScaffold(
+                                                                    transitionBackgroundColor:
+                                                                        Colors
+                                                                            .transparent,
                                                                     body: MySettings(
                                                                         darkDynamic:
                                                                             darkDynamic,
@@ -1234,6 +1353,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                               context,
                                                               CupertinoPageRoute(
                                                                 builder: (context) => CupertinoScaffold(
+                                                                    transitionBackgroundColor:
+                                                                        Colors
+                                                                            .transparent,
                                                                     body: MySettings(
                                                                         darkDynamic:
                                                                             darkDynamic,
@@ -1248,6 +1370,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                   curve: Curves
                                                                       .easeOutExpo,
                                                                   child: CupertinoScaffold(
+                                                                      transitionBackgroundColor:
+                                                                          Colors
+                                                                              .transparent,
                                                                       topRadius:
                                                                           Radius.circular(
                                                                               20),
@@ -1338,20 +1463,22 @@ class RefreshHomeState extends State<RefreshHome> {
                                                   )))))),
                             ],
                           ),
-                          Center(
-                              child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10,
-                                  ),
-                                  child: Text(
-                                      randInt == 0
-                                          ? "Tip: Shake Device to Share Zpp!"
-                                          : "Tip: Swipe a tile to the right to open!",
-                                      style: TextStyle(
-                                        color: context.isDarkMode == true
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ))))
+                          DelayedDisplay(
+                              delay: const Duration(milliseconds: 750),
+                              child: Center(
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 10,
+                                      ),
+                                      child: Text(
+                                          randInt == 0
+                                              ? "Tip: Shake Device to Share Zpp!"
+                                              : "Tip: Swipe a tile to the right to open!",
+                                          style: TextStyle(
+                                            color: context.isDarkMode == true
+                                                ? Colors.white
+                                                : Colors.black,
+                                          )))))
                         ]))),
               )));
     });

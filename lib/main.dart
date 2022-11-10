@@ -15,6 +15,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shake/shake.dart';
 import 'package:vibration/vibration.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -157,7 +158,8 @@ _vibrate() {
 
 class FutureCamera extends StatefulWidget {
   /// Default Constructor
-  const FutureCamera({Key? key}) : super(key: key);
+  const FutureCamera({Key? key, this.topPadding}) : super(key: key);
+  final topPadding;
 
   @override
   State<FutureCamera> createState() => _FutureCameraState();
@@ -211,6 +213,7 @@ class _FutureCameraState extends State<FutureCamera> {
   }
 
   var visibility = true;
+  bool loaded = false;
   @override
   Widget build(BuildContext context) {
     precacheImage(const AssetImage('assets/skull.png'), context);
@@ -218,354 +221,556 @@ class _FutureCameraState extends State<FutureCamera> {
     var size = MediaQuery.of(context).size;
     var height = MediaQuery.of(context).size.height - 60;
     if (!controller.value.isInitialized) {
-      return CupertinoPageScaffold(
-          backgroundColor: Colors.transparent,
-          // navigationBar:
-          //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: false,
-                systemNavigationBarContrastEnforced: false,
-                systemNavigationBarColor: Colors.transparent,
-                systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: Brightness.dark,
-              ),
-              sized: false,
-              child: SafeArea(
-                  bottom: false,
-                  child: Stack(alignment: Alignment.topRight, children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
-                        child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                            child: Container(
-                                color: Colors.white.withOpacity(0.1)))),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 60),
-                        child: ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(8.0),
-                                bottomRight: Radius.circular(8.0),
-                                topLeft: Radius.circular(18.0),
-                                topRight: Radius.circular(18.0)),
-                            child: Container(
-                                height: height,
-                                width: double.infinity,
-                                color: Colors.black))),
-                    Stack(
-                      alignment: Alignment.topRight,
-                      // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
-                      children: [
-                        const Center(
-                            child: Hero(
-                                transitionOnUserGestures: true,
-                                tag: 'camera',
-                                child: Icon(Icons.camera_alt,
-                                    color: Colors.white, size: 100))),
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const SafeArea(
-                                child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Image(
-                                      image: AssetImage('assets/wow.png'),
-                                    )))),
-                        Align(
-                            alignment: Alignment.topLeft,
-                            child: Bounceable(
-                                scaleFactor: 0.2,
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const SizedBox(
-                                  width: 52,
+      return Column(children: [
+        Padding(
+            padding: const EdgeInsets.only(top: 0, bottom: 10),
+            child: Center(
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10)),
+                    height: 5,
+                    width: 55))),
+        SizedBox(
+            height: MediaQuery.of(context).size.height - widget.topPadding - 25,
+            child: CupertinoPageScaffold(
+                backgroundColor: Colors.transparent,
+                // navigationBar:
+                //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
+                child: AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: const SystemUiOverlayStyle(
+                      systemStatusBarContrastEnforced: false,
+                      systemNavigationBarContrastEnforced: false,
+                      systemNavigationBarColor: Colors.transparent,
+                      systemNavigationBarDividerColor: Colors.transparent,
+                      systemNavigationBarIconBrightness: Brightness.dark,
+                    ),
+                    sized: false,
+                    child: SafeArea(
+                        bottom: false,
+                        child: Stack(alignment: Alignment.topRight, children: [
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: BackdropFilter(
+                                  filter:
+                                      ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                                  child: Container(
+                                      color: Colors.white.withOpacity(0.1)))),
+                          Padding(
+                              padding: const EdgeInsets.only(top: 60),
+                              child: ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(8.0),
+                                      bottomRight: Radius.circular(8.0),
+                                      topLeft: Radius.circular(18.0),
+                                      topRight: Radius.circular(18.0)),
+                                  child: Container(
+                                      height: height,
+                                      width: double.infinity,
+                                      color: Colors.transparent))),
+                          Stack(
+                            alignment: Alignment.topRight,
+                            // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const SafeArea(
+                                      child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Image(
+                                            image: AssetImage('assets/wow.png'),
+                                          )))),
+                              Align(
+                                  alignment: Alignment.topRight,
                                   child: Padding(
-                                      padding: EdgeInsets.only(top: 3),
-                                      child: Image(
-                                          image: AssetImage(
-                                              'assets/snap-close.png'),
-                                          fit: BoxFit.cover)),
-                                ))),
-                        const Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                                padding: EdgeInsets.fromLTRB(0, 18, 0, 0),
-                                child: Text("See Yourself in 200 years",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)))),
-                      ],
-                    ),
-                  ]))));
+                                      padding: const EdgeInsets.only(
+                                          top: 15, right: 15),
+                                      child: Bounceable(
+                                          scaleFactor: 0.6,
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                              width: 90,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          200000),
+                                                  color: const Color.fromARGB(
+                                                          255, 204, 204, 204)
+                                                      .withOpacity(0.8),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                                  255,
+                                                                  65,
+                                                                  65,
+                                                                  65)
+                                                              .withOpacity(0.3),
+                                                      spreadRadius: 10,
+                                                      blurRadius: 7,
+                                                      // changes position of shadow
+                                                    ),
+                                                  ]),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text("Home",
+                                                        style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 99, 99, 99),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18,
+                                                        )),
+                                                    SizedBox(
+                                                        height: 30,
+                                                        width: 30,
+                                                        child: RotatedBox(
+                                                            quarterTurns: 1,
+                                                            child: Icon(
+                                                                Icons
+                                                                    .arrow_forward_ios_rounded,
+                                                                size: 25,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        99,
+                                                                        99,
+                                                                        99))))
+                                                  ]))))),
+                              Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(25, 18, 115, 0),
+                                      child: FittedBox(
+                                          child: Text(
+                                              "See Yourself in 200 years",
+                                              style: TextStyle(
+                                                  color: context.isDarkMode
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                  fontSize: 20,
+                                                  fontWeight:
+                                                      FontWeight.bold))))),
+                            ],
+                          ),
+                        ])))))
+      ]);
     } else if (visibility == true) {
-      return CupertinoPageScaffold(
-          backgroundColor: Colors.transparent,
-          // navigationBar:
-          //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: false,
-                systemNavigationBarColor: Colors.transparent,
-                systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: Brightness.dark,
-              ),
-              sized: false,
-              child: Stack(alignment: Alignment.topRight, children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(18),
-                    child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                        child:
-                            Container(color: Colors.white.withOpacity(0.1)))),
-                Padding(
-                    padding: const EdgeInsets.only(top: 60),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
-                        child: Container(
-                            color: Colors.black,
-                            height: double.infinity,
-                            width: double.infinity))),
-                Padding(
-                    padding: const EdgeInsets.only(top: 60),
-                    child: Stack(
-                      // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
-                      children: [
-                        ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(8.0),
-                                bottomRight: Radius.circular(8.0),
-                                topLeft: Radius.circular(18.0),
-                                topRight: Radius.circular(18.0)),
-                            child: ClipRect(
-                              child: Transform.scale(
-                                scale: (height /
-                                        controller.value.previewSize!.height) *
-                                    1.5,
-                                child: Center(
-                                  child: AspectRatio(
-                                    aspectRatio:
-                                        1 / controller.value.aspectRatio,
-                                    child: CameraPreview(controller),
-                                  ),
-                                ),
-                              ),
-                            )),
-                        GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                visibility = false;
-                                devModeOn == false
-                                    ? controller.dispose()
-                                    : null;
-                              });
-                            },
-                            child: const SafeArea(
-                                child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Image(
-                                      image: AssetImage('assets/wow.png'),
-                                    )))),
-                      ],
-                    )),
-                // const Padding(
-                //     padding: EdgeInsets.only(top: 15, right: 8),
-                //     child: Align(
-                //         alignment: Alignment.topRight,
-                //         child: Padding(
-                //             padding: EdgeInsets.only(top: 8),
-                //             child: RotatedBox(
-                //                 quarterTurns: 1,
-                //                 child: CupertinoNavigationBarBackButton(
-                //                     // previousPageTitle: "Home",
-                //                     ))))),
-                Align(
-                    alignment: Alignment.topLeft,
-                    child: Bounceable(
-                        scaleFactor: 0.2,
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const SizedBox(
-                          width: 52,
-                          child: Padding(
-                              padding: EdgeInsets.only(top: 3),
-                              child: Image(
-                                  image: AssetImage('assets/snap-close.png'),
-                                  fit: BoxFit.cover)),
-                        ))),
-                const Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 18, 0, 0),
-                        child: Text("See Yourself in 200 years",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)))),
-              ])));
-    } else {
-      return CupertinoPageScaffold(
-          backgroundColor: Colors.transparent,
-          // navigationBar:
-          //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                systemStatusBarContrastEnforced: false,
-                systemNavigationBarColor: Colors.transparent,
-                systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: Brightness.dark,
-              ),
-              sized: false,
-              child: Stack(children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(18),
-                    child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                        child:
-                            Container(color: Colors.white.withOpacity(0.1)))),
-                Padding(
-                    padding: const EdgeInsets.only(top: 60),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
-                        child: Container(
-                            color: Colors.black,
-                            height: double.infinity,
-                            width: double.infinity))),
-                Stack(
-                  // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
-                  children: [
-                    const Center(
-                        child: Image(
-                            image: AssetImage('assets/skull.png'),
-                            fit: BoxFit.cover)),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: Bounceable(
-                            scaleFactor: 0.2,
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const SizedBox(
-                              width: 52,
-                              child: Padding(
-                                  padding: EdgeInsets.only(top: 3),
-                                  child: Image(
-                                      image:
-                                          AssetImage('assets/snap-close.png'),
-                                      fit: BoxFit.cover)),
-                            ))),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                          onTap: () {
-                            showOverlayNotification((context) {
-                              return Padding(
-                                  padding: EdgeInsets.only(
-                                      top: MediaQuery.of(context)
-                                              .viewPadding
-                                              .top +
-                                          15),
-                                  child: SizedBox(
-                                      width: MediaQuery.of(context).size.width -
-                                          150,
-                                      height: 50,
-                                      child: Stack(children: [
-                                        ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(112328),
-                                            child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 20, sigmaY: 20),
-                                                child: Container(
-                                                    color: Colors.white
-                                                        .withOpacity(0.1)))),
-                                        ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            child: Container(
-                                                alignment: Alignment.center,
-                                                child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                          "No editing for u Bozo",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 20))
-                                                    ])))
-                                      ])));
-                            }, duration: Duration(milliseconds: 4000));
-                          },
-                          child: SizedBox(
-                              width: 60,
-                              child: Padding(
-                                  padding: EdgeInsets.only(top: 5),
-                                  child: Image(
-                                      image: AssetImage('assets/snap-edit.png'),
-                                      fit: BoxFit.cover)))),
+      return Column(children: [
+        Padding(
+            padding: const EdgeInsets.only(top: 0, bottom: 10),
+            child: Center(
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10)),
+                    height: 5,
+                    width: 55))),
+        SizedBox(
+            height: MediaQuery.of(context).size.height - widget.topPadding - 25,
+            child: CupertinoPageScaffold(
+                backgroundColor: Colors.transparent,
+                // navigationBar:
+                //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
+                child: AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: const SystemUiOverlayStyle(
+                      systemStatusBarContrastEnforced: false,
+                      systemNavigationBarColor: Colors.transparent,
+                      systemNavigationBarDividerColor: Colors.transparent,
+                      systemNavigationBarIconBrightness: Brightness.dark,
                     ),
-                    const Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 18, 0, 0),
-                            child: Text("See Yourself in 200 years",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)))),
-                    Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 40 +
-                                    MediaQuery.of(context).viewPadding.bottom),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Only on',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                    sized: false,
+                    child: Stack(alignment: Alignment.topRight, children: [
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(18),
+                          child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                              child: Container(
+                                  color: Colors.white.withOpacity(0.1)))),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 60),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: Container(
+                                  color: Colors.black,
+                                  height: double.infinity,
+                                  width: double.infinity))),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 60),
+                          child: Stack(
+                            // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
+                            children: [
+                              ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(8.0),
+                                      bottomRight: Radius.circular(8.0),
+                                      topLeft: Radius.circular(18.0),
+                                      topRight: Radius.circular(18.0)),
+                                  child: ClipRect(
+                                    child: Transform.scale(
+                                      scale: (height /
+                                              controller
+                                                  .value.previewSize!.height) *
+                                          1.5,
+                                      child: Center(
+                                        child: AspectRatio(
+                                          aspectRatio:
+                                              1 / controller.value.aspectRatio,
+                                          child: CameraPreview(controller),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                      padding: EdgeInsets.only(left: 7.5),
-                                      child: SizedBox(
-                                          height: 40,
-                                          width: 17.5,
-                                          child: ClipRect(
-                                              child: Transform.scale(
-                                                  scale: 1.4,
-                                                  child: Image(
-                                                      image: AssetImage(
-                                                          'assets/bolt.png'),
-                                                      fit: BoxFit.cover))))),
-                                  Text(
-                                    'Zpp',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ])))
-                  ],
-                ),
-              ])));
+                                  )),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      visibility = false;
+                                      devModeOn == false
+                                          ? controller.dispose()
+                                          : null;
+                                      Future.delayed(
+                                          Duration(
+                                              milliseconds: Platform.isIOS
+                                                  ? 2500
+                                                  : 750), () {
+                                        setState(() {
+                                          loaded = true;
+                                        });
+                                      });
+                                    });
+                                  },
+                                  child: const SafeArea(
+                                      child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Image(
+                                            image: AssetImage('assets/wow.png'),
+                                          )))),
+                            ],
+                          )),
+                      // const Padding(
+                      //     padding: EdgeInsets.only(top: 15, right: 8),
+                      //     child: Align(
+                      //         alignment: Alignment.topRight,
+                      //         child: Padding(
+                      //             padding: EdgeInsets.only(top: 8),
+                      //             child: RotatedBox(
+                      //                 quarterTurns: 1,
+                      //                 child: CupertinoNavigationBarBackButton(
+                      //                     // previousPageTitle: "Home",
+                      //                     ))))),
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 15, right: 15),
+                              child: Bounceable(
+                                  scaleFactor: 0.6,
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                      width: 90,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(200000),
+                                          color: const Color.fromARGB(
+                                                  255, 204, 204, 204)
+                                              .withOpacity(0.8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color.fromARGB(
+                                                      255, 65, 65, 65)
+                                                  .withOpacity(0.3),
+                                              spreadRadius: 10,
+                                              blurRadius: 7,
+                                              // changes position of shadow
+                                            ),
+                                          ]),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Text("Home",
+                                                style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 99, 99, 99),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                )),
+                                            SizedBox(
+                                                height: 30,
+                                                width: 30,
+                                                child: RotatedBox(
+                                                    quarterTurns: 1,
+                                                    child: Icon(
+                                                        Icons
+                                                            .arrow_forward_ios_rounded,
+                                                        size: 25,
+                                                        color: Color.fromARGB(
+                                                            255, 99, 99, 99))))
+                                          ]))))),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                              padding: EdgeInsets.fromLTRB(25, 18, 115, 0),
+                              child: FittedBox(
+                                  child: Text("See Yourself in 200 years",
+                                      style: TextStyle(
+                                          color: context.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold))))),
+                    ]))))
+      ]);
+    } else {
+      return Column(children: [
+        Padding(
+            padding: const EdgeInsets.only(top: 0, bottom: 10),
+            child: Center(
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10)),
+                    height: 5,
+                    width: 55))),
+        SizedBox(
+            height: MediaQuery.of(context).size.height - widget.topPadding - 25,
+            child: CupertinoPageScaffold(
+                backgroundColor: Colors.transparent,
+                // navigationBar:
+                //     CupertinoNavigationBar(middle: Text("See yourself in 200 years")),
+                child: AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: const SystemUiOverlayStyle(
+                      systemStatusBarContrastEnforced: false,
+                      systemNavigationBarColor: Colors.transparent,
+                      systemNavigationBarDividerColor: Colors.transparent,
+                      systemNavigationBarIconBrightness: Brightness.dark,
+                    ),
+                    sized: false,
+                    child: Stack(children: [
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(18),
+                          child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                              child: Container(
+                                  color: Colors.white.withOpacity(0.1)))),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 60),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: Container(
+                                  color: Colors.black,
+                                  height: double.infinity,
+                                  width: double.infinity))),
+                      Stack(
+                        // Platform.isAndroid ? Future.delayed(Duration(seconds: 5)) : null;
+                        children: [
+                          Center(
+                              child: LoadingAnimationWidget.inkDrop(
+                                  color: Colors.white, size: 50)),
+                          Visibility(
+                              visible: loaded,
+                              child: const Center(
+                                  child: Image(
+                                      image: AssetImage('assets/skull.png'),
+                                      fit: BoxFit.cover))),
+                          Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 15, right: 15),
+                                  child: Bounceable(
+                                      scaleFactor: 0.6,
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                          width: 90,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(200000),
+                                              color: const Color.fromARGB(
+                                                      255, 204, 204, 204)
+                                                  .withOpacity(0.8),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color.fromARGB(
+                                                          255, 65, 65, 65)
+                                                      .withOpacity(0.3),
+                                                  spreadRadius: 10,
+                                                  blurRadius: 7,
+                                                  // changes position of shadow
+                                                ),
+                                              ]),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Text("Home",
+                                                    style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 99, 99, 99),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                    )),
+                                                SizedBox(
+                                                    height: 30,
+                                                    width: 30,
+                                                    child: RotatedBox(
+                                                        quarterTurns: 1,
+                                                        child: Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            size: 25,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    99,
+                                                                    99,
+                                                                    99))))
+                                              ]))))),
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                  padding: EdgeInsets.fromLTRB(25, 18, 115, 0),
+                                  child: FittedBox(
+                                      child: Text("See Yourself in 200 years",
+                                          style: TextStyle(
+                                              color: context.isDarkMode
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold))))),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                                onTap: () {
+                                  showOverlayNotification((context) {
+                                    return Padding(
+                                        padding: EdgeInsets.only(
+                                            top: MediaQuery.of(context)
+                                                    .viewPadding
+                                                    .top +
+                                                15),
+                                        child: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                150,
+                                            height: 50,
+                                            child: Stack(children: [
+                                              ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          112328),
+                                                  child: BackdropFilter(
+                                                      filter: ImageFilter.blur(
+                                                          sigmaX: 20,
+                                                          sigmaY: 20),
+                                                      child: Container(
+                                                          color: Colors.white
+                                                              .withOpacity(
+                                                                  0.1)))),
+                                              ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  child: Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                                "No editing for u Bozo",
+                                                                style: TextStyle(
+                                                                    color: context.isDarkMode
+                                                                        ? Colors
+                                                                            .white
+                                                                        : Colors
+                                                                            .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        20))
+                                                          ])))
+                                            ])));
+                                  }, duration: Duration(milliseconds: 4000));
+                                },
+                                child: Visibility(
+                                    visible: loaded,
+                                    child: SizedBox(
+                                        width: 60,
+                                        child: Padding(
+                                            padding: EdgeInsets.only(top: 65),
+                                            child: Image(
+                                                image: AssetImage(
+                                                    'assets/snap-edit.png'),
+                                                fit: BoxFit.cover))))),
+                          ),
+                          Visibility(
+                              visible: loaded,
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: 40 +
+                                              MediaQuery.of(context)
+                                                  .viewPadding
+                                                  .bottom),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Only on',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 7.5),
+                                                child: SizedBox(
+                                                    height: 40,
+                                                    width: 17.5,
+                                                    child: ClipRect(
+                                                        child: Transform.scale(
+                                                            scale: 1.4,
+                                                            child: Image(
+                                                                image: AssetImage(
+                                                                    'assets/bolt.png'),
+                                                                fit: BoxFit
+                                                                    .cover))))),
+                                            Text(
+                                              'Zpp',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ]))))
+                        ],
+                      ),
+                    ]))))
+      ]);
     }
   }
 }

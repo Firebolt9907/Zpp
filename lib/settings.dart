@@ -84,6 +84,49 @@ class MySettingsState extends State<MySettings> {
               border: Border.all(color: const Color.fromARGB(0, 255, 255, 255)),
               middle: const Text('Settings'),
               previousPageTitle: 'Home',
+              trailing: Padding(
+                  padding: const EdgeInsets.only(top: 0, right: 0),
+                  child: Bounceable(
+                      scaleFactor: 0.6,
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                          width: 90,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(200000),
+                              color: const Color.fromARGB(255, 204, 204, 204)
+                                  .withOpacity(0.8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: context.isDarkMode == true
+                                      ? const Color.fromARGB(255, 65, 65, 65)
+                                          .withOpacity(0.3)
+                                      : const Color.fromARGB(255, 204, 204, 204)
+                                          .withOpacity(0.6),
+                                  spreadRadius: 10,
+                                  blurRadius: 7,
+                                  // changes position of shadow
+                                ),
+                              ]),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text("Home",
+                                    style: TextStyle(
+                                      color: widget.lightDynamic.primary ??
+                                          Color.fromARGB(255, 99, 99, 99),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    )),
+                                SizedBox(
+                                    height: 30,
+                                    width: 30,
+                                    child: Icon(Icons.arrow_forward_ios_rounded,
+                                        size: 25,
+                                        color: widget.lightDynamic.primary ??
+                                            Color.fromARGB(255, 99, 99, 99)))
+                              ])))),
               automaticallyImplyLeading: true,
             ),
             child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -163,18 +206,22 @@ class MySettingsState extends State<MySettings> {
                                                   color: Colors.grey
                                                       .withOpacity(0.1),
                                                   alignment: Alignment.center,
-                                                  child: const Padding(
+                                                  child: Padding(
                                                     padding:
                                                         EdgeInsets.symmetric(
                                                             vertical: 5),
-                                                    child: Text(
-                                                      'My Friends',
-                                                      style: TextStyle(
-                                                          fontSize: 40,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
+                                                    child: Hero(
+                                                        tag: 'myfriends',
+                                                        child: Text(
+                                                          'My Friends',
+                                                          style: TextStyle(
+                                                              fontSize: 40,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )),
                                                   ),
                                                 ),
                                               )),
@@ -611,16 +658,19 @@ class MySettingsState extends State<MySettings> {
                                           //   builder: (context) => const Credits(),
                                           // );
                                         },
-                                        title: Text(
-                                          'Credits',
-                                          style: TextStyle(
-                                            color: context.isDarkMode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 19.5,
-                                          ),
-                                        ),
+                                        title: Hero(
+                                            tag: 'credits',
+                                            child: Text(
+                                              'Credits',
+                                              style: TextStyle(
+                                                color:
+                                                    context.isDarkMode == true
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 19.5,
+                                              ),
+                                            )),
                                         trailing: Icon(
                                           Icons.arrow_forward_ios_rounded,
                                           color: context.isDarkMode == true

@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'dart:ui';
+import 'package:Zpp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:vibration/vibration.dart';
 
@@ -158,24 +160,27 @@ class CoinFlipState extends State<CoinFlip2p> {
                                                                   .Color.fromARGB(
                                                               149, 47, 48, 84)),
                                                       const RotatedBox(
-                                                          quarterTurns: 2,
-                                                          child: Center(
-                                                              child: Padding(
-                                                                  padding: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              30),
-                                                                  child: FittedBox(
-                                                                      fit: BoxFit
-                                                                          .fitWidth,
-                                                                      child: Text(
-                                                                          'Tap and Hold to Ready Up',
-                                                                          textAlign: TextAlign
-                                                                              .center,
-                                                                          style: TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 30)))))),
+                                                        quarterTurns: 2,
+                                                        child: Center(
+                                                            child: Padding(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            30),
+                                                                child: Text(
+                                                                    'Tap and Hold to Ready Up',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize:
+                                                                            30)))),
+                                                      ),
                                                       Visibility(
                                                           visible: var1,
                                                           child:
@@ -210,6 +215,63 @@ class CoinFlipState extends State<CoinFlip2p> {
                                   transitionBetweenRoutes: false,
                                   border: null,
                                   backgroundColor: Colors.black,
+                                  trailing: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 0, right: 0),
+                                      child: Bounceable(
+                                          scaleFactor: 0.6,
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                              width: 90,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          200000),
+                                                  color: const Color.fromARGB(
+                                                          255, 204, 204, 204)
+                                                      .withOpacity(0.8),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                                  255,
+                                                                  65,
+                                                                  65,
+                                                                  65)
+                                                              .withOpacity(0.3),
+                                                      spreadRadius: 10,
+                                                      blurRadius: 7,
+                                                      // changes position of shadow
+                                                    ),
+                                                  ]),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text("Home",
+                                                        style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 99, 99, 99),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18,
+                                                        )),
+                                                    SizedBox(
+                                                        height: 30,
+                                                        width: 30,
+                                                        child: Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            size: 25,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    99,
+                                                                    99,
+                                                                    99)))
+                                                  ])))),
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(left: 15),
