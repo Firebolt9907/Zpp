@@ -11,11 +11,11 @@ import 'package:Zpp/coin_flip_6p.dart';
 import 'package:Zpp/coin_flip_7p.dart';
 import 'package:Zpp/coin_flip_8p.dart';
 import 'package:Zpp/random-word.dart';
-import 'package:battery_info/battery_info_plugin.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -23,22 +23,12 @@ import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:flutter/services.dart';
-import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:camera/camera.dart';
 import 'package:simple_list_tile/simple_list_tile.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-
-import 'package:battery_info/battery_info_plugin.dart';
-import 'package:battery_info/model/android_battery_info.dart';
-import 'package:battery_info/enums/charging_status.dart';
-import 'package:battery_info/model/iso_battery_info.dart';
-
-// import 'package:overlay_support/overlay_support.dart';
-// import 'package:flutter_slidable/flutter_slidable.dart';
-// import 'package:dynamic_color/dynamic_color.dart';
 
 import 'about_us.dart';
 import 'coin_flip_4p.dart';
@@ -73,7 +63,6 @@ class RefreshHomeState extends State<RefreshHome> {
   void initState() {
     super.initState();
     _loadCounter();
-    _getBattery();
     // controller.initialize();
   }
 
@@ -94,32 +83,11 @@ class RefreshHomeState extends State<RefreshHome> {
     });
   }
 
-  _getBattery() async {
-    var ios = (await BatteryInfoPlugin().iosBatteryInfo)!.batteryLevel;
-    var android = (await BatteryInfoPlugin().androidBatteryInfo)!.batteryLevel;
-    var battery = Platform.isIOS ? ios : android;
-    setState(() {
-      batteryLevel = int.tryParse('$battery');
-    });
-  }
-
   var randInt = Random().nextInt(2);
   @override
   Widget build(BuildContext context) {
     precacheImage(const AssetImage('assets/wow.png'), context);
     WidgetsFlutterBinding.ensureInitialized();
-
-    // spam == true
-    //     ? {
-    //         WidgetsFlutterBinding.ensureInitialized(),
-    //         Navigator.push(
-    //             context,
-    //             CupertinoPageRoute(
-    //               builder: (context) => AboutUs(),
-    //             ))
-    //       }
-    //     : null;
-    //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return DynamicColorBuilder(
         builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
       return CupertinoPageScaffold(
@@ -160,17 +128,13 @@ class RefreshHomeState extends State<RefreshHome> {
                     if (change.didChange(
                         from: IndicatorState.dragging,
                         to: IndicatorState.armed)) {
-                      Vibration.vibrate(duration: 5, amplitude: 255);
+                      Vibrate.feedback(FeedbackType.impact);
                     } else if (change.didChange(
                         from: IndicatorState.armed,
                         to: IndicatorState.loading)) {
-                      Vibration.vibrate(duration: 10, amplitude: 128);
+                      Vibrate.feedback(FeedbackType.impact);
                     }
                   }
-                  //else if (change.didChange(
-                  //     from: IndicatorState.armed, to: IndicatorState.loading)) {
-                  //   _vibrate();
-                  // }
                 },
                 builder: (context, child, controller) => AnimatedBuilder(
                     animation: controller,
@@ -210,502 +174,355 @@ class RefreshHomeState extends State<RefreshHome> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
                         child: ListView(children: [
-                          false
-                              ? Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: SizedBox(
-                                      width: MediaQuery.of(context).size.width -
-                                          20,
-                                      height: 100,
-                                      child: Stack(children: [
-                                        ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(18),
-                                            child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 20, sigmaY: 20),
-                                                child: Container(
-                                                    color: Colors.white
-                                                        .withOpacity(0.1)))),
-                                        ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            child: Container(
-                                                alignment: Alignment.center,
-                                                child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 15,
-                                                                  right: 15),
-                                                          child: Text(
-                                                              batteryLevel
-                                                                  .toString()))
-                                                    ])))
-                                      ])))
-                              : Container(),
                           Stack(
                             // padding: const EdgeInsets.only(bottom: 0),
                             children: [
                               DelayedDisplay(
                                   delay: const Duration(milliseconds: 0),
-                                  child: Dismissible(
-                                      resizeDuration:
-                                          const Duration(milliseconds: 10),
-                                      direction: DismissDirection.none,
-                                      onDismissed: (dismissed) {
-                                        Platform.isMacOS
-                                            ? null
-                                            : Platform.isWindows
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20,
+                                          left: 10,
+                                          right: 20,
+                                          bottom: 0),
+                                      child: Bounceable(
+                                          onTap: () {
+                                            Platform.isMacOS
                                                 ? null
-                                                : Vibration.vibrate(
-                                                    duration: 10);
-                                        Future.delayed(
-                                            Duration(milliseconds: 3500), () {
-                                          setState(() {
-                                            topDismissed = false;
-                                            bottomDismissed = false;
-                                          });
-                                        });
-                                        devModeOn == false
-                                            ? Navigator.push(
-                                                context,
-                                                CupertinoPageRoute(
-                                                  builder: (context) => coinFlip ==
-                                                          2.0
-                                                      ? CoinFlip2p(
-                                                          devModeOn: devModeOn,
-                                                        )
-                                                      : coinFlip == 3.0
-                                                          ? CoinFlip3p(
+                                                : Platform.isWindows
+                                                    ? null
+                                                    : Vibrate.feedback(
+                                                        FeedbackType.impact);
+
+                                            devModeOn == false
+                                                ? Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                      builder: (context) => coinFlip ==
+                                                              2.0
+                                                          ? CoinFlip2p(
                                                               devModeOn:
                                                                   devModeOn,
                                                             )
-                                                          : coinFlip == 4.0
-                                                              ? CoinFlip4p(
+                                                          : coinFlip == 3.0
+                                                              ? CoinFlip3p(
                                                                   devModeOn:
                                                                       devModeOn,
                                                                 )
-                                                              : coinFlip == 5.0
-                                                                  ? CoinFlip5p(
+                                                              : coinFlip == 4.0
+                                                                  ? CoinFlip4p(
                                                                       devModeOn:
                                                                           devModeOn,
                                                                     )
                                                                   : coinFlip ==
-                                                                          6.0
-                                                                      ? CoinFlip6p(
+                                                                          5.0
+                                                                      ? CoinFlip5p(
                                                                           devModeOn:
                                                                               devModeOn,
                                                                         )
                                                                       : coinFlip ==
-                                                                              7.0
-                                                                          ? CoinFlip7p(
+                                                                              6.0
+                                                                          ? CoinFlip6p(
                                                                               devModeOn: devModeOn,
                                                                             )
-                                                                          : CoinFlip8p(
-                                                                              devModeOn: devModeOn,
-                                                                            ),
-                                                ))
-                                            : Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                    type: PageTransitionType
-                                                        .rightToLeft,
-                                                    curve: Curves.easeOutExpo,
-                                                    child: coinFlip == 2.0
-                                                        ? const CoinFlip2p()
-                                                        : coinFlip == 3.0
-                                                            ? const CoinFlip3p()
-                                                            : coinFlip == 4.0
-                                                                ? const CoinFlip4p()
-                                                                : coinFlip ==
-                                                                        5.0
-                                                                    ? const CoinFlip5p()
-                                                                    : coinFlip ==
-                                                                            6.0
-                                                                        ? const CoinFlip6p()
-                                                                        : coinFlip ==
-                                                                                7.0
-                                                                            ? const CoinFlip7p()
-                                                                            : const CoinFlip8p()));
-                                        Future.delayed(
-                                            const Duration(milliseconds: 500),
-                                            () {
-                                          setState(() {});
-                                        });
-                                      },
-                                      onUpdate: (details) {
-                                        // setState(() {
-                                        // });
-                                      },
-                                      key: UniqueKey(),
-                                      background: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text('Open?',
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: context.isDarkMode
-                                                      ? Colors.white
-                                                      : Colors.black))),
-                                      child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20,
-                                              left: 10,
-                                              right: 20,
-                                              bottom: 0),
-                                          child: Bounceable(
-                                              onTap: () {
-                                                Platform.isMacOS
-                                                    ? null
-                                                    : Platform.isWindows
-                                                        ? null
-                                                        : Vibration.vibrate(
-                                                            duration: 10);
-
-                                                devModeOn == false
-                                                    ? Navigator.push(
-                                                        context,
-                                                        CupertinoPageRoute(
-                                                          builder: (context) => coinFlip ==
-                                                                  2.0
-                                                              ? CoinFlip2p(
-                                                                  devModeOn:
-                                                                      devModeOn,
-                                                                )
-                                                              : coinFlip == 3.0
-                                                                  ? CoinFlip3p(
-                                                                      devModeOn:
-                                                                          devModeOn,
-                                                                    )
-                                                                  : coinFlip ==
-                                                                          4.0
-                                                                      ? CoinFlip4p(
-                                                                          devModeOn:
-                                                                              devModeOn,
-                                                                        )
-                                                                      : coinFlip ==
-                                                                              5.0
-                                                                          ? CoinFlip5p(
-                                                                              devModeOn: devModeOn,
-                                                                            )
-                                                                          : coinFlip == 6.0
-                                                                              ? CoinFlip6p(
+                                                                          : coinFlip == 7.0
+                                                                              ? CoinFlip7p(
                                                                                   devModeOn: devModeOn,
                                                                                 )
-                                                                              : coinFlip == 7.0
-                                                                                  ? CoinFlip7p(
-                                                                                      devModeOn: devModeOn,
-                                                                                    )
-                                                                                  : CoinFlip8p(
-                                                                                      devModeOn: devModeOn,
-                                                                                    ),
-                                                        ))
-                                                    : Navigator.push(
-                                                        context,
-                                                        PageTransition(
-                                                            type:
-                                                                PageTransitionType
-                                                                    .rightToLeft,
-                                                            curve: Curves
-                                                                .easeOutExpo,
-                                                            child: coinFlip ==
-                                                                    2.0
-                                                                ? const CoinFlip2p()
+                                                                              : CoinFlip8p(
+                                                                                  devModeOn: devModeOn,
+                                                                                ),
+                                                    ))
+                                                : Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        curve:
+                                                            Curves.easeOutExpo,
+                                                        child: coinFlip == 2.0
+                                                            ? const CoinFlip2p()
+                                                            : coinFlip == 3.0
+                                                                ? const CoinFlip3p()
                                                                 : coinFlip ==
-                                                                        3.0
-                                                                    ? const CoinFlip3p()
+                                                                        4.0
+                                                                    ? const CoinFlip4p()
                                                                     : coinFlip ==
-                                                                            4.0
-                                                                        ? const CoinFlip4p()
+                                                                            5.0
+                                                                        ? const CoinFlip5p()
                                                                         : coinFlip ==
-                                                                                5.0
-                                                                            ? const CoinFlip5p()
-                                                                            : coinFlip == 6.0
-                                                                                ? const CoinFlip6p()
-                                                                                : coinFlip == 7.0
-                                                                                    ? const CoinFlip7p()
-                                                                                    : const CoinFlip8p()));
-                                              },
-                                              child: SimpleListTile(
-                                                onTap: () {
-                                                  Platform.isMacOS
+                                                                                6.0
+                                                                            ? const CoinFlip6p()
+                                                                            : coinFlip == 7.0
+                                                                                ? const CoinFlip7p()
+                                                                                : const CoinFlip8p()));
+                                          },
+                                          child: SimpleListTile(
+                                            onTap: () {
+                                              Platform.isMacOS
+                                                  ? null
+                                                  : Platform.isWindows
                                                       ? null
-                                                      : Platform.isWindows
-                                                          ? null
-                                                          : Vibration.vibrate(
-                                                              duration: 10);
-                                                  showOverlayNotification(
-                                                      (context) {
-                                                    return Dismissible(
-                                                        key: UniqueKey(),
-                                                        direction:
-                                                            DismissDirection.up,
-                                                        onDismissed:
-                                                            ((direction) {
-                                                          setState(() {
-                                                            topDismissed = true;
-                                                          });
-                                                        }),
-                                                        child: Visibility(
-                                                            visible:
-                                                                !topDismissed,
-                                                            child: Padding(
-                                                                padding: EdgeInsets.only(
-                                                                    top: MediaQuery.of(context)
-                                                                            .viewPadding
-                                                                            .top +
-                                                                        5),
-                                                                child: SizedBox(
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width -
-                                                                        20,
-                                                                    height: 50,
-                                                                    child: Stack(
-                                                                        children: [
-                                                                          ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(18),
-                                                                              child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20), child: Container(color: Colors.white.withOpacity(0.1)))),
-                                                                          ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(15),
-                                                                              child: Container(
-                                                                                  alignment: Alignment.center,
-                                                                                  child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: const [
-                                                                                    RotatedBox(quarterTurns: 2, child: Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)))))
-                                                                                  ])))
-                                                                        ])))));
-                                                  },
-                                                      duration: const Duration(
-                                                          milliseconds: 3000));
-                                                  showOverlayNotification(
-                                                      position:
-                                                          NotificationPosition
-                                                              .bottom,
-                                                      (context) {
-                                                    return Dismissible(
-                                                        key: UniqueKey(),
-                                                        direction:
-                                                            DismissDirection
-                                                                .down,
-                                                        onDismissed:
-                                                            ((direction) {
-                                                          setState(() {
-                                                            bottomDismissed =
-                                                                true;
-                                                          });
-                                                        }),
-                                                        child: Visibility(
-                                                            visible:
-                                                                !bottomDismissed,
-                                                            child: Padding(
-                                                                padding: EdgeInsets.only(
-                                                                    bottom: MediaQuery.of(context)
-                                                                            .viewPadding
-                                                                            .bottom +
-                                                                        20),
-                                                                child: SizedBox(
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width -
-                                                                        20,
-                                                                    height: 50,
-                                                                    child: Stack(
-                                                                        children: [
-                                                                          ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(18),
-                                                                              child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20), child: Container(color: Colors.white.withOpacity(0.1)))),
-                                                                          ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(15),
-                                                                              child: Container(
-                                                                                  alignment: Alignment.center,
-                                                                                  child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                                                                    const Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20))))
-                                                                                  ])))
-                                                                        ])))));
-                                                  },
-                                                      duration: const Duration(
-                                                          milliseconds: 3000));
-                                                  devModeOn == false
-                                                      ? Navigator.push(
-                                                          context,
-                                                          CupertinoPageRoute(
-                                                            builder: (context) => coinFlip ==
-                                                                    2.0
-                                                                ? CoinFlip2p(
+                                                      : Vibrate.feedback(
+                                                          FeedbackType.impact);
+                                              showOverlayNotification(
+                                                  (context) {
+                                                return Dismissible(
+                                                    key: UniqueKey(),
+                                                    direction:
+                                                        DismissDirection.up,
+                                                    onDismissed: ((direction) {
+                                                      setState(() {
+                                                        topDismissed = true;
+                                                      });
+                                                    }),
+                                                    child: Visibility(
+                                                        visible: !topDismissed,
+                                                        child: Padding(
+                                                            padding: EdgeInsets.only(
+                                                                top: MediaQuery.of(
+                                                                            context)
+                                                                        .viewPadding
+                                                                        .top +
+                                                                    5),
+                                                            child: SizedBox(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width -
+                                                                    20,
+                                                                height: 50,
+                                                                child: Stack(
+                                                                    children: [
+                                                                      ClipRRect(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              18),
+                                                                          child: BackdropFilter(
+                                                                              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                                                                              child: Container(color: Colors.white.withOpacity(0.1)))),
+                                                                      ClipRRect(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(15),
+                                                                          child: Container(
+                                                                              alignment: Alignment.center,
+                                                                              child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: const [
+                                                                                RotatedBox(quarterTurns: 2, child: Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)))))
+                                                                              ])))
+                                                                    ])))));
+                                              },
+                                                  duration: const Duration(
+                                                      milliseconds: 3000));
+                                              showOverlayNotification(
+                                                  position: NotificationPosition
+                                                      .bottom, (context) {
+                                                return Dismissible(
+                                                    key: UniqueKey(),
+                                                    direction:
+                                                        DismissDirection.down,
+                                                    onDismissed: ((direction) {
+                                                      setState(() {
+                                                        bottomDismissed = true;
+                                                      });
+                                                    }),
+                                                    child: Visibility(
+                                                        visible:
+                                                            !bottomDismissed,
+                                                        child: Padding(
+                                                            padding: EdgeInsets.only(
+                                                                bottom: MediaQuery.of(
+                                                                            context)
+                                                                        .viewPadding
+                                                                        .bottom +
+                                                                    20),
+                                                            child: SizedBox(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width -
+                                                                    20,
+                                                                height: 50,
+                                                                child: Stack(
+                                                                    children: [
+                                                                      ClipRRect(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              18),
+                                                                          child: BackdropFilter(
+                                                                              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                                                                              child: Container(color: Colors.white.withOpacity(0.1)))),
+                                                                      ClipRRect(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(15),
+                                                                          child: Container(
+                                                                              alignment: Alignment.center,
+                                                                              child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                                                                const Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20))))
+                                                                              ])))
+                                                                    ])))));
+                                              },
+                                                  duration: const Duration(
+                                                      milliseconds: 3000));
+                                              devModeOn == false
+                                                  ? Navigator.push(
+                                                      context,
+                                                      CupertinoPageRoute(
+                                                        builder: (context) => coinFlip ==
+                                                                2.0
+                                                            ? CoinFlip2p(
+                                                                devModeOn:
+                                                                    devModeOn,
+                                                              )
+                                                            : coinFlip == 3.0
+                                                                ? CoinFlip3p(
                                                                     devModeOn:
                                                                         devModeOn,
                                                                   )
                                                                 : coinFlip ==
-                                                                        3.0
-                                                                    ? CoinFlip3p(
+                                                                        4.0
+                                                                    ? CoinFlip4p(
                                                                         devModeOn:
                                                                             devModeOn,
                                                                       )
                                                                     : coinFlip ==
-                                                                            4.0
-                                                                        ? CoinFlip4p(
+                                                                            5.0
+                                                                        ? CoinFlip5p(
                                                                             devModeOn:
                                                                                 devModeOn,
                                                                           )
                                                                         : coinFlip ==
-                                                                                5.0
-                                                                            ? CoinFlip5p(
+                                                                                6.0
+                                                                            ? CoinFlip6p(
                                                                                 devModeOn: devModeOn,
                                                                               )
-                                                                            : coinFlip == 6.0
-                                                                                ? CoinFlip6p(
+                                                                            : coinFlip == 7.0
+                                                                                ? CoinFlip7p(
                                                                                     devModeOn: devModeOn,
                                                                                   )
-                                                                                : coinFlip == 7.0
-                                                                                    ? CoinFlip7p(
-                                                                                        devModeOn: devModeOn,
-                                                                                      )
-                                                                                    : CoinFlip8p(
-                                                                                        devModeOn: devModeOn,
-                                                                                      ),
-                                                          ))
-                                                      : Navigator.push(
-                                                          context,
-                                                          PageTransition(
-                                                              type: PageTransitionType
+                                                                                : CoinFlip8p(
+                                                                                    devModeOn: devModeOn,
+                                                                                  ),
+                                                      ))
+                                                  : Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                          type:
+                                                              PageTransitionType
                                                                   .rightToLeft,
-                                                              curve: Curves
-                                                                  .easeOutExpo,
-                                                              child: coinFlip ==
-                                                                      2.0
-                                                                  ? const CoinFlip2p()
+                                                          curve: Curves
+                                                              .easeOutExpo,
+                                                          child: coinFlip == 2.0
+                                                              ? const CoinFlip2p()
+                                                              : coinFlip == 3.0
+                                                                  ? const CoinFlip3p()
                                                                   : coinFlip ==
-                                                                          3.0
-                                                                      ? const CoinFlip3p()
+                                                                          4.0
+                                                                      ? const CoinFlip4p()
                                                                       : coinFlip ==
-                                                                              4.0
-                                                                          ? const CoinFlip4p()
-                                                                          : coinFlip == 5.0
-                                                                              ? const CoinFlip5p()
-                                                                              : coinFlip == 6.0
-                                                                                  ? const CoinFlip6p()
-                                                                                  : coinFlip == 7.0
-                                                                                      ? const CoinFlip7p()
-                                                                                      : const CoinFlip8p()));
-                                                },
-                                                title: SizedBox(
-                                                  width: double.infinity,
-                                                  child: CupertinoSlider(
-                                                    // key: UniqueKey(),
-                                                    thumbColor: Colors.white,
-                                                    activeColor: context
-                                                                .isDarkMode ==
-                                                            true
-                                                        ? darkDynamic
-                                                                ?.secondary ??
-                                                            CupertinoColors
-                                                                .activeBlue
-                                                        : lightDynamic
-                                                                ?.secondary ??
-                                                            CupertinoColors
-                                                                .activeBlue,
-                                                    min: 2,
-                                                    max: 8,
-                                                    divisions: 6,
-                                                    value: coinFlip,
-                                                    onChanged: (value) {
-                                                      Platform.isMacOS
+                                                                              5.0
+                                                                          ? const CoinFlip5p()
+                                                                          : coinFlip == 6.0
+                                                                              ? const CoinFlip6p()
+                                                                              : coinFlip == 7.0
+                                                                                  ? const CoinFlip7p()
+                                                                                  : const CoinFlip8p()));
+                                            },
+                                            title: SizedBox(
+                                              width: double.infinity,
+                                              child: CupertinoSlider(
+                                                // key: UniqueKey(),
+                                                thumbColor: Colors.white,
+                                                activeColor: context
+                                                            .isDarkMode ==
+                                                        true
+                                                    ? darkDynamic?.secondary ??
+                                                        CupertinoColors
+                                                            .activeBlue
+                                                    : lightDynamic?.secondary ??
+                                                        CupertinoColors
+                                                            .activeBlue,
+                                                min: 2,
+                                                max: 8,
+                                                divisions: 6,
+                                                value: coinFlip,
+                                                onChanged: (value) {
+                                                  Platform.isMacOS
+                                                      ? null
+                                                      : Platform.isWindows
                                                           ? null
-                                                          : Platform.isWindows
-                                                              ? null
-                                                              : Vibration
-                                                                  .vibrate(
-                                                                      duration:
-                                                                          10);
-                                                      setState(() {
-                                                        value;
-                                                        coinFlip =
-                                                            value; //.roundToDouble();
-                                                      });
-                                                    },
-                                                  ),
-                                                ),
-                                                subtitle: Expanded(
-                                                    child: Text(
-                                                  'Coin Flip ${coinFlip.toStringAsFixed(coinFlip.truncateToDouble() == coinFlip ? 0 : 1)}p',
-                                                  style: TextStyle(
-                                                    color: context.isDarkMode ==
-                                                            true
+                                                          : Vibrate.feedback(
+                                                              FeedbackType
+                                                                  .impact);
+                                                  setState(() {
+                                                    value;
+                                                    coinFlip =
+                                                        value; //.roundToDouble();
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            subtitle: Expanded(
+                                                child: Text(
+                                              'Coin Flip ${coinFlip.toStringAsFixed(coinFlip.truncateToDouble() == coinFlip ? 0 : 1)}p',
+                                              style: TextStyle(
+                                                color:
+                                                    context.isDarkMode == true
                                                         ? Colors.white
                                                         : Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 19.5,
-                                                  ),
-                                                )),
-                                                trailing: Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_rounded,
-                                                  color: context.isDarkMode ==
-                                                          true
-                                                      ? darkDynamic?.primary ??
-                                                          Colors.white
-                                                      : lightDynamic?.primary ??
-                                                          Colors.black,
-                                                ),
-                                                leading: BackdropFilter(
-                                                    filter: ImageFilter.blur(
-                                                        sigmaX: 20, sigmaY: 20),
-                                                    child: Container(
-                                                        color: context
-                                                                .isDarkMode
-                                                            ? Colors.white
-                                                                .withOpacity(
-                                                                    0.1)
-                                                            : Colors.black
-                                                                .withOpacity(
-                                                                    0.1),
-                                                        child: Transform.scale(
-                                                            scale: 2.2,
-                                                            child: Image(
-                                                              image: context
-                                                                          .isDarkMode ==
-                                                                      true
-                                                                  ? const AssetImage(
-                                                                      'assets/coin_light.png')
-                                                                  : const AssetImage(
-                                                                      'assets/coin_dark.png'),
-                                                              // fit: BoxFit.cover
-                                                            )))),
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                tileColor: Colors.grey[300]!,
-                                                circleColor:
-                                                    context.isDarkMode == true
-                                                        ? darkDynamic
-                                                                ?.background ??
-                                                            Colors.black
-                                                        : lightDynamic
-                                                                ?.background ??
-                                                            Colors.white,
-                                                circleDiameter: 80,
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    const Color.fromARGB(
-                                                        255, 9, 255, 0),
-                                                    context.isDarkMode == true
-                                                        ? darkDynamic
-                                                                ?.background ??
-                                                            Colors.black
-                                                        : lightDynamic
-                                                                ?.background ??
-                                                            Colors.white,
-                                                  ],
-                                                ),
-                                              ))))),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 19.5,
+                                              ),
+                                            )),
+                                            trailing: Icon(
+                                              Icons.arrow_forward_ios_rounded,
+                                              color: context.isDarkMode == true
+                                                  ? darkDynamic?.primary ??
+                                                      Colors.white
+                                                  : lightDynamic?.primary ??
+                                                      Colors.black,
+                                            ),
+                                            leading: BackdropFilter(
+                                                filter: ImageFilter.blur(
+                                                    sigmaX: 20, sigmaY: 20),
+                                                child: Container(
+                                                    color: context.isDarkMode
+                                                        ? Colors.white
+                                                            .withOpacity(0.1)
+                                                        : Colors.black
+                                                            .withOpacity(0.1),
+                                                    child: Transform.scale(
+                                                        scale: 2.2,
+                                                        child: Image(
+                                                          image: context
+                                                                      .isDarkMode ==
+                                                                  true
+                                                              ? const AssetImage(
+                                                                  'assets/coin_light.png')
+                                                              : const AssetImage(
+                                                                  'assets/coin_dark.png'),
+                                                          // fit: BoxFit.cover
+                                                        )))),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            tileColor: Colors.grey[300]!,
+                                            circleColor: context.isDarkMode ==
+                                                    true
+                                                ? darkDynamic?.background ??
+                                                    Colors.black
+                                                : lightDynamic?.background ??
+                                                    Colors.white,
+                                            circleDiameter: 80,
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                const Color.fromARGB(
+                                                    255, 9, 255, 0),
+                                                context.isDarkMode == true
+                                                    ? darkDynamic?.background ??
+                                                        Colors.black
+                                                    : lightDynamic
+                                                            ?.background ??
+                                                        Colors.white,
+                                              ],
+                                            ),
+                                          )))),
                               Padding(
                                   padding: const EdgeInsets.only(top: 130),
                                   child: DelayedDisplay(
@@ -721,8 +538,8 @@ class RefreshHomeState extends State<RefreshHome> {
                                               ? null
                                               : Platform.isWindows
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10);
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact);
                                           CupertinoScaffold
                                               .showCupertinoModalBottomSheet(
                                             shadow: BoxShadow(
@@ -770,8 +587,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                         ? null
                                                         : Platform.isWindows
                                                             ? null
-                                                            : Vibration.vibrate(
-                                                                duration: 10);
+                                                            : Vibrate.feedback(
+                                                                FeedbackType
+                                                                    .impact);
                                                     CupertinoScaffold
                                                         .showCupertinoModalBottomSheet(
                                                       shadow: BoxShadow(
@@ -804,8 +622,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                         ? null
                                                         : Platform.isWindows
                                                             ? null
-                                                            : Vibration.vibrate(
-                                                                duration: 10);
+                                                            : Vibrate.feedback(
+                                                                FeedbackType
+                                                                    .impact);
                                                     Future.delayed(
                                                         devModeOn
                                                             ? const Duration(
@@ -938,18 +757,8 @@ class RefreshHomeState extends State<RefreshHome> {
                                               ? null
                                               : Platform.isWindows
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10);
-                                          // Navigator.push(
-                                          //     context,
-                                          //     CupertinoPageRoute(
-                                          //       builder: (context) =>
-                                          //           RandomWord(
-                                          //               darkDynamic:
-                                          //                   darkDynamic,
-                                          //               lightDynamic:
-                                          //                   lightDynamic),
-                                          //     ));
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact);
                                           CupertinoScaffold
                                               .showCupertinoModalBottomSheet(
                                             shadow: BoxShadow(
@@ -997,18 +806,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       ? null
                                                       : Platform.isWindows
                                                           ? null
-                                                          : Vibration.vibrate(
-                                                              duration: 10);
-                                                  // Navigator.push(
-                                                  //     context,
-                                                  //     CupertinoPageRoute(
-                                                  //       builder: (context) =>
-                                                  //           RandomWord(
-                                                  //               darkDynamic:
-                                                  //                   darkDynamic,
-                                                  //               lightDynamic:
-                                                  //                   lightDynamic),
-                                                  //     ));
+                                                          : Vibrate.feedback(
+                                                              FeedbackType
+                                                                  .impact);
                                                   CupertinoScaffold
                                                       .showCupertinoModalBottomSheet(
                                                     shadow: BoxShadow(
@@ -1039,8 +839,9 @@ class RefreshHomeState extends State<RefreshHome> {
                                                         ? null
                                                         : Platform.isWindows
                                                             ? null
-                                                            : Vibration.vibrate(
-                                                                duration: 10);
+                                                            : Vibrate.feedback(
+                                                                FeedbackType
+                                                                    .impact);
                                                     CupertinoScaffold
                                                         .showCupertinoModalBottomSheet(
                                                       shadow: BoxShadow(
@@ -1153,104 +954,6 @@ class RefreshHomeState extends State<RefreshHome> {
                                                   ),
                                                 )))),
                                   )),
-                              // Padding(
-                              //     padding: const EdgeInsets.only(top: 10),
-                              //     child: SimpleListTile(
-                              //       onTap: () => devModeOn == false
-                              //           ? Navigator.push(
-                              //               context,
-                              //               CupertinoPageRoute(
-                              //                 builder: (context) =>
-                              //                     const MySettings(darkDynamic: darkDynamic, lightDynamic: lightDynamic),
-                              //               ))
-                              //           : Navigator.push(
-                              //               context,
-                              //               PageTransition(
-                              //                   type: PageTransitionType
-                              //                       .rightToLeft,
-                              //                   curve: Curves.easeOutExpo,
-                              //                   child: const MySettings(darkDynamic: darkDynamic, lightDynamic: lightDynamic))),
-                              //       title: Text(
-                              //         'Settings',
-                              //         style: TextStyle(
-                              //           color: context.isDarkMode == true
-                              //               ? Colors.white
-                              //               : Colors.black,
-                              //           fontWeight: FontWeight.bold,
-                              //           fontSize: 20,
-                              //         ),
-                              //       ),
-                              //       trailing: Icon(
-                              //         Icons.arrow_forward_ios_rounded,
-                              //         color: context.isDarkMode == true
-                              //             ? Colors.white
-                              //             : Colors.black,
-                              //       ),
-                              //       leading: Icon(Icons.settings,
-                              //           color: context.isDarkMode == true
-                              //               ? Colors.white
-                              //               : Colors.black,
-                              //           size: 45),
-                              //       borderRadius: BorderRadius.circular(15),
-                              //       tileColor: Colors.grey[300]!,
-                              //       circleColor: context.isDarkMode == true
-                              //           ? Colors.black
-                              //           : Colors.white,
-                              //       circleDiameter: 80,
-                              //       gradient: LinearGradient(
-                              //         colors: [
-                              //           const Color.fromARGB(
-                              //               255, 123, 123, 123),
-                              //           context.isDarkMode == true
-                              //               ? Colors.black
-                              //               : Colors.white
-                              //         ],
-                              //       ),
-                              //     )),
-                              // Padding(
-                              //     padding: const EdgeInsets.only(top: 10),
-                              //     child: SimpleListTile(
-                              //       onTap: () => _launchURL(
-                              //           "https://deusexmachinaftc.wixsite.com/home"),
-                              //       title: Text(
-                              //         'Deus Ex Machina',
-                              //         style: TextStyle(
-                              //           color: context.isDarkMode == true
-                              //               ? Colors.white
-                              //               : Colors.black,
-                              //           fontWeight: FontWeight.bold,
-                              //           fontSize: 20,
-                              //         ),
-                              //       ),
-                              //       trailing: Icon(
-                              //         Icons.open_in_new_rounded,
-                              //         color: context.isDarkMode == true
-                              //             ? Colors.white
-                              //             : Colors.black,
-                              //       ),
-                              //       leading: Transform.scale(
-                              //           scale: 0.9,
-                              //           child: const Image(
-                              //             image: AssetImage(
-                              //                 'assets/demlogo.png'),
-                              //             // fit: BoxFit.cover
-                              //           )),
-                              //       borderRadius: BorderRadius.circular(15),
-                              //       tileColor: Colors.grey[300]!,
-                              //       circleColor: context.isDarkMode == true
-                              //           ? Colors.black
-                              //           : Colors.white,
-                              //       circleDiameter: 80,
-                              //       gradient: LinearGradient(
-                              //         colors: [
-                              //           const Color.fromARGB(
-                              //               255, 255, 225, 0),
-                              //           context.isDarkMode == true
-                              //               ? Colors.black
-                              //               : Colors.white
-                              //         ],
-                              //       ),
-                              //     )),
                               Padding(
                                   padding: const EdgeInsets.only(top: 350),
                                   child: DelayedDisplay(
@@ -1315,6 +1018,13 @@ class RefreshHomeState extends State<RefreshHome> {
                                               ),
                                               child: Bounceable(
                                                   onTap: () {
+                                                    Platform.isMacOS
+                                                        ? null
+                                                        : Platform.isWindows
+                                                            ? null
+                                                            : Vibrate.feedback(
+                                                                FeedbackType
+                                                                    .impact);
                                                     devModeOn == false
                                                         ? Navigator.push(
                                                             context,
@@ -1348,6 +1058,13 @@ class RefreshHomeState extends State<RefreshHome> {
                                                   },
                                                   child: SimpleListTile(
                                                     onTap: () {
+                                                      Platform.isMacOS
+                                                          ? null
+                                                          : Platform.isWindows
+                                                              ? null
+                                                              : Vibrate.feedback(
+                                                                  FeedbackType
+                                                                      .impact);
                                                       devModeOn == false
                                                           ? Navigator.push(
                                                               context,

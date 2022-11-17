@@ -114,7 +114,7 @@ class MySettingsState extends State<MySettings> {
                               children: [
                                 Text("Home",
                                     style: TextStyle(
-                                      color: widget.lightDynamic.primary ??
+                                      color: widget.lightDynamic?.primary ??
                                           Color.fromARGB(255, 99, 99, 99),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
@@ -124,7 +124,7 @@ class MySettingsState extends State<MySettings> {
                                     width: 30,
                                     child: Icon(Icons.arrow_forward_ios_rounded,
                                         size: 25,
-                                        color: widget.lightDynamic.primary ??
+                                        color: widget.lightDynamic?.primary ??
                                             Color.fromARGB(255, 99, 99, 99)))
                               ])))),
               automaticallyImplyLeading: true,
@@ -426,7 +426,7 @@ class MySettingsState extends State<MySettings> {
                                                         .top +
                                                     35),
                                             child: SizedBox(
-                                                width: 250,
+                                                width: 290,
                                                 height: 50,
                                                 child: Bounceable(
                                                     onTap: () {
@@ -443,7 +443,7 @@ class MySettingsState extends State<MySettings> {
                                                                         .top +
                                                                     35),
                                                             child: SizedBox(
-                                                                width: 250,
+                                                                width: 290,
                                                                 height: 50,
                                                                 child: Stack(
                                                                     children: [

@@ -146,18 +146,7 @@ class WebViewState extends State<OpenWebView> {
                                                                     .circular(
                                                                         20)),
                                                             child: WebView(
-                                                              gestureNavigationEnabled:
-                                                                  true,
-                                                              gestureRecognizers: <
-                                                                  Factory<
-                                                                      OneSequenceGestureRecognizer>>{
-                                                                Factory<
-                                                                    OneSequenceGestureRecognizer>(
-                                                                  () =>
-                                                                      EagerGestureRecognizer(),
-                                                                ),
-                                                              },
-                                                              key: UniqueKey(),
+                                                              // key: UniqueKey(),
                                                               onWebViewCreated:
                                                                   (WebViewController
                                                                       webViewController) {
@@ -166,16 +155,24 @@ class WebViewState extends State<OpenWebView> {
                                                               },
                                                               onPageFinished:
                                                                   (url) {
-                                                                _controller
-                                                                    .runJavascript(
-                                                                        "document.getElementsByClassName('ws-header-container')[0].style.display='none';");
-                                                                _controller
-                                                                    .runJavascript(
-                                                                        "document.getElementsByClassName('ws-footer-page')[0].style.display='none';");
+                                                                Platform.isAndroid
+                                                                    ? JavascriptMode
+                                                                        .unrestricted
+                                                                    : _controller
+                                                                        .runJavascript(
+                                                                            "document.getElementsByClassName('ws-header-container')[0].style.display='none';");
+                                                                Platform.isAndroid
+                                                                    ? JavascriptMode
+                                                                        .unrestricted
+                                                                    : _controller
+                                                                        .runJavascript(
+                                                                            "document.getElementsByClassName('ws-footer-page')[0].style.display='none';");
                                                               },
-                                                              javascriptMode:
-                                                                  JavascriptMode
-                                                                      .unrestricted,
+                                                              javascriptMode: Platform.isAndroid
+                                                                  ? JavascriptMode
+                                                                      .unrestricted
+                                                                  : JavascriptMode
+                                                                      .disabled,
                                                               // backgroundColor: Colors.black,
                                                               initialUrl: widget
                                                                   .website,

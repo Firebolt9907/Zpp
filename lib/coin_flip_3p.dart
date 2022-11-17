@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:vibration/vibration.dart';
 
 class CoinFlip3p extends StatefulWidget {
   const CoinFlip3p({Key? key, this.devModeOn}) : super(key: key);
@@ -134,7 +134,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               Navigator.pop(context);
                             },
                             child: Container(
-                                width: 90,
+                                width: 100,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(200000),
                                     color:
@@ -186,8 +186,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressStart: ((details) => {
                                     Platform.isMacOS
                                         ? null
-                                        : Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        : Vibrate.feedback(FeedbackType.impact),
                                     setState(() {
                                       var1 = true;
                                     }),
@@ -196,8 +195,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressEnd: ((details) => {
                                     Platform.isMacOS
                                         ? null
-                                        : Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        : Vibrate.feedback(FeedbackType.impact),
                                     setState(() {
                                       var1 = true;
                                     }),
@@ -206,8 +204,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressCancel: () {
                                 Platform.isMacOS
                                     ? null
-                                    : Vibration.vibrate(
-                                        duration: 10, amplitude: 128);
+                                    : Vibrate.feedback(FeedbackType.impact);
                                 setState(() {
                                   var1 = false;
                                 });
@@ -281,8 +278,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressStart: ((details) => {
                                     Platform.isMacOS
                                         ? null
-                                        : Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        : Vibrate.feedback(FeedbackType.impact),
                                     setState(() {
                                       var2 = true;
                                     }),
@@ -291,8 +287,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressEnd: ((details) => {
                                     Platform.isMacOS
                                         ? null
-                                        : Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        : Vibrate.feedback(FeedbackType.impact),
                                     setState(() {
                                       var2 = true;
                                     }),
@@ -301,8 +296,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressCancel: () {
                                 Platform.isMacOS
                                     ? null
-                                    : Vibration.vibrate(
-                                        duration: 10, amplitude: 128);
+                                    : Vibrate.feedback(FeedbackType.impact);
                                 setState(() {
                                   var2 = false;
                                 });
@@ -379,8 +373,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressStart: ((details) => {
                                     Platform.isMacOS
                                         ? null
-                                        : Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        : Vibrate.feedback(FeedbackType.impact),
                                     setState(() {
                                       var3 = true;
                                     }),
@@ -389,8 +382,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressEnd: ((details) => {
                                     Platform.isMacOS
                                         ? null
-                                        : Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        : Vibrate.feedback(FeedbackType.impact),
                                     setState(() {
                                       var3 = true;
                                     }),
@@ -399,8 +391,7 @@ class CoinFlipState extends State<CoinFlip3p> {
                               onLongPressCancel: () {
                                 Platform.isMacOS
                                     ? null
-                                    : Vibration.vibrate(
-                                        duration: 10, amplitude: 128);
+                                    : Vibrate.feedback(FeedbackType.impact);
                                 setState(() {
                                   var3 = false;
                                 });
@@ -539,7 +530,7 @@ class Win extends StatelessWidget {
         onTap: () {
           Platform.isMacOS == true
               ? null
-              : Vibration.vibrate(duration: 10, amplitude: 128);
+              : Vibrate.feedback(FeedbackType.impact);
           Navigator.pushReplacement(
               context,
               CupertinoPageRoute(

@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:rive/rive.dart';
-import 'package:vibration/vibration.dart';
 import 'package:http/http.dart' as http;
 
 class YoMomma extends StatefulWidget {
@@ -111,22 +111,18 @@ class _YoMommaState extends State<YoMomma> {
                         CustomRefreshIndicator(
                           controller: controller,
                           key: key,
-                          onRefresh: () {
-                            Future.delayed(const Duration(milliseconds: 200),
-                                () {
-                              setState(() {
-                                futureAlbum = fetchAlbum();
-                              });
+                          onRefresh: () => Future.delayed(
+                              const Duration(milliseconds: 200), () {
+                            setState(() {
+                              futureAlbum = fetchAlbum();
                             });
-                            return Vibration.vibrate(
-                                duration: 10, amplitude: 128);
-                          },
+                          }),
                           offsetToArmed: _offsetToArmed,
                           onStateChanged: (IndicatorStateChange change) {
                             if (change.didChange(
                                 from: IndicatorState.dragging,
                                 to: IndicatorState.armed)) {
-                              Vibration.vibrate(duration: 5, amplitude: 255);
+                              Vibrate.feedback(FeedbackType.impact);
                             }
                             //else if (change.didChange(
                             //     from: IndicatorState.armed, to: IndicatorState.loading)) {

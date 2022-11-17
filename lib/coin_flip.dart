@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:vibration/vibration.dart';
 
 class CoinFlip2p extends StatefulWidget {
   const CoinFlip2p({Key? key, this.devModeOn}) : super(key: key);
@@ -40,6 +40,8 @@ class CoinFlipState extends State<CoinFlip2p> {
   bool exited = false;
   var topWin = 0;
   var rng = Random();
+  var random = 0;
+  var rancount = 0;
 
   int randInt = 0;
 
@@ -57,11 +59,17 @@ class CoinFlipState extends State<CoinFlip2p> {
         kBottomNavigationBarHeight -
         MediaQuery.of(context).padding.top;
     gesture() async {
+      setState(() {
+        while (rancount < 10) {
+          random = Random().nextInt(2);
+          rancount += 1;
+        }
+      });
       if (var1 == true) {
         if (var2 == true) {
           ("tapped");
           setState(() {
-            randInt = Random().nextInt(2);
+            randInt = random;
           });
           if (randInt == 0) {
             setState(() {
@@ -120,24 +128,21 @@ class CoinFlipState extends State<CoinFlip2p> {
                                         }),
                                       }),
                                   onLongPressStart: ((details) => {
-                                        Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        Vibrate.feedback(FeedbackType.impact),
                                         setState(() {
                                           var1 = true;
                                         }),
                                         gesture(),
                                       }),
                                   onLongPressEnd: ((details) => {
-                                        Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        Vibrate.feedback(FeedbackType.impact),
                                         setState(() {
                                           var1 = true;
                                         }),
                                         gesture(),
                                       }),
                                   onLongPressCancel: () {
-                                    Vibration.vibrate(
-                                        duration: 10, amplitude: 128);
+                                    Vibrate.feedback(FeedbackType.impact);
                                     setState(() {
                                       var1 = false;
                                     });
@@ -224,7 +229,7 @@ class CoinFlipState extends State<CoinFlip2p> {
                                             Navigator.pop(context);
                                           },
                                           child: Container(
-                                              width: 90,
+                                              width: 100,
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -324,24 +329,21 @@ class CoinFlipState extends State<CoinFlip2p> {
                                         }),
                                       }),
                                   onLongPressStart: ((details) => {
-                                        Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        Vibrate.feedback(FeedbackType.impact),
                                         setState(() {
                                           var2 = true;
                                         }),
                                         gesture(),
                                       }),
                                   onLongPressEnd: ((details) => {
-                                        Vibration.vibrate(
-                                            duration: 10, amplitude: 128),
+                                        Vibrate.feedback(FeedbackType.impact),
                                         setState(() {
                                           var2 = true;
                                         }),
                                         gesture(),
                                       }),
                                   onLongPressCancel: () {
-                                    Vibration.vibrate(
-                                        duration: 10, amplitude: 128);
+                                    Vibrate.feedback(FeedbackType.impact);
                                     setState(() {
                                       var2 = false;
                                     });
@@ -449,7 +451,7 @@ class Win extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                       child: GestureDetector(
                           onTap: () {
-                            Vibration.vibrate(duration: 10, amplitude: 128);
+                            Vibrate.feedback(FeedbackType.impact);
                             Navigator.pushReplacement(
                                 context,
                                 CupertinoPageRoute(

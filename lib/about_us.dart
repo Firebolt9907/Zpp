@@ -7,6 +7,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as tab;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:iconforest_arcticons/arcticons.dart';
 import 'dart:async';
 
@@ -17,7 +18,6 @@ import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sheet/route.dart';
 import 'package:swipe_deck/swipe_deck.dart';
-import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -44,7 +44,7 @@ _launchURL(var myUrl) async {
 }
 
 _vibrate() {
-  Vibration.vibrate(duration: 10, amplitude: 128);
+  Vibrate.feedback(FeedbackType.impact);
 }
 
 class AboutUs extends StatefulWidget {
@@ -478,7 +478,7 @@ class AboutUsState extends State<AboutUs> {
                                                                         true,
                                                                   ))),
                                   SizedBox(
-                                      height: 90,
+                                      height: 100,
                                       child: Padding(
                                           padding: const EdgeInsets.only(
                                               top: 20,
@@ -1004,7 +1004,7 @@ class AboutUsState extends State<AboutUs> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                            width: 110,
+                            width: 125,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(200000),
                                 color: const Color.fromARGB(255, 204, 204, 204)
@@ -1026,7 +1026,7 @@ class AboutUsState extends State<AboutUs> {
                                 children: [
                                   Text("Settings",
                                       style: TextStyle(
-                                        color: widget.lightDynamic.primary ??
+                                        color: widget.lightDynamic?.primary ??
                                             Color.fromARGB(255, 99, 99, 99),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
@@ -1039,10 +1039,10 @@ class AboutUsState extends State<AboutUs> {
                                           child: Icon(
                                               Icons.arrow_forward_ios_rounded,
                                               size: 25,
-                                              color:
-                                                  widget.lightDynamic.primary ??
-                                                      Color.fromARGB(
-                                                          255, 99, 99, 99))))
+                                              color: widget
+                                                      .lightDynamic?.primary ??
+                                                  Color.fromARGB(
+                                                      255, 99, 99, 99))))
                                 ]))))),
           ]),
         ])) /*)*/;

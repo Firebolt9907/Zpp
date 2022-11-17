@@ -15,9 +15,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shake/shake.dart';
-import 'package:vibration/vibration.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -58,13 +58,17 @@ final GlobalKey _key = GlobalKey();
 void _share() async {
   RenderRepaintBoundary boundary =
       _key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-
+  var link = Platform.isIOS
+      ? "appstorelink"
+      : Platform.isAndroid
+          ? "playstorelink"
+          : "";
   ui.Image image = await boundary.toImage();
   ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
   if (byteData != null) {
     Uint8List pngBytes = byteData.buffer.asUint8List();
     await WcFlutterShare.share(
-        text: 'Download Zpp Now! ',
+        text: 'Download Zpp Now! $link',
         sharePopupTitle: 'share',
         fileName: 'ZppShare.png',
         mimeType: 'image/png',
@@ -109,9 +113,11 @@ void main() async {
               ? null
               : _cameras = await availableCameras();
   FlutterNativeSplash.remove();
-  ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
-    _share();
-  });
+  ShakeDetector detector = ShakeDetector.autoStart(
+      minimumShakeCount: 2,
+      onPhoneShake: () {
+        _share();
+      });
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Platform.isAndroid ? addBoolToSF('devModeOn', false) : null;
@@ -153,7 +159,8 @@ getBoolValuesSF(second) async {
 }
 
 _vibrate() {
-  Vibration.vibrate(duration: 10, amplitude: 128);
+  Vibrate.feedback(FeedbackType.light);
+  Vibrate.feedback(FeedbackType.heavy);
 }
 
 class FutureCamera extends StatefulWidget {
@@ -173,7 +180,8 @@ class _FutureCameraState extends State<FutureCamera> {
     super.initState();
     _loadCounter();
     controller = Platform.isIOS
-        ? CameraController(_cameras[1], ResolutionPreset.low, enableAudio: true)
+        ? CameraController(_cameras[1], ResolutionPreset.veryHigh,
+            enableAudio: false)
         : CameraController(_cameras[1], ResolutionPreset.max,
             enableAudio: false);
     controller.initialize().then((_) {
@@ -293,7 +301,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                             Navigator.pop(context);
                                           },
                                           child: Container(
-                                              width: 90,
+                                              width: 100,
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -347,7 +355,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                   alignment: Alignment.topLeft,
                                   child: Padding(
                                       padding:
-                                          EdgeInsets.fromLTRB(25, 18, 115, 0),
+                                          EdgeInsets.fromLTRB(25, 18, 125, 0),
                                       child: FittedBox(
                                           child: Text(
                                               "See Yourself in 200 years",
@@ -430,11 +438,10 @@ class _FutureCameraState extends State<FutureCamera> {
                                   )),
                               GestureDetector(
                                   onTap: () {
+                                    _vibrate();
                                     setState(() {
                                       visibility = false;
-                                      devModeOn == false
-                                          ? controller.dispose()
-                                          : null;
+                                      controller.dispose();
                                       Future.delayed(
                                           Duration(
                                               milliseconds: Platform.isIOS
@@ -476,7 +483,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                     Navigator.pop(context);
                                   },
                                   child: Container(
-                                      width: 90,
+                                      width: 100,
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(200000),
@@ -519,7 +526,7 @@ class _FutureCameraState extends State<FutureCamera> {
                       Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
-                              padding: EdgeInsets.fromLTRB(25, 18, 115, 0),
+                              padding: EdgeInsets.fromLTRB(25, 18, 125, 0),
                               child: FittedBox(
                                   child: Text("See Yourself in 200 years",
                                       style: TextStyle(
@@ -576,6 +583,11 @@ class _FutureCameraState extends State<FutureCamera> {
                           Center(
                               child: LoadingAnimationWidget.inkDrop(
                                   color: Colors.white, size: 50)),
+                          Center(
+                              child: Padding(
+                                  padding: EdgeInsets.only(top: 120),
+                                  child: Text("Processing...",
+                                      style: TextStyle(color: Colors.white)))),
                           Visibility(
                               visible: loaded,
                               child: const Center(
@@ -593,7 +605,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                         Navigator.pop(context);
                                       },
                                       child: Container(
-                                          width: 90,
+                                          width: 100,
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(200000),
@@ -641,7 +653,7 @@ class _FutureCameraState extends State<FutureCamera> {
                           Align(
                               alignment: Alignment.topLeft,
                               child: Padding(
-                                  padding: EdgeInsets.fromLTRB(25, 18, 115, 0),
+                                  padding: EdgeInsets.fromLTRB(25, 18, 125, 0),
                                   child: FittedBox(
                                       child: Text("See Yourself in 200 years",
                                           style: TextStyle(

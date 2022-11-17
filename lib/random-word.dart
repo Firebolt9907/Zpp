@@ -9,9 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:rive/rive.dart';
-import 'package:vibration/vibration.dart';
 import 'package:http/http.dart' as http;
 
 class RandomWord extends StatefulWidget {
@@ -129,7 +129,7 @@ class _RandomWordState extends State<RandomWord> {
                                 alignment: Alignment.topLeft,
                                 child: Padding(
                                     padding:
-                                        EdgeInsets.fromLTRB(25, 18, 115, 0),
+                                        EdgeInsets.fromLTRB(25, 18, 130, 0),
                                     child: FittedBox(
                                         child: Text("Random Word Generator",
                                             style: TextStyle(
@@ -155,8 +155,7 @@ class _RandomWordState extends State<RandomWord> {
                                   });
                                   Platform.isWindows
                                       ? null
-                                      : Vibration.vibrate(
-                                          duration: 10, amplitude: 128);
+                                      : Vibrate.feedback(FeedbackType.impact);
                                   return Future.delayed(
                                       const Duration(milliseconds: 0));
                                 },
@@ -167,8 +166,7 @@ class _RandomWordState extends State<RandomWord> {
                                       to: IndicatorState.armed)) {
                                     Platform.isWindows
                                         ? null
-                                        : Vibration.vibrate(
-                                            duration: 5, amplitude: 255);
+                                        : Vibrate.feedback(FeedbackType.impact);
                                   }
                                   //else if (change.didChange(
                                   //     from: IndicatorState.armed, to: IndicatorState.loading)) {
@@ -373,8 +371,8 @@ class _RandomWordState extends State<RandomWord> {
                                                 Padding(
                                                     padding: EdgeInsets.only(
                                                         top: 10,
-                                                        left: 40,
-                                                        right: 40,
+                                                        left: 90,
+                                                        right: 90,
                                                         bottom: MediaQuery.of(
                                                                     context)
                                                                 .viewPadding
@@ -402,9 +400,16 @@ class _RandomWordState extends State<RandomWord> {
                                                               },
                                                               child: const Text(
                                                                   'Refresh',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white)),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  )),
                                                             )))),
                                               ])),
                                     ])),
@@ -419,7 +424,7 @@ class _RandomWordState extends State<RandomWord> {
                                       Navigator.pop(context);
                                     },
                                     child: Container(
-                                        width: 90,
+                                        width: 100,
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(200000),

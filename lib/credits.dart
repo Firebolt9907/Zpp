@@ -807,7 +807,7 @@ class Credits extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: Container(
-                            width: 110,
+                            width: 125,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(200000),
                                 color: const Color.fromARGB(255, 204, 204, 204)
@@ -829,7 +829,7 @@ class Credits extends StatelessWidget {
                                 children: [
                                   Text("Settings",
                                       style: TextStyle(
-                                        color: lightDynamic.primary ??
+                                        color: lightDynamic?.primary ??
                                             Color.fromARGB(255, 99, 99, 99),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
@@ -842,7 +842,7 @@ class Credits extends StatelessWidget {
                                           child: Icon(
                                               Icons.arrow_forward_ios_rounded,
                                               size: 25,
-                                              color: lightDynamic.primary ??
+                                              color: lightDynamic?.primary ??
                                                   Color.fromARGB(
                                                       255, 99, 99, 99))))
                                 ]))))),

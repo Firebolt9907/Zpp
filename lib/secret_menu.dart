@@ -18,7 +18,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:rive/rive.dart';
 import 'package:sheet/sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vibration/vibration.dart';
 import 'package:sheet/route.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -167,7 +166,8 @@ class DevConfirm extends StatelessWidget {
                                       SheetRoute<void>(
                                         draggable: true,
                                         builder: (context) => OpenWebView(
-                                            website: "https://google.com"),
+                                            website:
+                                                "https://whatismybrowser.com"),
                                       ));
                                 } else if (inputValue == "game") {
                                   Navigator.pushReplacement(

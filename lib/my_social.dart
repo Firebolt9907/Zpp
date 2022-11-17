@@ -3,8 +3,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:simple_list_tile/simple_list_tile.dart';
-import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,7 +23,7 @@ class MySocial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
-    Platform.isMacOS ? null : Vibration.vibrate(duration: 10, amplitude: 128);
+    Platform.isMacOS ? null : Vibrate.feedback(FeedbackType.impact);
     // MediaQueryData(textScaleFactor: MediaQuery.textScaleFactorOf(context));
     return ClipRRect(
         borderRadius: BorderRadius.circular(12.0),

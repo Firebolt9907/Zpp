@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:vibration/vibration.dart';
 
 class CoinFlip8p extends StatefulWidget {
   const CoinFlip8p({Key? key, this.devModeOn}) : super(key: key);
@@ -171,7 +171,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                               Navigator.pop(context);
                             },
                             child: Container(
-                                width: 90,
+                                width: 100,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(200000),
                                     color:
@@ -233,9 +233,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var1 = true;
                                               }),
@@ -244,9 +243,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var1 = true;
                                               }),
@@ -255,8 +253,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var1 = false;
                                           });
@@ -282,8 +280,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                                         horizontal:
                                                                             30),
                                                                 child: Text(
-                                                                    maxLines:
-                                                                        10,
+                                                                    maxLines: 4,
                                                                     'Tap and Hold to Ready Up',
                                                                     textAlign:
                                                                         TextAlign
@@ -336,9 +333,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var2 = true;
                                               }),
@@ -347,9 +343,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var2 = true;
                                               }),
@@ -358,8 +353,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var2 = false;
                                           });
@@ -385,8 +380,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                                         horizontal:
                                                                             30),
                                                                 child: Text(
-                                                                    maxLines:
-                                                                        10,
+                                                                    maxLines: 4,
                                                                     'Tap and Hold to Ready Up',
                                                                     textAlign:
                                                                         TextAlign
@@ -438,9 +432,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var3 = true;
                                               }),
@@ -449,9 +442,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var3 = true;
                                               }),
@@ -460,8 +452,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var3 = false;
                                           });
@@ -487,8 +479,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                                         horizontal:
                                                                             30),
                                                                 child: Text(
-                                                                    maxLines:
-                                                                        10,
+                                                                    maxLines: 4,
                                                                     'Tap and Hold to Ready Up',
                                                                     textAlign:
                                                                         TextAlign
@@ -541,9 +532,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var4 = true;
                                               }),
@@ -552,9 +542,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var4 = true;
                                               }),
@@ -563,8 +552,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var4 = false;
                                           });
@@ -590,8 +579,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                                         horizontal:
                                                                             30),
                                                                 child: Text(
-                                                                    maxLines:
-                                                                        10,
+                                                                    maxLines: 4,
                                                                     'Tap and Hold to Ready Up',
                                                                     textAlign:
                                                                         TextAlign
@@ -643,9 +631,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var5 = true;
                                               }),
@@ -654,9 +641,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var5 = true;
                                               }),
@@ -665,8 +651,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var5 = false;
                                           });
@@ -692,8 +678,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                                         horizontal:
                                                                             30),
                                                                 child: Text(
-                                                                    maxLines:
-                                                                        10,
+                                                                    maxLines: 4,
                                                                     'Tap and Hold to Ready Up',
                                                                     textAlign:
                                                                         TextAlign
@@ -746,9 +731,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var6 = true;
                                               }),
@@ -757,9 +741,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var6 = true;
                                               }),
@@ -768,8 +751,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var6 = false;
                                           });
@@ -795,8 +778,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                                         horizontal:
                                                                             30),
                                                                 child: Text(
-                                                                    maxLines:
-                                                                        10,
+                                                                    maxLines: 4,
                                                                     'Tap and Hold to Ready Up',
                                                                     textAlign:
                                                                         TextAlign
@@ -851,9 +833,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var7 = true;
                                               }),
@@ -862,9 +843,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var7 = true;
                                               }),
@@ -873,8 +853,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var7 = false;
                                           });
@@ -900,8 +880,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                                         horizontal:
                                                                             30),
                                                                 child: Text(
-                                                                    maxLines:
-                                                                        10,
+                                                                    maxLines: 4,
                                                                     'Tap and Hold to Ready Up',
                                                                     textAlign:
                                                                         TextAlign
@@ -954,9 +933,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var8 = true;
                                               }),
@@ -965,9 +943,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var8 = true;
                                               }),
@@ -976,8 +953,8 @@ class CoinFlipState extends State<CoinFlip8p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var8 = false;
                                           });
@@ -1003,8 +980,7 @@ class CoinFlipState extends State<CoinFlip8p> {
                                                                         horizontal:
                                                                             30),
                                                                 child: Text(
-                                                                    maxLines:
-                                                                        10,
+                                                                    maxLines: 4,
                                                                     'Tap and Hold to Ready Up',
                                                                     textAlign:
                                                                         TextAlign
@@ -1116,7 +1092,7 @@ class Win extends StatelessWidget {
         onTap: () {
           Platform.isMacOS == true
               ? null
-              : Vibration.vibrate(duration: 10, amplitude: 128);
+              : Vibrate.feedback(FeedbackType.impact);
           Navigator.pushReplacement(
               context,
               CupertinoPageRoute(

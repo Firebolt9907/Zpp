@@ -2,9 +2,9 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
-import 'package:vibration/vibration.dart';
 
 import 'main.dart';
 
@@ -66,11 +66,11 @@ class RandomPageState extends State<RandomPage> {
                           if (change.didChange(
                               from: IndicatorState.dragging,
                               to: IndicatorState.armed)) {
-                            Vibration.vibrate(duration: 5, amplitude: 255);
+                            Vibrate.feedback(FeedbackType.impact);
                           } else if (change.didChange(
                               from: IndicatorState.armed,
                               to: IndicatorState.loading)) {
-                            Vibration.vibrate(duration: 10, amplitude: 128);
+                            Vibrate.feedback(FeedbackType.impact);
                           }
                           //else if (change.didChange(
                           //     from: IndicatorState.armed, to: IndicatorState.loading)) {

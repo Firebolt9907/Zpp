@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:vibration/vibration.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'main.dart';
@@ -23,7 +23,7 @@ _launchURL(var myUrl) async {
 }
 
 _vibrate() {
-  Vibration.vibrate(duration: 10, amplitude: 128);
+  Vibrate.feedback(FeedbackType.impact);
 }
 
 class CandidatesPage extends StatelessWidget {

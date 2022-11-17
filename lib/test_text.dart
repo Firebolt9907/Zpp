@@ -4,7 +4,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vibration/vibration.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,7 +30,6 @@ class TestText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Vibration.vibrate(duration: 10, amplitude: 128);
     //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return CupertinoPageScaffold(
         navigationBar: const CupertinoNavigationBar(

@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:vibration/vibration.dart';
 
 class CoinFlip6p extends StatefulWidget {
   const CoinFlip6p({Key? key, this.devModeOn}) : super(key: key);
@@ -143,63 +143,50 @@ class CoinFlipState extends State<CoinFlip6p> {
                 child: Stack(children: [
               Scaffold(
                   resizeToAvoidBottomInset: true,
-                  appBar: CupertinoNavigationBar(trailing: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 0, right: 0),
-                                      child: Bounceable(
-                                          scaleFactor: 0.6,
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                              width: 90,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          200000),
-                                                  color: const Color.fromARGB(
-                                                          255, 204, 204, 204)
-                                                      .withOpacity(0.8),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                                  255,
-                                                                  65,
-                                                                  65,
-                                                                  65)
-                                                              .withOpacity(0.3),
-                                                      spreadRadius: 10,
-                                                      blurRadius: 7,
-                                                      // changes position of shadow
-                                                    ),
-                                                  ]),
-                                              child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Text("Home",
-                                                        style: TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 99, 99, 99),
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18,
-                                                        )),
-                                                    SizedBox(
-                                                        height: 30,
-                                                        width: 30,
-                                                        child: Icon(
-                                                            Icons
-                                                                .arrow_forward_ios_rounded,
-                                                            size: 25,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    99,
-                                                                    99,
-                                                                    99)))
-                                                  ])))),
+                  appBar: CupertinoNavigationBar(
+                    trailing: Padding(
+                        padding: const EdgeInsets.only(top: 0, right: 0),
+                        child: Bounceable(
+                            scaleFactor: 0.6,
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(200000),
+                                    color:
+                                        const Color.fromARGB(255, 204, 204, 204)
+                                            .withOpacity(0.8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color.fromARGB(
+                                                255, 65, 65, 65)
+                                            .withOpacity(0.3),
+                                        spreadRadius: 10,
+                                        blurRadius: 7,
+                                        // changes position of shadow
+                                      ),
+                                    ]),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text("Home",
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 99, 99, 99),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          )),
+                                      SizedBox(
+                                          height: 30,
+                                          width: 30,
+                                          child: Icon(
+                                              Icons.arrow_forward_ios_rounded,
+                                              size: 25,
+                                              color: Color.fromARGB(
+                                                  255, 99, 99, 99)))
+                                    ])))),
                     middle: Text('Coin Flip',
                         style: TextStyle(color: Colors.white)),
                     automaticallyImplyLeading: true,
@@ -230,9 +217,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var1 = true;
                                               }),
@@ -241,9 +227,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var1 = true;
                                               }),
@@ -252,8 +237,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var1 = false;
                                           });
@@ -333,9 +318,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var2 = true;
                                               }),
@@ -344,9 +328,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var2 = true;
                                               }),
@@ -355,8 +338,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var2 = false;
                                           });
@@ -435,9 +418,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var3 = true;
                                               }),
@@ -446,9 +428,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var3 = true;
                                               }),
@@ -457,8 +438,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var3 = false;
                                           });
@@ -538,9 +519,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var4 = true;
                                               }),
@@ -549,9 +529,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var4 = true;
                                               }),
@@ -560,8 +539,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var4 = false;
                                           });
@@ -640,9 +619,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var5 = true;
                                               }),
@@ -651,9 +629,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var5 = true;
                                               }),
@@ -662,8 +639,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var5 = false;
                                           });
@@ -743,9 +720,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressStart: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var6 = true;
                                               }),
@@ -754,9 +730,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressEnd: ((details) => {
                                               Platform.isMacOS
                                                   ? null
-                                                  : Vibration.vibrate(
-                                                      duration: 10,
-                                                      amplitude: 128),
+                                                  : Vibrate.feedback(
+                                                      FeedbackType.impact),
                                               setState(() {
                                                 var6 = true;
                                               }),
@@ -765,8 +740,8 @@ class CoinFlipState extends State<CoinFlip6p> {
                                         onLongPressCancel: () {
                                           Platform.isMacOS
                                               ? null
-                                              : Vibration.vibrate(
-                                                  duration: 10, amplitude: 128);
+                                              : Vibrate.feedback(
+                                                  FeedbackType.impact);
                                           setState(() {
                                             var6 = false;
                                           });
@@ -905,7 +880,7 @@ class Win extends StatelessWidget {
         onTap: () {
           Platform.isMacOS == true
               ? null
-              : Vibration.vibrate(duration: 10, amplitude: 128);
+              : Vibrate.feedback(FeedbackType.impact);
           Navigator.pushReplacement(
               context,
               CupertinoPageRoute(
