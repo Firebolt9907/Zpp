@@ -1,28 +1,19 @@
-import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:ui';
-import 'package:Zpp/my_social.dart';
 import 'package:Zpp/test.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as tab;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:iconforest_arcticons/arcticons.dart';
-import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:sheet/route.dart';
 import 'package:swipe_deck/swipe_deck.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:card_swiper/card_swiper.dart';
 
-import 'secret_menu.dart';
 import 'main.dart';
 
 const IMAGES = [
@@ -43,9 +34,6 @@ _launchURL(var myUrl) async {
   }
 }
 
-_vibrate() {
-  Vibrate.feedback(FeedbackType.impact);
-}
 
 class AboutUs extends StatefulWidget {
   const AboutUs(
@@ -77,9 +65,9 @@ class AboutUsState extends State<AboutUs> {
   @override
   var indexItem = 'amogus';
   var devMode = 0;
-  final _offsetToArmed = 75.0;
   bool hint = true;
 
+  @override
   Widget build(BuildContext context) {
     const colorizeColors = [
       Colors.purple,
@@ -106,7 +94,7 @@ class AboutUsState extends State<AboutUs> {
         sized: false,
         child: Column(children: [
           Padding(
-              padding: EdgeInsets.only(top: 0, bottom: 10),
+              padding: const EdgeInsets.only(top: 0, bottom: 10),
               child: Center(
                   child: Container(
                       decoration: BoxDecoration(
@@ -116,7 +104,7 @@ class AboutUsState extends State<AboutUs> {
                       width: 55))),
           Stack(children: [
             ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(18.0),
                   topRight: Radius.circular(18.0),
                 ),
@@ -129,13 +117,13 @@ class AboutUsState extends State<AboutUs> {
                             25,
                         color: Colors.white.withOpacity(0.1)))),
             Padding(
-                padding: EdgeInsets.only(top: 0),
+                padding: const EdgeInsets.only(top: 0),
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height -
                         widget.topPadding -
                         25,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(18.0),
                           topRight: Radius.circular(18.0),
                         ),
@@ -225,7 +213,7 @@ class AboutUsState extends State<AboutUs> {
                                                       //             )));
                                                       CupertinoScaffold
                                                           .showCupertinoModalBottomSheet(
-                                                        shadow: BoxShadow(
+                                                        shadow: const BoxShadow(
                                                             color: Colors
                                                                 .transparent),
                                                         expand: false,
@@ -985,7 +973,7 @@ class AboutUsState extends State<AboutUs> {
             Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                    padding: EdgeInsets.fromLTRB(25, 18, 115, 0),
+                    padding: const EdgeInsets.fromLTRB(25, 18, 115, 0),
                     child: FittedBox(
                         child: Text("My Friends",
                             style: TextStyle(
@@ -1014,7 +1002,7 @@ class AboutUsState extends State<AboutUs> {
                                     color: context.isDarkMode == true
                                         ? const Color.fromARGB(255, 65, 65, 65)
                                             .withOpacity(0.3)
-                                        : Color.fromARGB(255, 240, 240, 240)
+                                        : const Color.fromARGB(255, 240, 240, 240)
                                             .withOpacity(0.6),
                                     spreadRadius: 10,
                                     blurRadius: 7,
@@ -1027,7 +1015,7 @@ class AboutUsState extends State<AboutUs> {
                                   Text("Settings",
                                       style: TextStyle(
                                         color: widget.lightDynamic?.primary ??
-                                            Color.fromARGB(255, 99, 99, 99),
+                                            const Color.fromARGB(255, 99, 99, 99),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                       )),
@@ -1041,7 +1029,7 @@ class AboutUsState extends State<AboutUs> {
                                               size: 25,
                                               color: widget
                                                       .lightDynamic?.primary ??
-                                                  Color.fromARGB(
+                                                  const Color.fromARGB(
                                                       255, 99, 99, 99))))
                                 ]))))),
           ]),

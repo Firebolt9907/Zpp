@@ -3,7 +3,6 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
-import 'package:Zpp/candidates.dart';
 import 'package:Zpp/coin_flip.dart';
 import 'package:Zpp/coin_flip_3p.dart';
 import 'package:Zpp/coin_flip_5p.dart';
@@ -19,25 +18,18 @@ import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:flutter/services.dart';
-import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:camera/camera.dart';
 import 'package:simple_list_tile/simple_list_tile.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 
-import 'about_us.dart';
 import 'coin_flip_4p.dart';
-import 'test_text.dart';
 import 'settings.dart';
-import 'my_social.dart';
 import 'main.dart';
-import 'candidates.dart';
-import 'secret_menu.dart';
 
 class RefreshHome extends StatefulWidget {
   const RefreshHome({Key? key, this.darkDynamic, this.lightDynamic})
@@ -52,7 +44,6 @@ class RefreshHome extends StatefulWidget {
 class RefreshHomeState extends State<RefreshHome> {
   final _offsetToArmed = 90.0;
   late CameraController controller;
-  late List<CameraDescription> _cameras;
 
   // final darkDynamic;
   // final lightDynamic;
@@ -306,7 +297,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                           child: Container(
                                                                               alignment: Alignment.center,
                                                                               child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: const [
-                                                                                RotatedBox(quarterTurns: 2, child: Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)))))
+                                                                                RotatedBox(quarterTurns: 2, child: Padding(padding: EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)))))
                                                                               ])))
                                                                     ])))));
                                               },
@@ -354,8 +345,8 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                               BorderRadius.circular(15),
                                                                           child: Container(
                                                                               alignment: Alignment.center,
-                                                                              child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                                                                const Padding(padding: const EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20))))
+                                                                              child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: const [
+                                                                                Padding(padding: EdgeInsets.only(left: 15, right: 15), child: FittedBox(fit: BoxFit.fitWidth, child: Text("Have everyone tap and hold a color to play", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20))))
                                                                               ])))
                                                                     ])))));
                                               },
@@ -542,7 +533,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       FeedbackType.impact);
                                           CupertinoScaffold
                                               .showCupertinoModalBottomSheet(
-                                            shadow: BoxShadow(
+                                            shadow: const BoxShadow(
                                                 color: Colors.transparent),
                                             expand: false,
                                             bounce: false,
@@ -592,7 +583,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                     .impact);
                                                     CupertinoScaffold
                                                         .showCupertinoModalBottomSheet(
-                                                      shadow: BoxShadow(
+                                                      shadow: const BoxShadow(
                                                           color: Colors
                                                               .transparent),
                                                       expand: false,
@@ -634,7 +625,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                     0), () {
                                                       CupertinoScaffold
                                                           .showCupertinoModalBottomSheet(
-                                                        shadow: BoxShadow(
+                                                        shadow: const BoxShadow(
                                                             color: Colors
                                                                 .transparent),
                                                         expand: false,
@@ -761,7 +752,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                       FeedbackType.impact);
                                           CupertinoScaffold
                                               .showCupertinoModalBottomSheet(
-                                            shadow: BoxShadow(
+                                            shadow: const BoxShadow(
                                                 color: Colors.transparent),
                                             expand: false,
                                             bounce: false,
@@ -811,7 +802,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                   .impact);
                                                   CupertinoScaffold
                                                       .showCupertinoModalBottomSheet(
-                                                    shadow: BoxShadow(
+                                                    shadow: const BoxShadow(
                                                         color:
                                                             Colors.transparent),
                                                     expand: false,
@@ -844,7 +835,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                     .impact);
                                                     CupertinoScaffold
                                                         .showCupertinoModalBottomSheet(
-                                                      shadow: BoxShadow(
+                                                      shadow: const BoxShadow(
                                                           color: Colors
                                                               .transparent),
                                                       expand: false,
@@ -1091,7 +1082,7 @@ class RefreshHomeState extends State<RefreshHome> {
                                                                           Colors
                                                                               .transparent,
                                                                       topRadius:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               20),
                                                                       body: MySettings(
                                                                           darkDynamic:

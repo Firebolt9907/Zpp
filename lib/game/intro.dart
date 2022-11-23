@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GameIntro extends StatefulWidget {
+  const GameIntro({super.key});
+
   @override
   _GameIntroState createState() => _GameIntroState();
 }

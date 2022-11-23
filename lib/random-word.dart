@@ -61,10 +61,6 @@ class _RandomWordState extends State<RandomWord> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height -
-        kBottomNavigationBarHeight -
-        MediaQuery.of(context).padding.top;
-    bool visible = true;
     var _offsetToArmed = 90.0;
     final key = GlobalKey<CustomRefreshIndicatorState>();
     bool _startedManually = false;
@@ -92,7 +88,7 @@ class _RandomWordState extends State<RandomWord> {
               height:
                   MediaQuery.of(context).size.height - widget.topPadding - 25,
               child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(18),
                       topLeft: Radius.circular(18)),
                   child: CupertinoPageScaffold(
@@ -117,7 +113,7 @@ class _RandomWordState extends State<RandomWord> {
                           child:
                               Stack(alignment: Alignment.topRight, children: [
                             ClipRRect(
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(18),
                                     topLeft: Radius.circular(18)),
                                 child: BackdropFilter(
@@ -129,7 +125,7 @@ class _RandomWordState extends State<RandomWord> {
                                 alignment: Alignment.topLeft,
                                 child: Padding(
                                     padding:
-                                        EdgeInsets.fromLTRB(25, 18, 130, 0),
+                                        const EdgeInsets.fromLTRB(25, 18, 130, 0),
                                     child: FittedBox(
                                         child: Text("Random Word Generator",
                                             style: TextStyle(
@@ -341,7 +337,7 @@ class _RandomWordState extends State<RandomWord> {
                                                       ),
                                                       Padding(
                                                           padding:
-                                                              EdgeInsets.only(
+                                                              const EdgeInsets.only(
                                                                   left: 7.5),
                                                           child: SizedBox(
                                                               height: 40,
@@ -350,7 +346,7 @@ class _RandomWordState extends State<RandomWord> {
                                                                   child: Transform.scale(
                                                                       scale:
                                                                           1.4,
-                                                                      child: Image(
+                                                                      child: const Image(
                                                                           image: AssetImage(
                                                                               'assets/bolt.png'),
                                                                           fit: BoxFit
@@ -449,7 +445,7 @@ class _RandomWordState extends State<RandomWord> {
                                         child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
-                                            children: [
+                                            children: const [
                                               Text("Home",
                                                   style: TextStyle(
                                                     color: Color.fromARGB(

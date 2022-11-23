@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'dart:ui';
-import 'package:Zpp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -213,7 +211,7 @@ class CoinFlipState extends State<CoinFlip2p> {
                                                   )))))),
                               Stack(children: [
                                 CupertinoNavigationBar(
-                                  middle: Text('Coin Flip',
+                                  middle: const Text('Coin Flip',
                                       style: TextStyle(color: Colors.white)),
                                   automaticallyImplyLeading: true,
                                   previousPageTitle: "Home",
@@ -254,7 +252,7 @@ class CoinFlipState extends State<CoinFlip2p> {
                                               child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
-                                                  children: [
+                                                  children: const [
                                                     Text("Home",
                                                         style: TextStyle(
                                                           color: Color.fromARGB(
@@ -279,16 +277,16 @@ class CoinFlipState extends State<CoinFlip2p> {
                                                   ])))),
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 15),
+                                    padding: const EdgeInsets.only(left: 15),
                                     child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Padding(
-                                            padding: EdgeInsets.only(top: 1.5),
+                                            padding: const EdgeInsets.only(top: 1.5),
                                             child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  Text(
+                                                  const Text(
                                                     'Only on',
                                                     style: TextStyle(
                                                       fontSize: 15,
@@ -298,7 +296,7 @@ class CoinFlipState extends State<CoinFlip2p> {
                                                     ),
                                                   ),
                                                   Padding(
-                                                      padding: EdgeInsets.only(
+                                                      padding: const EdgeInsets.only(
                                                           left: 7.5),
                                                       child: SizedBox(
                                                           height: 40,
@@ -306,12 +304,12 @@ class CoinFlipState extends State<CoinFlip2p> {
                                                           child: ClipRect(
                                                               child: Transform.scale(
                                                                   scale: 1.4,
-                                                                  child: Image(
+                                                                  child: const Image(
                                                                       image: AssetImage(
                                                                           'assets/bolt.png'),
                                                                       fit: BoxFit
                                                                           .cover))))),
-                                                  Text(
+                                                  const Text(
                                                     'Zpp',
                                                     style: TextStyle(
                                                       fontSize: 15,
@@ -430,9 +428,6 @@ class Win extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height -
-        kBottomNavigationBarHeight -
-        MediaQuery.of(context).padding.top;
     return ClipRRect(
         borderRadius: BorderRadius.circular(12.0),
         child: CupertinoPageScaffold(

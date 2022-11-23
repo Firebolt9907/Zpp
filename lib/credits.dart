@@ -7,12 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as tab;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:sheet/route.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Credits extends StatelessWidget {
@@ -25,7 +20,6 @@ class Credits extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
     const colorizeColors = [
       Colors.purple,
       Colors.blue,
@@ -63,7 +57,7 @@ class Credits extends StatelessWidget {
                       width: 55))),
           Stack(children: [
             ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(18.0),
                   topRight: Radius.circular(18.0),
                 ),
@@ -76,12 +70,12 @@ class Credits extends StatelessWidget {
                             25,
                         color: Colors.white.withOpacity(0.1)))),
             Padding(
-                padding: EdgeInsets.only(top: 00),
+                padding: const EdgeInsets.only(top: 00),
                 child: SizedBox(
                     height:
                         MediaQuery.of(context).size.height - topPadding - 25,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(18.0),
                             topRight: Radius.circular(18.0)),
                         child: Stack(children: [
@@ -788,7 +782,7 @@ class Credits extends StatelessWidget {
             Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                    padding: EdgeInsets.fromLTRB(25, 18, 115, 0),
+                    padding: const EdgeInsets.fromLTRB(25, 18, 115, 0),
                     child: FittedBox(
                         child: Text("Credits",
                             style: TextStyle(
@@ -817,7 +811,7 @@ class Credits extends StatelessWidget {
                                     color: context.isDarkMode == true
                                         ? const Color.fromARGB(255, 65, 65, 65)
                                             .withOpacity(0.3)
-                                        : Color.fromARGB(255, 240, 240, 240)
+                                        : const Color.fromARGB(255, 240, 240, 240)
                                             .withOpacity(0.6),
                                     spreadRadius: 10,
                                     blurRadius: 7,
@@ -830,7 +824,7 @@ class Credits extends StatelessWidget {
                                   Text("Settings",
                                       style: TextStyle(
                                         color: lightDynamic?.primary ??
-                                            Color.fromARGB(255, 99, 99, 99),
+                                            const Color.fromARGB(255, 99, 99, 99),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                       )),
@@ -843,7 +837,7 @@ class Credits extends StatelessWidget {
                                               Icons.arrow_forward_ios_rounded,
                                               size: 25,
                                               color: lightDynamic?.primary ??
-                                                  Color.fromARGB(
+                                                  const Color.fromARGB(
                                                       255, 99, 99, 99))))
                                 ]))))),
           ])
@@ -859,7 +853,7 @@ void _launchTAB(context, string, preview) {
     bounce: false,
     context: context,
     backgroundColor: Colors.transparent,
-    shadow: BoxShadow(color: Colors.transparent),
+    shadow: const BoxShadow(color: Colors.transparent),
     builder: (context) => CupertinoScaffold(
       transitionBackgroundColor: Colors.transparent,
       body: OpenWebView(website: string, preview: preview),

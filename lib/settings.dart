@@ -1,26 +1,20 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:Zpp/credits.dart';
 import 'package:Zpp/secret_menu.dart';
-import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:sheet/route.dart';
-import 'package:sheet/sheet.dart';
 import 'package:simple_list_tile/simple_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:swipe_deck/swipe_deck.dart';
 
 import 'about_us.dart';
 import 'main.dart';
-import 'my_social.dart';
 
 _launchURL(var myUrl) async {
   Uri finalUrl = Uri.parse(myUrl);
@@ -115,7 +109,7 @@ class MySettingsState extends State<MySettings> {
                                 Text("Home",
                                     style: TextStyle(
                                       color: widget.lightDynamic?.primary ??
-                                          Color.fromARGB(255, 99, 99, 99),
+                                          const Color.fromARGB(255, 99, 99, 99),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                     )),
@@ -125,7 +119,7 @@ class MySettingsState extends State<MySettings> {
                                     child: Icon(Icons.arrow_forward_ios_rounded,
                                         size: 25,
                                         color: widget.lightDynamic?.primary ??
-                                            Color.fromARGB(255, 99, 99, 99)))
+                                            const Color.fromARGB(255, 99, 99, 99)))
                               ])))),
               automaticallyImplyLeading: true,
             ),
@@ -146,7 +140,7 @@ class MySettingsState extends State<MySettings> {
                         Bounceable(
                             onTap: () {
                               CupertinoScaffold.showCupertinoModalBottomSheet(
-                                  shadow: BoxShadow(color: Colors.transparent),
+                                  shadow: const BoxShadow(color: Colors.transparent),
                                   expand: false,
                                   bounce: false,
                                   useRootNavigator: true,
@@ -206,7 +200,7 @@ class MySettingsState extends State<MySettings> {
                                                   color: Colors.grey
                                                       .withOpacity(0.1),
                                                   alignment: Alignment.center,
-                                                  child: Padding(
+                                                  child: const Padding(
                                                     padding:
                                                         EdgeInsets.symmetric(
                                                             vertical: 5),
@@ -234,7 +228,7 @@ class MySettingsState extends State<MySettings> {
                                                   onDismissed: (dismissed) {
                                                     CupertinoScaffold
                                                         .showCupertinoModalBottomSheet(
-                                                            shadow: BoxShadow(
+                                                            shadow: const BoxShadow(
                                                                 color: Colors
                                                                     .transparent),
                                                             expand: false,
@@ -326,7 +320,7 @@ class MySettingsState extends State<MySettings> {
                                     ? {
                                         CupertinoScaffold
                                             .showCupertinoModalBottomSheet(
-                                          shadow: BoxShadow(
+                                          shadow: const BoxShadow(
                                               color: Colors.transparent),
                                           expand: false,
                                           bounce: false,
@@ -464,7 +458,7 @@ class MySettingsState extends State<MySettings> {
                                                                           ]))
                                                                     ])));
                                                       },
-                                                          duration: Duration(
+                                                          duration: const Duration(
                                                               milliseconds:
                                                                   4000));
                                                       Navigator.of(context)
@@ -539,7 +533,7 @@ class MySettingsState extends State<MySettings> {
                                                               ]))
                                                     ]))));
                                       },
-                                        duration: Duration(milliseconds: 1500));
+                                        duration: const Duration(milliseconds: 1500));
                                 // : Navigator.push(
                                 //     context,
                                 //     CupertinoPageRoute(
@@ -569,7 +563,7 @@ class MySettingsState extends State<MySettings> {
                                         onTap: () {
                                           CupertinoScaffold
                                               .showCupertinoModalBottomSheet(
-                                            shadow: BoxShadow(
+                                            shadow: const BoxShadow(
                                                 color: Colors.transparent),
                                             expand: false,
                                             bounce: false,
@@ -634,7 +628,7 @@ class MySettingsState extends State<MySettings> {
                                                                           .center,
                                                                   children: [
                                                                     const Padding(
-                                                                        padding: const EdgeInsets.only(
+                                                                        padding: EdgeInsets.only(
                                                                             left:
                                                                                 15,
                                                                             right:

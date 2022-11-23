@@ -32,8 +32,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 import 'my_app.dart';
-import 'my_social.dart';
-import 'refresh_home.dart';
 
 late List<CameraDescription> _cameras;
 
@@ -122,7 +120,6 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Platform.isAndroid ? addBoolToSF('devModeOn', false) : null;
   bool i = (prefs.getBool('devModeOn') ?? true);
-  print(i);
   Platform.isWindows ? null : detector.startListening;
   runApp(OverlaySupport.global(
     child: Phoenix(
@@ -131,19 +128,9 @@ void main() async {
   ));
 }
 
-_launchURL(var myUrl) async {
-  Uri finalUrl = Uri.parse(myUrl);
-  if (await canLaunchUrl(finalUrl)) {
-    launchUrl(finalUrl, mode: LaunchMode.externalApplication);
-  } else {
-    throw 'Could not launch $myUrl';
-  }
-}
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-late Future<bool> _Developer;
 
 addBoolToSF(second, bool first) async {
   ('wrote to prefs');
@@ -153,9 +140,7 @@ addBoolToSF(second, bool first) async {
 
 getBoolValuesSF(second) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  ("accessed prefs");
   //Return bool
-  bool? second = prefs.getBool('devModeOn');
 }
 
 _vibrate() {
@@ -226,7 +211,6 @@ class _FutureCameraState extends State<FutureCamera> {
   Widget build(BuildContext context) {
     precacheImage(const AssetImage('assets/skull.png'), context);
     precacheImage(const AssetImage('assets/editor.png'), context);
-    var size = MediaQuery.of(context).size;
     var height = MediaQuery.of(context).size.height - 60;
     if (!controller.value.isInitialized) {
       return Column(children: [
@@ -326,7 +310,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                               child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
-                                                  children: [
+                                                  children: const [
                                                     Text("Home",
                                                         style: TextStyle(
                                                           color: Color.fromARGB(
@@ -355,7 +339,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                   alignment: Alignment.topLeft,
                                   child: Padding(
                                       padding:
-                                          EdgeInsets.fromLTRB(25, 18, 125, 0),
+                                          const EdgeInsets.fromLTRB(25, 18, 125, 0),
                                       child: FittedBox(
                                           child: Text(
                                               "See Yourself in 200 years",
@@ -503,7 +487,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                       child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
-                                          children: [
+                                          children: const [
                                             Text("Home",
                                                 style: TextStyle(
                                                   color: Color.fromARGB(
@@ -526,7 +510,7 @@ class _FutureCameraState extends State<FutureCamera> {
                       Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
-                              padding: EdgeInsets.fromLTRB(25, 18, 125, 0),
+                              padding: const EdgeInsets.fromLTRB(25, 18, 125, 0),
                               child: FittedBox(
                                   child: Text("See Yourself in 200 years",
                                       style: TextStyle(
@@ -583,7 +567,7 @@ class _FutureCameraState extends State<FutureCamera> {
                           Center(
                               child: LoadingAnimationWidget.inkDrop(
                                   color: Colors.white, size: 50)),
-                          Center(
+                          const Center(
                               child: Padding(
                                   padding: EdgeInsets.only(top: 120),
                                   child: Text("Processing...",
@@ -625,7 +609,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                           child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
-                                              children: [
+                                              children: const [
                                                 Text("Home",
                                                     style: TextStyle(
                                                       color: Color.fromARGB(
@@ -653,7 +637,7 @@ class _FutureCameraState extends State<FutureCamera> {
                           Align(
                               alignment: Alignment.topLeft,
                               child: Padding(
-                                  padding: EdgeInsets.fromLTRB(25, 18, 125, 0),
+                                  padding: const EdgeInsets.fromLTRB(25, 18, 125, 0),
                                   child: FittedBox(
                                       child: Text("See Yourself in 200 years",
                                           style: TextStyle(
@@ -721,11 +705,11 @@ class _FutureCameraState extends State<FutureCamera> {
                                                                         20))
                                                           ])))
                                             ])));
-                                  }, duration: Duration(milliseconds: 4000));
+                                  }, duration: const Duration(milliseconds: 4000));
                                 },
                                 child: Visibility(
                                     visible: loaded,
-                                    child: SizedBox(
+                                    child: const SizedBox(
                                         width: 60,
                                         child: Padding(
                                             padding: EdgeInsets.only(top: 65),
@@ -748,7 +732,7 @@ class _FutureCameraState extends State<FutureCamera> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text(
+                                            const Text(
                                               'Only on',
                                               style: TextStyle(
                                                 fontSize: 20,
@@ -758,19 +742,19 @@ class _FutureCameraState extends State<FutureCamera> {
                                             ),
                                             Padding(
                                                 padding:
-                                                    EdgeInsets.only(left: 7.5),
+                                                    const EdgeInsets.only(left: 7.5),
                                                 child: SizedBox(
                                                     height: 40,
                                                     width: 17.5,
                                                     child: ClipRect(
                                                         child: Transform.scale(
                                                             scale: 1.4,
-                                                            child: Image(
+                                                            child: const Image(
                                                                 image: AssetImage(
                                                                     'assets/bolt.png'),
                                                                 fit: BoxFit
                                                                     .cover))))),
-                                            Text(
+                                            const Text(
                                               'Zpp',
                                               style: TextStyle(
                                                 fontSize: 20,

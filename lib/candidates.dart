@@ -4,27 +4,11 @@ import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'main.dart';
 import 'cands/rishu-sharma.dart';
-
-_launchURL(var myUrl) async {
-  Uri finalUrl = Uri.parse(myUrl);
-  if (await canLaunchUrl(finalUrl)) {
-    launchUrl(finalUrl, mode: LaunchMode.externalApplication);
-  } else {
-    throw 'Could not launch $myUrl';
-  }
-}
-
-_vibrate() {
-  Vibrate.feedback(FeedbackType.impact);
-}
 
 class CandidatesPage extends StatelessWidget {
   CandidatesPage({Key? key}) : super(key: key);
@@ -39,6 +23,7 @@ class CandidatesPage extends StatelessWidget {
   @override
   var devMode = 0;
   final _offsetToArmed = 75.0;
+  @override
   Widget build(BuildContext context) {
     const colorizeColors = [
       Colors.purple,
@@ -58,7 +43,7 @@ class CandidatesPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         child: Scaffold(
             appBar: CupertinoNavigationBar(
-                backgroundColor: Color(0x00000000),
+                backgroundColor: const Color(0x00000000),
                 border: Border.all(color: Colors.transparent),
                 previousPageTitle: "Home",
                 middle: const Text("Candidates")),

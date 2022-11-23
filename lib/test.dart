@@ -54,7 +54,6 @@ class _YoMommaState extends State<YoMomma> {
         kBottomNavigationBarHeight -
         MediaQuery.of(context).padding.top -
         55;
-    bool visible = true;
     var _offsetToArmed = 90.0;
     final key = GlobalKey<CustomRefreshIndicatorState>();
     bool _startedManually = false;
@@ -79,7 +78,7 @@ class _YoMommaState extends State<YoMomma> {
                       height: 5,
                       width: 55))),
           ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20.0),
                   topRight: Radius.circular(20.0)),
               child: CupertinoPageScaffold(
@@ -87,7 +86,7 @@ class _YoMommaState extends State<YoMomma> {
                     middle: const Text('Yo Momma'),
                     automaticallyImplyLeading: false,
                     transitionBetweenRoutes: false,
-                    trailing: Padding(
+                    trailing: const Padding(
                         padding: EdgeInsets.only(top: 12.5),
                         child: ClipRect(
                             child: RotatedBox(

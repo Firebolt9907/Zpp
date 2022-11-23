@@ -3,12 +3,10 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'main.dart';
-import 'about_us.dart';
 
 _launchURL(var myUrl) async {
   Uri finalUrl = Uri.parse(myUrl);
@@ -27,6 +25,8 @@ class TestText extends StatelessWidget {
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
   );
+
+  const TestText({super.key});
 
   @override
   Widget build(BuildContext context) {

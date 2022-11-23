@@ -1,17 +1,14 @@
-import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 
 import 'package:Zpp/main.dart';
-import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:iconforest_arcticons/arcticons.dart';
-import 'package:sheet/sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -19,7 +16,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 class OpenWebView extends StatefulWidget {
   // final website;
 
-  OpenWebView({super.key, this.website, this.preview});
+  const OpenWebView({super.key, this.website, this.preview});
   final website;
   final preview;
   @override
@@ -43,20 +40,12 @@ class WebViewState extends State<OpenWebView> {
 
   late WebViewController _controller;
   // String website = '';
-  String _selectedMenu = '';
   @override
   Widget build(BuildContext context) {
-    var key = const Key('webview');
     String site =
         widget.website.replaceAll("https://", "").replaceAll("http://", "");
     var pos = site.indexOf('/');
     String result = (pos != -1) ? site.substring(0, pos) : site;
-    double width = MediaQuery.of(context).size.width;
-    double height2 = MediaQuery.of(context).size.height;
-    double height = MediaQuery.of(context).size.height -
-        kBottomNavigationBarHeight -
-        kToolbarHeight;
-    print(kBottomNavigationBarHeight);
     var preview = widget.preview;
     return MaterialApp(
         color: Colors.transparent,
@@ -76,7 +65,7 @@ class WebViewState extends State<OpenWebView> {
                     top: false,
                     bottom: false,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(20),
                             topLeft: Radius.circular(20)),
                         child: CupertinoPageScaffold(
@@ -92,9 +81,9 @@ class WebViewState extends State<OpenWebView> {
                                       alignment: Alignment.bottomRight,
                                       children: [
                                         Padding(
-                                            padding: EdgeInsets.only(top: 25),
+                                            padding: const EdgeInsets.only(top: 25),
                                             child: ClipRRect(
-                                                borderRadius: BorderRadius.only(
+                                                borderRadius: const BorderRadius.only(
                                                     topRight:
                                                         Radius.circular(20),
                                                     topLeft:
@@ -138,7 +127,7 @@ class WebViewState extends State<OpenWebView> {
                                                     child: Hero(
                                                         tag: widget.website,
                                                         child: ClipRRect(
-                                                            borderRadius: BorderRadius.only(
+                                                            borderRadius: const BorderRadius.only(
                                                                 topRight: Radius
                                                                     .circular(
                                                                         20),
@@ -291,16 +280,16 @@ class WebViewState extends State<OpenWebView> {
                                                                     TextSpan(
                                                                         text:
                                                                             preview,
-                                                                        style: TextStyle(
+                                                                        style: const TextStyle(
                                                                             fontWeight:
                                                                                 FontWeight.bold)),
-                                                                    TextSpan(
+                                                                    const TextSpan(
                                                                         text:
                                                                             ' - '),
                                                                     TextSpan(
                                                                         text:
                                                                             result,
-                                                                        style: TextStyle(
+                                                                        style: const TextStyle(
                                                                             fontStyle:
                                                                                 FontStyle.italic)),
                                                                   ],

@@ -2,14 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'dart:ui';
-import 'package:Zpp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 class CoinFlip8p extends StatefulWidget {
   const CoinFlip8p({Key? key, this.devModeOn}) : super(key: key);
@@ -160,7 +157,7 @@ class CoinFlipState extends State<CoinFlip8p> {
               Scaffold(
                   resizeToAvoidBottomInset: true,
                   appBar: CupertinoNavigationBar(
-                    middle: Text('Coin Flip',
+                    middle: const Text('Coin Flip',
                         style: TextStyle(color: Colors.white)),
                     automaticallyImplyLeading: true,
                     trailing: Padding(
@@ -190,14 +187,14 @@ class CoinFlipState extends State<CoinFlip8p> {
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text("Home",
+                                      const Text("Home",
                                           style: TextStyle(
                                             color:
                                                 Color.fromARGB(255, 99, 99, 99),
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
                                           )),
-                                      SizedBox(
+                                      const SizedBox(
                                           height: 30,
                                           width: 30,
                                           child: Icon(
@@ -1040,11 +1037,11 @@ class CoinFlipState extends State<CoinFlip8p> {
                   child: Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                          padding: EdgeInsets.only(top: 1.5),
+                          padding: const EdgeInsets.only(top: 1.5),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Only on',
                                   style: TextStyle(
                                     fontSize: 15,
@@ -1053,18 +1050,18 @@ class CoinFlipState extends State<CoinFlip8p> {
                                   ),
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 7.5),
+                                    padding: const EdgeInsets.only(left: 7.5),
                                     child: SizedBox(
                                         height: 40,
                                         width: 17.5,
                                         child: ClipRect(
                                             child: Transform.scale(
                                                 scale: 1.4,
-                                                child: Image(
+                                                child: const Image(
                                                     image: AssetImage(
                                                         'assets/bolt.png'),
                                                     fit: BoxFit.cover))))),
-                                Text(
+                                const Text(
                                   'Zpp',
                                   style: TextStyle(
                                     fontSize: 15,

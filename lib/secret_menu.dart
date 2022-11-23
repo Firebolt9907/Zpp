@@ -1,22 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:ui';
 
 import 'package:Zpp/game/intro.dart';
 import 'package:Zpp/webview.dart';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:Zpp/candidates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:overlay_support/overlay_support.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:rive/rive.dart';
-import 'package:sheet/sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sheet/route.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -45,13 +34,12 @@ class DevConfirm extends StatelessWidget {
     systemNavigationBarDividerColor: Colors.transparent,
     statusBarColor: Colors.transparent,
   );
-  late WebViewController _myController;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Column(children: [
       Padding(
-          padding: EdgeInsets.only(top: 50, bottom: 14),
+          padding: const EdgeInsets.only(top: 50, bottom: 14),
           child: Center(
               child: Container(
                   decoration: BoxDecoration(
@@ -62,7 +50,7 @@ class DevConfirm extends StatelessWidget {
       SizedBox(
           height: height - 69,
           child: ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20.0),
                   topRight: Radius.circular(20.0)),
               child: CupertinoPageScaffold(
@@ -173,7 +161,7 @@ class DevConfirm extends StatelessWidget {
                                   Navigator.pushReplacement(
                                       context,
                                       CupertinoPageRoute(
-                                          builder: (context) => GameIntro()));
+                                          builder: (context) => const GameIntro()));
                                 }
                               },
                               autofocus: true,
