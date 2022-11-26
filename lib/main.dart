@@ -59,7 +59,7 @@ void _share() async {
   var link = Platform.isIOS
       ? "appstorelink"
       : Platform.isAndroid
-          ? "playstorelink"
+          ? "https://play.google.com/store/apps/details?id=com.firebolt.zpp"
           : "";
   ui.Image image = await boundary.toImage();
   ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
